@@ -1,10 +1,10 @@
 # Wattary's Ear
 # NOTE: this file requires PyAudio & Python Speech Recognition Engine because it uses the Microphone class
 
-#Importing the nodule
+#Importing the module
 import speech_recognition as sr
 
-# obtain audio from the microphone
+# obtaining audio from the microphone
 Ear = sr.Recognizer()
 with sr.Microphone() as source:
     print("Listening!")
