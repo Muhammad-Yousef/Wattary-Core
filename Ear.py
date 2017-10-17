@@ -5,6 +5,7 @@
 import speech_recognition as sr
 import nltk
 from nltk.tokenize import sent_tokenize
+from nltk.tokenize import word_tokenize
 
 #-------------------------- Speech Recognition : Speech-to-text -----------------------------------#
 
@@ -28,11 +29,13 @@ except sr.RequestError as e:
 
 #----------------------------------------- NLP Pipeline ------------------------------------------#
 
-# For testing purposes only
-text = """Hello, My name is Ahmad. I am 22 years old. I study computer science at MIT """
+#----------------------------------- Sentence Splitting ------------------------------------------#
 
 # Performing sentence tokenization and saving the result into sentences list in order to parse each one seperately.
 sentences = sent_tokenize(text)
 
+#----------------------------------------- Word Tokenization ------------------------------------------#
 
+# Performing word tokenization over the resulted sentences and save the result into a new list of lists called tokens.
+tokens = [word_tokenize(sentence) for sentence in sentences]
 
