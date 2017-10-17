@@ -5,7 +5,7 @@
 import speech_recognition as sr
 import nltk
 import nltk.data
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import regexp_tokenize
 
 #-------------------------- Speech Recognition : Speech-to-text -----------------------------------#
 
@@ -38,5 +38,5 @@ sentences = tokenizer.tokenize(text)
 #----------------------------------------- Word Tokenization ------------------------------------------#
 
 # Performing word tokenization over the resulted sentences and save the result into a new list of lists called tokens.
-tokens = [word_tokenize(sentence) for sentence in sentences]
+tokens = [regexp_tokenize(sentence, pattern = "[\w']+") for sentence in sentences]
 
