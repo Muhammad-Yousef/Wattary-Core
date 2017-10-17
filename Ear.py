@@ -4,7 +4,7 @@
 #Importing the modules
 import speech_recognition as sr
 import nltk
-from nltk.tokenize import sent_tokenize
+import nltk.data
 from nltk.tokenize import word_tokenize
 
 #-------------------------- Speech Recognition : Speech-to-text -----------------------------------#
@@ -32,7 +32,8 @@ except sr.RequestError as e:
 #----------------------------------- Sentence Splitting ------------------------------------------#
 
 # Performing sentence tokenization and saving the result into sentences list in order to parse each one seperately.
-sentences = sent_tokenize(text)
+tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+sentences = tokenizer.tokenize(text)
 
 #----------------------------------------- Word Tokenization ------------------------------------------#
 
