@@ -40,24 +40,47 @@ def Model(valueList = []):
     in this example  i choose  random values ,
     in the future this indxes will depend on the user's selction
     in this demo the user want us to recommedd a car with :
-    1-Nummber of galons per mile   ,  2- the Horse Power
+    1- Nummber of galons per mile   ,  2- the Horse Power
     3- Number of gears of the car
 
+    '''
+    '''
+    :return array of 2 arrays 
+    1st: the length between the begining of the csv file  to the choosen value 
+    2nd: the choosen value that well be recomended to the user
     '''
     Data = Cars.ix[:, (1, 4, 10)].values
 
     Neighbors = NearestNeighbors(n_neighbors=1).fit(Data)
 
-    print(Neighbors.kneighbors([valueList]))
+    Output = Neighbors.kneighbors([valueList])
+
+    return Output
 
 
+def outputHandling(output):
+    """
+    :return: Full Details for the Recommended Item
+    """
 
+    # cast the list given to String
+    OutPut = str(output[1])
 
+    # remove the Brackets from the string
+    newOutput = OutPut.strip("[]")
 
+    # cast it again to Integer
+    Index = int(newOutput)
+
+    # Return the Recommended Item
+    recommendedItem = Cars.iloc[Index]
+    return recommendedItem
 
 #--------------------------------------------Just For Testing----------------------------------------------#
 
 Initlaize()
 #Display()
 Test = SetTestValues([21,150,4])
-Model(Test)
+op = Model(Test)
+o = outputHandling(op)
+print(o)
