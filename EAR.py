@@ -10,7 +10,7 @@ import re
 
 class EAR:
 
-    text = "I loooooove yooouuu"
+    text = ""
     tokens = []
 
     # Speech-To-Text
