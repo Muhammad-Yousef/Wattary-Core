@@ -5,11 +5,12 @@
 import speech_recognition as sr
 import nltk
 from nltk.tokenize import regexp_tokenize
+import re
 
 
 class EAR:
 
-    text = ''
+    text = "I should've done that thing I didn't do"
     tokens = []
 
     # Speech-To-Text
@@ -30,6 +31,27 @@ class EAR:
             print("I can't hear you, Could you repeat that please? ")
         except sr.RequestError as e:
             print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+    # Expanding Contractions
+    def Expand(self):
+
+        replacement_patterns = [
+            (r'won\'t', 'will not'),
+            (r'can\'t', 'can not'),
+            (r'I\'m', 'I am'),
+            (r'ain\'t', 'is not'),
+            (r'(\w+)\'ll', '\g<1> will'),
+            (r'(\w+)n\'t', '\g<1> not'),
+            (r'(\w+)\'ve', '\g<1> have'),
+            (r'(\w+)\'s', '\g<1> is'),
+            (r'(\w+)\'re', '\g<1> are'),
+            (r'(\w+)\'d', '\g<1> would')
+        ]
+
+        patterns = [(re.compile(regex), repl) for (regex, repl) in replacement_patterns]
+
+        for (pattern, repl) in patterns:
+            self.text = re.sub(pattern, repl, self.text)
 
     # Performing word tokenization over the resulted text and save the result into a new list of tokens called tokens
     def tokenize(self):
