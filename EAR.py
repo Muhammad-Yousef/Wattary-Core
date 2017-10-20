@@ -4,39 +4,33 @@
 #Importing the modules
 import speech_recognition as sr
 import nltk
-import nltk.data
 from nltk.tokenize import regexp_tokenize
 
-#-------------------------- Speech Recognition : Speech-to-text -----------------------------------#
 
-# obtaining audio from the microphone
-Ear = sr.Recognizer()
-with sr.Microphone() as source:
-    print("Listening!")
-    audio = Ear.listen(source)
+class EAR:
 
-# recognize speech using Google Speech Recognition
-# for testing purposes, we're just using the default API key
-# to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")` instead of `r.recognize_google(audio)`
+    text = ''
+    tokens = []
 
-try:
-    # Saving recognized text into text variable
-    text = Ear.recognize_google(audio)
-except sr.UnknownValueError:
-    print("I can't hear you, Could you repeat that please? ")
-except sr.RequestError as e:
-    print("Could not request results from Google Speech Recognition service; {0}".format(e))
+    # Speech-To-Text
+    def Listen(self):
+        # obtaining audio from the microphone
+        with sr.Microphone() as source:
+            print('Listening!')
+            audio = sr.Recognizer().listen(source)
 
-#----------------------------------------- NLP Pipeline ------------------------------------------#
+        # recognize speech using Google Speech Recognition
+        # for testing purposes, we're just using the default API key
+        # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")` instead of `r.recognize_google(audio)`
 
-#----------------------------------- Sentence Splitting ------------------------------------------#
+        try:
+            # Saving recognized text into text variable
+            self.text = sr.Recognizer().recognize_google(audio)
+        except sr.UnknownValueError:
+            print("I can't hear you, Could you repeat that please? ")
+        except sr.RequestError as e:
+            print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
-# Performing sentence tokenization and saving the result into sentences list in order to parse each one seperately.
-tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-sentences = tokenizer.tokenize(text)
-
-#----------------------------------------- Word Tokenization ------------------------------------------#
-
-# Performing word tokenization over the resulted sentences and save the result into a new list of lists called tokens.
-tokens = [regexp_tokenize(sentence, pattern = "[\w']+") for sentence in sentences]
-
+    # Performing word tokenization over the resulted text and save the result into a new list of tokens called tokens
+    def tokenize(self):
+        self.tokens = regexp_tokenize(self.text, pattern = "[\w']+")
