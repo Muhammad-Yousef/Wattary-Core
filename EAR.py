@@ -10,8 +10,9 @@ import re
 
 class EAR:
 
-    text = ""
+    text = "My name is Muhammad"
     tokens = []
+    tagged_tokens = []
 
     # Speech-To-Text
     def Listen(self):
@@ -72,3 +73,8 @@ class EAR:
     # Performing word tokenization over the resulted text and save the result into a new list of tokens called tokens
     def tokenize(self):
         self.tokens = regexp_tokenize(self.text, pattern = "[\w']+")
+
+    # Temporary : Untill I reach Stanford Core NLP Tagger
+    # Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
+    def tag(self):
+        self.tagged_tokens = nltk.pos_tag(self.tokens)
