@@ -6,13 +6,16 @@ import speech_recognition as sr
 import nltk
 from nltk.tokenize import regexp_tokenize
 from nltk.corpus import wordnet
+from nltk.tree import Tree
 import re
+
 
 class EAR:
 
-    text = "My name is Muhammad"
+    text = ""
     tokens = []
     tagged_tokens = []
+    namedEnts = []
 
     # Speech-To-Text
     def Listen(self):
@@ -78,3 +81,12 @@ class EAR:
     # Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
     def tag(self):
         self.tagged_tokens = nltk.pos_tag(self.tokens)
+
+    # Extracting Recognized Named-Entities such as : Person, Organization
+    def Recognizer(self):
+        NER = nltk.ne_chunk(self.tagged_tokens)
+
+        for NE in NER:
+            if hasattr(NE, 'label'):
+                temp = NE.label(), ' '.join(N[0] for N in NE)
+                self.namedEnts.append(temp)
