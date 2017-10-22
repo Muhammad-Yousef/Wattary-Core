@@ -16,6 +16,7 @@ class EAR:
     tokens = []
     tagged_tokens = []
     namedEnts = []
+    info = []
 
     # Speech-To-Text
     def Listen(self):
@@ -90,3 +91,28 @@ class EAR:
             if hasattr(NE, 'label'):
                 temp = NE.label(), ' '.join(N[0] for N in NE)
                 self.namedEnts.append(temp)
+
+    # Information Extractor
+    def Extractor(self):
+        chunkGram = r"""
+        
+            chunk:
+            {<VB><RP><DT><NN>}
+            }<VB>{
+            }<DT>{
+            
+                    
+        """
+
+        chunkParser = nltk.RegexpParser(chunkGram)
+        chunked = chunkParser.parse(self.tagged_tokens)
+
+        chunked.draw()
+
+        for element in chunked:
+            if hasattr(element, 'label'):
+                temp = element.label(), ' '.join(e[0] for e in element)
+                self.info.append(temp)
+
+
+
