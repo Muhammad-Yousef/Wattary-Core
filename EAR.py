@@ -96,10 +96,19 @@ class EAR:
     def Extractor(self):
         chunkGram = r"""
         
+            # Light off
             chunk:
             {<VB><RP><DT><NN>}
             }<VB>{
             }<DT>{
+            
+            # Light on
+            
+            # Temperature
+            chunk:
+            {<VB><DT><NN><TO><CD>}
+            }<VB><DT>{
+            }<TO>{
             
                     
         """
@@ -111,8 +120,5 @@ class EAR:
 
         for element in chunked:
             if hasattr(element, 'label'):
-                temp = element.label(), ' '.join(e[0] for e in element)
+                temp = ' '.join(e[0] for e in element)
                 self.info.append(temp)
-
-
-
