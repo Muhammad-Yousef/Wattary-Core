@@ -19,14 +19,15 @@ class RECOMMENDER:
 
     def Display(self):
 
-        """Mosab's implementation"""
+        # This method for Testing purpose only
+        print(self.dataSet.head())
 
 
     def SetTestValues(self, testValues = []):
         # This Method will take a Dict instead of list in the Future
         self.listOfValues = testValues
 
-        return listOfValues
+        return self.listOfValues
 
 
     def Model(self, valueList = []):
@@ -55,16 +56,28 @@ class RECOMMENDER:
         return self.Output
 
 
-    def outPutHandling(self):
 
-        """Mosab's implementation"""
+    def outPutHandling(self,output):
+        #:return: Full Details for the Recommended Item
 
+        # cast the list given to String
+        self.OutPut = str(output[1])
+
+        # remove the Brackets from the string
+        self.newOutput = self.OutPut.strip("[]")
+
+        # cast it again to Integer
+        self.Index = int(self.newOutput)
+
+        # Return the Recommended Item
+        self.recommendedItem = self.dataSet.iloc[self.Index]
+        print(self.recommendedItem)
 
 #--------------------------------------------------Main To Test---------------------------------------#
+x=RECOMMENDER("")
+x.outPutHandling([2,15,4])
 
-    """Mosab's implementation"""
-
-#------------------------------------- Old Version of the code without OOP paradigm-------------------#
+  #------------------------------------- Old Version of the code without OOP paradigm-------------------#
 '''
 # using pandas library to read our Data set file.csv
 Cars = pd.read_csv('DataSets/mtcars.csv')
