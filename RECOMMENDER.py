@@ -15,22 +15,17 @@ class RECOMMENDER:
         self.dataSet = dataset  # To initialize the path when creating the object
         self.listOfValues = testValues  # To initialize the test values when crating the object without using a function
 
-    def Initialize(self):
+    def Initialize(self,CoulmsNames = []):
         # Define the Columns's names of the Data set
-        self.dataSet.coulmns = ['carNames', 'Mpg', 'Cyl', 'disp', 'horsePower', 'drat', 'Wight', 'qsec', 'vs', 'am',
-                                'Gear', 'carb']
+        self.dataSet.coulmns = CoulmsNames
 
     def Display(self):
         # This method for Testing purpose only
         print(self.dataSet.head())
 
-    """
-    def SetTestValues(self, testValues=[]):
-        # This Method will take a Dict instead of list in the Future    # Lines to Remove
-        self.listOfValues = testValues
 
-        return self.listOfValues
-    """
+    def SetValuesIndexes(self, testValues=[]):
+        """ ToDo """
 
     def Model(self, valueList=[]):
         """
@@ -76,8 +71,10 @@ class RECOMMENDER:
 
 # --------------------------------------------------Just for Testing---------------------------------------#
 pathOfDataSet = pd.read_csv('DataSets/mtcars.csv')
+TestCoulmns = ['carNames', 'Mpg', 'Cyl', 'disp', 'horsePower', 'drat', 'Wight', 'qsec', 'vs', 'am','Gear', 'carb']
 x = RECOMMENDER(pathOfDataSet, [21, 150, 4])
-x.Initialize()
+
+x.Initialize(TestCoulmns)
 # listV = x.SetTestValues([21, 150, 4]) # line to remove
 out = x.Model(x.listOfValues)
 recomendedItem = x.outPutHandling(out)
