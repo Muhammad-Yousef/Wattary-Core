@@ -9,18 +9,25 @@ import sklearn
 from sklearn.neighbors import NearestNeighbors
 
 
-# ----------------------------------------------------- OOP Version -----------------------------------#
+# ----------------------------------------------------- Recommender Class -----------------------------------#
 class RECOMMENDER:
     def __init__(self, dataset, testValues=[]):
-        self.dataSet = dataset  # To initialize the path when creating the object
-        self.listOfValues = testValues  # To initialize the test values when crating the object without using a function
+        """
 
-    def Initialize(self,CoulmsNames = []):
-        # Define the Columns's names of the Data set
-        self.dataSet.coulmns = CoulmsNames
+        :param dataset: string: that has the path to the data set
+        :param testValues:  list:  the values that we will recommend an item based on it
+
+        initialize the path when creating the object
+        and initialize the test values when crating the object without using a function
+        """
+
+        self.dataSet = dataset
+
+        self.listOfValues = testValues
 
     def Display(self):
-        # This method for Testing purpose only
+        """ This method for Testing purpose only """
+
         print(self.dataSet.head())
 
 
@@ -29,53 +36,51 @@ class RECOMMENDER:
 
     def Model(self, valueList=[]):
         """
-            in this example  i choose  random values ,
-            in the future this indexes will depend on the user's selection
-            in this demo the user want us to recommend a car with :
-            1- Number of galons per mile
-            2- the Horse Power
-            3- Number of gears of the car
+
+        :param valueList: list:  the values that we will recommend an item based on it
+        :return: list:
+
+
+        checking data in all rows for the columns 1,4 and 10,
+        Fitting the Nearest Neighbors function to the data in our data set
+        and Getting the nearest value to the desired values in the data set
         """
-        '''
-        :return array of 2 arrays 
-        1st: the length between the beginning of the csv file  to the chosen value
-        2nd: the chosen value that well be recommended to the user
-        '''
-        # checking data in all rows for the columns 1,4 and 10
+
         self.Data = self.dataSet.ix[:, (1, 4, 10)].values
 
-        # Fitting the Nearest Neighbors function to the data in our data set
         self.Neighbors = NearestNeighbors(n_neighbors=1).fit(self.Data)
 
-        # Getting the nearest value to the desired values in the data set
         self.Output = self.Neighbors.kneighbors([valueList])
 
         return self.Output
 
-    def outPutHandling(self, output):
-        #:return: Full Details for the Recommended Item
 
-        # cast the list given to String
+
+
+    def outPutHandling(self, output):
+        """
+
+        :param output: list:  than returned from Model()
+        :return: recommenedItem: vector row or list: that has the recommended details
+
+        cast the list given to String,
+        remove the Brackets from the string
+        and return the Recommended Item
+        """
         self.OutPut = str(output[1])
 
-        # remove the Brackets from the string
         self.newOutput = self.OutPut.strip("[]")
 
         # cast it again to Integer
         self.Index = int(self.newOutput)
 
-        # Return the Recommended Item
         self.recommendedItem = self.dataSet.iloc[self.Index]
         return self.recommendedItem
 
 
 # --------------------------------------------------Just for Testing---------------------------------------#
-pathOfDataSet = pd.read_csv('DataSets/mtcars.csv')
-TestCoulmns = ['carNames', 'Mpg', 'Cyl', 'disp', 'horsePower', 'drat', 'Wight', 'qsec', 'vs', 'am','Gear', 'carb']
-x = RECOMMENDER(pathOfDataSet, [21, 150, 4])
-
-x.Initialize(TestCoulmns)
-# listV = x.SetTestValues([21, 150, 4]) # line to remove
+Cars = pd.read_csv('DataSets/mtcars.csv')
+x = RECOMMENDER(Cars, [21, 150, 4])
 out = x.Model(x.listOfValues)
 recomendedItem = x.outPutHandling(out)
 print(recomendedItem)
