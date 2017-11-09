@@ -12,11 +12,12 @@ import re
 
 class EAR:
 
-    text = ""
-    tokens = []
-    tagged_tokens = []
-    namedEnts = []
-    info = []
+    def __init__(self):
+        self.text = ""
+        self.tokens = []
+        self.tagged_tokens = []
+        self.namedEnts = []
+        self.info = []
 
     # 1. Speech-To-Text
     def Listen(self):
