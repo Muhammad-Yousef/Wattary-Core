@@ -30,7 +30,6 @@ def faceDetect(img):
 cam = cv2.VideoCapture(0)
 while True:
 	mg, img = cam.read()
-	# img = cv2.flip(img, 1)
 	img = face(img)
 	cv2.imshow('my webcam', img)
 	if cv2.waitKey(1) == 27:
