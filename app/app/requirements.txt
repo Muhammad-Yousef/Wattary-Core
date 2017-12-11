@@ -1,0 +1,5 @@
+Flask==0.12.2
+Flask-Cors==3.0.3
+Flask-Login==0.4.0
+Flask-SocketIO==2.8.5
+Flask-WTF==0.14.2
