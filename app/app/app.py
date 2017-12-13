@@ -1,22 +1,33 @@
-#########################################
-#############                  ##########
-############# Testing SocketIO ##########
-#############     Localy       ##########
-#########################################
+##################################### Imorting the Modules  ###########################################
+
+
 from flask import Flask
 from flask_socketio import SocketIO, send
+from core.sender import Sender
 
+
+#######################################################################################################
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecret'
 socketio = SocketIO(app)
 
-hi = ""
+
+clientName = 'user'
+TOPIC = 'PI'
+
+
+#  an example of  switch the light on
+def lightOn(message):
+	send = Sender()
+	send.Conect(clientName)
+	send.send(clientName , TOPIC , message)
+	send.disconnect(clientName)
+
 
 @socketio.on('message')
 def handleMessage(msg):
-	print('Message: ' + msg)
-	send(msg, broadcast=True)
-	hi = msg
+	lightOn(int(msg))
+
 
 
 
@@ -24,7 +35,7 @@ def handleMessage(msg):
 
 @app.route('/')
 def index():
-	return hi
+	return "Every thing is up and running"
 
 
 if __name__ == '__main__':
