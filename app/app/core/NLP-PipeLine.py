@@ -1,4 +1,3 @@
-# Wattary's Ear
 # NOTE: this file requires NLTK & PyAudio & Python Speech Recognition Engine because it uses the Microphone class
 
 #Importing the modules
