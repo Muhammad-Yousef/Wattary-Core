@@ -172,12 +172,12 @@ def listen():
 
     client = speech.SpeechClient()
     config = types.RecognitionConfig(
-        encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=RATE,
-        language_code=language_code)
+        encoding = enums.RecognitionConfig.AudioEncoding.LINEAR16,
+        sample_rate_hertz = RATE,
+        language_code = language_code)
     streaming_config = types.StreamingRecognitionConfig(
-        config=config,
-        interim_results=True)
+        config = config,
+        interim_results = True)
 
     with MicrophoneStream(RATE, CHUNK) as stream:
         audio_generator = stream.generator()
@@ -188,5 +188,3 @@ def listen():
 
         # Now, put the transcription responses to use.
         listen_print_loop(responses)
-
-listen()
