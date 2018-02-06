@@ -7,7 +7,6 @@ from nltk.corpus import wordnet
 from nltk.tree import Tree
 import re
 
-
 class NLP:
 
     def __init__(self):
