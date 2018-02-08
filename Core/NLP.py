@@ -1,4 +1,4 @@
-# NOTE: this file requires NLTK & PyAudio & Python Speech Recognition Engine because it uses the Microphone class
+# NOTE: this file requires NLTK
 
 #Importing the modules
 import nltk
