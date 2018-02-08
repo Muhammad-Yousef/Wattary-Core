@@ -5,7 +5,7 @@ import nltk
 from nltk.tokenize import regexp_tokenize
 from nltk.corpus import wordnet
 from nltk.tree import Tree
-import re
+import spell
 
 class NLP:
 
@@ -15,6 +15,7 @@ class NLP:
         self.tagged_tokens = []
         self.namedEnts = []
         self.info = []
+
 
     # 1. Expanding Contractions
     def Expand(self):
@@ -41,7 +42,11 @@ class NLP:
     def tokenize(self):
         self.tokens = regexp_tokenize(self.text, pattern = "[\w']+")
 
-    # 3. Repeating eliminator
+    # 3. Spelling Correction | Unfinished yet
+    def correct(self):
+        self.tokens = [spell.correction(token) for token in self.tokens]
+
+    # 4. Repeating eliminator
     def replace(self, word):
         repeat_regexp = re.compile(r'(\w*)(\w)\2(\w*)')
         repl = r'\1\2\3'
@@ -58,11 +63,11 @@ class NLP:
         self.tokens = [self.replace(token) for token in self.tokens]
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
-    # 4. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
+    # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
     def tag(self):
         self.tagged_tokens = nltk.pos_tag(self.tokens)
 
-    # 5. Extracting Recognized Named-Entities such as : Person, Organization
+    # 6. Extracting Recognized Named-Entities such as : Person, Organization
     def Recognize(self):
         NER = nltk.ne_chunk(self.tagged_tokens)
 
@@ -71,7 +76,7 @@ class NLP:
                 temp = NE.label(), ' '.join(N[0] for N in NE)
                 self.namedEnts.append(temp)
 
-    # 6. Information Extractor
+    # 7. Information Extractor
     def Extract(self):
         chunkGram = r"""
         
