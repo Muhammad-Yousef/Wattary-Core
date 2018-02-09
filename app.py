@@ -3,7 +3,7 @@
 
 from flask import Flask
 from flask_socketio import SocketIO, send
-from core.sender import Sender
+from Core.sender import Sender
 
 
 #######################################################################################################
@@ -30,13 +30,13 @@ def handleMessage(msg):
 
 
 
-
-
-
+# For Testing only
 @app.route('/')
-def index():
-	return "Every thing is up and running"
+def homepage():
+	return """
+    <h1>Hello Wattary</h1> """
+
 
 
 if __name__ == '__main__':
-	socketio.run(app,host='0.0.0.0',port=5000)
+	socketio.run(debug=True, use_reloader=True)
