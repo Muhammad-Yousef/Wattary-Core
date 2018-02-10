@@ -30,13 +30,19 @@ def handleMessage(msg):
 
 
 
-# For Testing only
+
 @app.route('/')
 def homepage():
-	return """
-    <h1>Hello Wattary</h1> """
+
+
+    return """
+    <h1>Hello Wattary</h1>
+
+  
+    """
 
 
 
 if __name__ == '__main__':
-	socketio.run(debug=True, use_reloader=True)
+	app.run(debug=True, use_reloader=True)
+
