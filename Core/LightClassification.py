@@ -68,7 +68,6 @@ Light = np.asarray([(1, 16, 1, 1),
                     (5, 16.45, 1, 0),
                     (6, 16.55, 1, 0),
                     (7, 16, 1, 0),
-
                     (1, 15, 1, 1),
                     (2, 16.35, 1, 1),
                     (3, 14.5, 1, 0),
@@ -132,8 +131,8 @@ Cls = SVC()
 Cls.fit(X, Y)
 
 # Predict with fixed values
-print(str(Cls.predict(np.array([(3, 14, 1)], dtype=np.float32))).strip("[]."))
-print(str(Cls.predict(np.array([(4, 16.30, 1)], dtype=np.float32))).strip("[]."))
-print(str(Cls.predict(np.array([(5, 15.30, 1)], dtype=np.float32))).strip("[]."))
+print("SVC : " + str(Cls.predict(np.array([(3, 14, 1)], dtype=np.float32))).strip("[]."))
+print("SVC : " + str(Cls.predict(np.array([(4, 16.30, 1)], dtype=np.float32))).strip("[]."))
+print("SVC : " + str(Cls.predict(np.array([(5, 15.30, 1)], dtype=np.float32))).strip("[]."))
 # Evaluate the accuracy of the model
-print(int(Cls.score(X, Y) * 10), '%')
+print(int(Cls.score(X, Y) * 100), '%')
