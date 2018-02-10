@@ -1,11 +1,12 @@
 # NOTE: this file requires NLTK
 
 #Importing the modules
+import re
 import nltk
 from nltk.tokenize import regexp_tokenize
 from nltk.corpus import wordnet
 from nltk.tree import Tree
-import spell
+import Core.spell
 
 class NLP:
 
@@ -17,10 +18,12 @@ class NLP:
         self.info = []
 
 
-    # 1. Expanding Contractions
+    # 1. Expanding Contractions | Need to be improved - adding another contractions - and tested by all the possible commands contractions
     def Expand(self):
 
         replacement_patterns = [
+            (r'wanna', 'want to'),
+            (r'gonna', 'going to'),
             (r'won\'t', 'will not'),
             (r'can\'t', 'can not'),
             (r'I\'m', 'I am'),
@@ -44,7 +47,7 @@ class NLP:
 
     # 3. Spelling Correction | Unfinished yet
     def correct(self):
-        self.tokens = [spell.correction(token) for token in self.tokens]
+        self.tokens = [Core.spell.correction(token) for token in self.tokens]
 
     # 4. Repeating eliminator
     def replace(self, word):
