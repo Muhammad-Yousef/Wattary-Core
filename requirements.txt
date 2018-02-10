@@ -25,4 +25,7 @@ SQLAlchemy==1.1.13
 Werkzeug==0.12.2
 WTForms==2.1
 paho-mqtt
+    
+
+
 
