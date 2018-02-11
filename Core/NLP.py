@@ -7,12 +7,13 @@ from nltk.tokenize import regexp_tokenize
 from nltk.corpus import wordnet
 from nltk.tree import Tree
 import Core.spell
+import Core.TextClassifier
 
 
 class NLP:
 
     def __init__(self):
-        self.text = "What is the weather tomorrow in Cairo?"
+        self.text = "switch off the light"
         self.tokens = []
         self.corrected = []
         self.tagged_tokens = []
@@ -89,21 +90,28 @@ class NLP:
                 self.info.append(temp)
 
     # 6. Executor
-    def execute(self):
+    def executer(self):
         self.Expander()
         self.tokenizer()
         self.corrector()
         self.tagger()
         self.Extractor()
+        self.Detector()
 
+    # 7. Intent-Detector
+    def Detector(self):
+        Core.TextClassifier.Train()
+        Core.TextClassifier.Test()
+        Core.TextClassifier.result(self.text)
 
 # ====================================
 # Temporal : For testing purposes
 
 A = NLP()
-A.execute()
+A.executer()
 print('Text =', A.text)
 print('Tokens =', A.tokens)
 print('Corrected Tokens =', A.corrected)
 print('Tagged Tokens =', A.tagged_tokens)
 print('Information =', A.info)
+print('Intent =', )
