@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.svm import SVC
+from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import train_test_split
 
 # Creating Data for The Light Values
@@ -126,13 +127,29 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=1, strati
 
 # Creating a Classifier With SuperVectorClustering Algorithm
 Cls = SVC()
+Cls2 = GaussianNB()
 
 # Fit The Data
 Cls.fit(X, Y)
+Cls2.fit(X, Y)
+
 
 # Predict with fixed values
+
+# SVC Prediction
 print("SVC : " + str(Cls.predict(np.array([(3, 14, 1)], dtype=np.float32))).strip("[]."))
 print("SVC : " + str(Cls.predict(np.array([(4, 16.30, 1)], dtype=np.float32))).strip("[]."))
 print("SVC : " + str(Cls.predict(np.array([(5, 15.30, 1)], dtype=np.float32))).strip("[]."))
+
+# GaussianNB Prediction
+print("GaussianNB : " + str(Cls2.predict(np.array([(3, 14, 1)], dtype=np.float32))).strip("[]."))
+print("GaussianNB : " + str(Cls2.predict(np.array([(4, 16.30, 1)], dtype=np.float32))).strip("[]."))
+print("GaussianNB : " + str(Cls2.predict(np.array([(5, 15.30, 1)], dtype=np.float32))).strip("[]."))
+
 # Evaluate the accuracy of the model
-print(int(Cls.score(X, Y) * 100), '%')
+
+# SVC Accuracy
+print("SVC : ", (Cls.score(X, Y) * 100), '%')
+
+# GaussianNB Accuracy
+print("GaussianNB : ",  (Cls.score(X, Y) * 100), '%')
