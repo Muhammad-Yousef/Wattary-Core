@@ -4,6 +4,8 @@
 from flask import Flask
 from flask_socketio import SocketIO, send
 from Core.sender import Sender
+from flask import render_template, render_template_string
+
 
 
 #######################################################################################################
@@ -35,11 +37,7 @@ def handleMessage(msg):
 def homepage():
 
 
-    return """
-    <h1>Hello Wattary</h1>
-
-  
-    """
+    return render_template('index.html')
 
 
 
