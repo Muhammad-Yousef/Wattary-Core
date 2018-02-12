@@ -44,7 +44,7 @@ class NLP:
 
     # 2. Performing word tokenization over the resulted text and save the result into a new list of tokens called tokens
     def tokenizer(self):
-        self.tokens = regexp_tokenize(self.text, pattern="[\w']+")
+        self.tokens = regexp_tokenize(self.text, pattern="[\w'\.]+")
 
     # 3. Spelling Correction | Unfinished yet => The corpora needs to be reinforced by the rest commands
     def corrector(self):
