@@ -3,7 +3,7 @@ function Ticker( elem ) {
 	this.done = false;
 	this.cycleCount = 5;
 	this.cycleCurrent = 0;
-	this.chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-_=+{}|[]\\;\':"<>?,./`~'.split('');
+	this.chars = '010110010101011010101011010101001010110'.split('');
 	this.charsCount = this.chars.length;
 	this.letters = elem.find( 'span' );
 	this.letterCount = this.letters.length;
