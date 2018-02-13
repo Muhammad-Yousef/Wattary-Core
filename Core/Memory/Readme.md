@@ -83,7 +83,7 @@
 
  Ex:
  ```
-   code, data = getValues('air_con_DS', ['o_val', 'in_val', 'flag'], 13)
+   code, data = memory.getValues('air_con_DS', ['o_val', 'in_val', 'flag'], 13)
    if code == 101:
        outSideVal  = data['o_val']
        inSideVal   = data['in_val']
@@ -114,7 +114,7 @@
 
  Ex:
  ```
-   code = insertValues('air_con_DS', {'o_val': 33, 'in_val': 22})
+   code = memory.insertValues('air_con_DS', {'o_val': 33, 'in_val': 22})
    if code == 202:
        logging.warning('the user_id is not exist.')
    elif code == 203:
@@ -147,7 +147,7 @@
 
  Ex:
  ```
-   code = modifyValues(air_con, {'o_val': 33, 'in_val': 22}, 13)
+   code = memory.modifyValues(air_con, {'o_val': 33, 'in_val': 22}, 13)
    if code == 302:
        logging.warning('the user_id is not exist.')
    elif code == 303:
