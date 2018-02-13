@@ -1,44 +1,64 @@
 
  Memory API Version 0.27
  
- Depandacies:
- - Postgresql-v10.2
- - Python >= 3.5
- ```
- $ brew install postgres
- $ initdb /usr/local/var/postgres
- $ /usr/local/Cellar/postgresql/<version>/bin/createuser -s postgres
- ```
-
  This module plays as a mid-way communicator between the database and users
  To easily Read, Modify or Insert data.
  
  Written By: Ahmed Abdeldaim
+ 
+  Depandacies:
+ - Postgresql-v10.2
+ - Python >= 3.5
+ ```shell
+ # Instal postgres
+ $ brew install postgres
+ 
+ # Create DBs
+ $ initdb /usr/local/var/postgres
+ 
+ # Create the initial user
+ $ /usr/local/Cellar/postgresql/<version>/bin/createuser -s postgres
+ 
+ # To start the server
+ $ pg_ctl -D /usr/local/var/postgres -l logfile start
+ 
+ # Login to the postgres console
+ $ sudo -su postgres
+ 
+ # create a DB
+ $ createdb wattary
+ 
+ # create a user(must be the same name of the DB)
+ $ createuser --interactive
+ 
+ # Login to the SQL comman line from the new user
+ $ psql -U wattary
+ ```
 
  To use this module well:
  please read the following lines.
 
  Database Schema:
  ---------------------------------------------------------------------------------------------------------
- - Table Name(*)   | column1(type)  | column2(type)     | column3(type) ...                               -
+ - Table Name(*)   | column1(type)  | column2(type)     | column3(type) ...                               
  ---------------------------------------------------------------------------------------------------------
- - users(1)        | user_id(int)   | user_name(string) | user_face(string) | a_t(string)                 -
+ - users(1)        | user_id(int)   | user_name(string) | user_face(string) | a_t(string)                 
  ---------------------------------------------------------------------------------------------------------
- - light(2)        | user_id(int)   | val(bool)         | u_val(bool)       | flag(bool)                  -
+ - light(2)        | user_id(int)   | val(bool)         | u_val(bool)       | flag(bool)                  
  ---------------------------------------------------------------------------------------------------------
- - air_con(2)      | user_id(int)   | o_val(int)        | in_val(int)       | u_val(int)   | flag(int)    -
+ - air_con(2)      | user_id(int)   | o_val(int)        | in_val(int)       | u_val(int)   | flag(int)    
   ---------------------------------------------------------------------------------------------------------
- - tv(2)           | user_id(int)   | val(int)          | u_val(int)        | flag(bool)                  -
+ - tv(2)           | user_id(int)   | val(int)          | u_val(int)        | flag(bool)                  
  ---------------------------------------------------------------------------------------------------------
- - light_DS(3)     | user_id(int)   | val(bool)         | day(int)          | date(date)   | time(time)   -
+ - light_DS(3)     | user_id(int)   | val(bool)         | day(int)          | date(date)   | time(time)   
  ---------------------------------------------------------------------------------------------------------
- - air_con_DS(3)   | user_id(int)   | val(int)          | day(int)          | date(date)   | time(time)   -
+ - air_con_DS(3)   | user_id(int)   | val(int)          | day(int)          | date(date)   | time(time)   
  ---------------------------------------------------------------------------------------------------------
- - tv_DS(3)        | user_id(int)   | val(int)          | day(int)          | date(date)   | time(time)   -
+ - tv_DS(3)        | user_id(int)   | val(int)          | day(int)          | date(date)   | time(time)   
  ---------------------------------------------------------------------------------------------------------
- - camera(4)       | user_id(int)   | src(string)                                                         -
+ - camera(4)       | user_id(int)   | src(string)                                                         
  ---------------------------------------------------------------------------------------------------------
- - user_pref(5)    | user_id(int)                                                                         -
+ - user_pref(5)    | user_id(int)                                                                         
  ---------------------------------------------------------------------------------------------------------
  *:
    1. contains users basic data.
@@ -47,16 +67,22 @@
    4. contains the latest images which passed to the camera.
    5. contains the user preferences>
 
+ 
+ **Notes:**
+ 1. We don't need to add date and time columns in dataset tables because they will added automaticly.
+ 2. In dataset tables the date and time will be based on the date and time of the server.
+ 
+ 
  To load this module in your script, use:
- ```
+ ```python
  from Memory import memory
  ```
  or
- ```
+ ```python
  import Memory.memory
  ```
  or
- ```
+ ```python
  import Memory.memory as anyName
  ```
 
@@ -82,7 +108,7 @@
    105: this means wrong columns name.
 
  Ex:
- ```
+ ```python
    code, data = memory.getValues('air_con_DS', ['o_val', 'in_val', 'flag'], 13)
    if code == 101:
        outSideVal  = data['o_val']
@@ -113,7 +139,7 @@
    205: this means wrong columns name.
 
  Ex:
- ```
+ ```python
    code = memory.insertValues('air_con_DS', {'o_val': 33, 'in_val': 22})
    if code == 202:
        logging.warning('the user_id is not exist.')
@@ -146,7 +172,7 @@
    306: this can't use this function for this type of table. 
 
  Ex:
- ```
+ ```python
    code = memory.modifyValues(air_con, {'o_val': 33, 'in_val': 22}, 13)
    if code == 302:
        logging.warning('the user_id is not exist.')
