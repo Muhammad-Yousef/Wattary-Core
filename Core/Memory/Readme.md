@@ -60,8 +60,8 @@
  import Memory.memory as anyName
  ```
 
- To read data from this module:
- use function getValues(params)
+ ## To read data from this module:
+ use function `getValues(params)`
  - this function takes 3 parameters:
 
    1. table name. Ex: air_con_DS.
@@ -96,8 +96,8 @@
        logging.warning('unrecognized code: ' + code)
 ```
 
- To insert data to a table:
- use function insertValues(params)
+ ## To insert data to a table:
+ use function `insertValues(params)`
  - this function takes 2 parameters:
    1. table name. Ex: air_con_DS.
    2. a dictionary of columns and the values you want. Ex: {'o_val': 33, 'in_val': 22}.
@@ -123,8 +123,8 @@
        logging.warning('unrecognized code: ' + code)
 ```
 
- To Modify data in a table:
- use function modifyValues(params)
+ ## To Modify data in a table:
+ use function `modifyValues(params)`
 
  **WARNING: this function doesn't work for tables of type (2 or 3).**
 
