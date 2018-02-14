@@ -9,7 +9,14 @@ train = [
     ('switch off the light', 'light-off'),
     ('switch the light off', 'light-off'),
     ('turn the light off', 'light-off'),
-    ('turn off the light', 'light-off')
+    ('turn off the light', 'light-off'),
+
+    ('set the temperature to', 'temperature-update'),
+    ('update the temperature to ', 'temperature-update'),
+
+    ('call the elevator', 'elevator-calling'),
+
+    ('what is the weather today in ', 'weather-inquiry')
 
 ]
 

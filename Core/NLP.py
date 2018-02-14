@@ -61,10 +61,43 @@ class NLP:
 
         if self.intent in ('light-on', 'light-off'):
             chunkGram = r"""
-                
-                
-                
+               
             """
+        elif self.intent == 'temperature-update':
+            chunkGram = r"""
+            
+                chunk:
+                {<VB><DT><NN><TO><CD><IN><DT><NN>}
+                }<VB>{
+                }<DT>{
+                }<TO>{
+                }<IN>{
+            
+            """
+
+        elif self.intent == 'elevator-calling':
+            chunkGram = r"""
+            
+                chunk:
+                {<VB><DT><NN>}
+                }<VB>{
+                }<DT>{
+            
+            """
+
+        elif self.intent == 'weather-inquiry':
+            chunkGram = r"""
+            
+                chunk:
+                {<WP><VBZ><DT><NN><NN><IN><NN>+}
+                }<WP>{
+                }<VBZ>{
+                }<DT>{
+                }<IN>{
+                <NN>}{<NN>
+            
+            """
+
 
         chunkParser = nltk.RegexpParser(chunkGram)
         chunked = chunkParser.parse(self.tagged_tokens)

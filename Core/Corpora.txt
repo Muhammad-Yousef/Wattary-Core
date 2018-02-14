@@ -1,5 +1,13 @@
-Switch on the light
-Turn on the light
-Switch off the light
-Turn off the light
-set the temprature to
+switch off the light in the
+turn off the light in the
+switch the light off in the
+turn the light off in the
+switch the light on in the
+turn the light on in the
+
+set the temperature to in the
+update the temperature to in the
+
+call the elevator
+
+what is the weather today in
