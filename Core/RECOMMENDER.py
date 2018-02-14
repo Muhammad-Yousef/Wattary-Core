@@ -60,7 +60,7 @@ class RECOMMENDER:
     def outPutHandling(self, output):
         """
 
-        :param output: list:  than returned from Model()
+        :param output: list:  that returned from Model()
         :return: recommenedItem: vector row or list: that has the recommended details
 
         cast the list given to String,
