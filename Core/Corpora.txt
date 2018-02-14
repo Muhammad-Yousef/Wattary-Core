@@ -3,4 +3,3 @@ Turn on the light
 Switch off the light
 Turn off the light
 set the temprature to
-what is the weather tomorrow on

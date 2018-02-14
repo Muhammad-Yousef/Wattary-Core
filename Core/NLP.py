@@ -1,11 +1,7 @@
-# NOTE: this file requires NLTK
-
 # Importing the modules
 import re
 import nltk
 from nltk.tokenize import regexp_tokenize
-from nltk.corpus import wordnet
-from nltk.tree import Tree
 import Core.spell
 import Core.TextClassifier
 
@@ -16,12 +12,12 @@ class NLP:
         self.text = input()
         self.tokens = []
         self.corrected = []
+        self.intent = ''
         self.tagged_tokens = []
         self.info = []
-        self.intent = ''
 
     # 1. Expanding Contractions | Need to be improved - adding another contractions - and tested by all the possible commands contractions
-    def Expander(self):
+    def expander(self):
 
         replacement_patterns = [
             (r'wanna', 'want to'),
@@ -52,7 +48,7 @@ class NLP:
         self.corrected = [Core.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
 
     # 4. Intent-Detector
-    def Detector(self):
+    def detector(self):
         self.intent = Core.TextClassifier.C.classify(' '.join(self.corrected))
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
@@ -61,31 +57,19 @@ class NLP:
         self.tagged_tokens = nltk.pos_tag(self.corrected)
 
     # 6. Information Extractor
-    def Extractor(self):
-        chunkGram = r"""
+    def extractor(self):
 
-            # Light off
-            chunk:
-            {<VB><RP><DT><NN>}
-            }<VB>{
-            }<DT>{
-
-            # Light on
-            chunk:
-            {<IN><DT><NN>}
-            }<DT>{
-
-            # Temperature
-            chunk:
-            {<VB><DT><NN><TO><CD>}
-            }<VB><DT>{
-            }<TO>{
-
-        """
+        if self.intent in ('light-on', 'light-off'):
+            chunkGram = r"""
+                
+                
+                
+            """
 
         chunkParser = nltk.RegexpParser(chunkGram)
         chunked = chunkParser.parse(self.tagged_tokens)
 
+        # Temporary: Should be deleted unless we are in presentation mode
         chunked.draw()
 
         for element in chunked:
@@ -94,22 +78,23 @@ class NLP:
                 self.info.append(temp)
 
     # 7. Executor
-    def executer(self):
-        self.Expander()
+    def executor(self):
+        self.expander()
         self.tokenizer()
         self.corrector()
-        self.Detector()
+        self.detector()
         self.tagger()
-        #self.Extractor()
+        self.extractor()
 
 # ====================================
 # Temporal : For testing purposes
 
-A = NLP()
-A.executer()
-print('Text =', A.text)
-print('Intent =', A.intent)
-print('Tokens =', A.tokens)
-print('Corrected Tokens =', A.corrected)
-print('Tagged Tokens =', A.tagged_tokens)
-print('Information =', A.info)
+while True:
+    A = NLP()
+    A.executor()
+    print('Intent =', A.intent)
+    print('Text =', A.text)
+    print('Tokens =', A.tokens)
+    print('Corrected Tokens =', A.corrected)
+    print('Tagged Tokens =', A.tagged_tokens)
+    print('Extracted Information =', A.info)
