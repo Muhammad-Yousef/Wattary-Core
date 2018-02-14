@@ -13,11 +13,12 @@ import Core.TextClassifier
 class NLP:
 
     def __init__(self):
-        self.text = "switch off the light"
+        self.text = input()
         self.tokens = []
         self.corrected = []
         self.tagged_tokens = []
         self.info = []
+        self.intent = ''
 
     # 1. Expanding Contractions | Need to be improved - adding another contractions - and tested by all the possible commands contractions
     def Expander(self):
@@ -48,15 +49,18 @@ class NLP:
 
     # 3. Spelling Correction | Unfinished yet => The corpora needs to be reinforced by the rest commands
     def corrector(self):
-        self.corrected = [Core.spell.correction(token) if not re.match('[0-9]', token) else token for token in
-                          self.tokens]
+        self.corrected = [Core.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
+
+    # 4. Intent-Detector
+    def Detector(self):
+        self.intent = Core.TextClassifier.C.classify(' '.join(self.corrected))
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
-    # 4. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
+    # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
     def tagger(self):
         self.tagged_tokens = nltk.pos_tag(self.corrected)
 
-    # 5. Information Extractor
+    # 6. Information Extractor
     def Extractor(self):
         chunkGram = r"""
 
@@ -89,20 +93,14 @@ class NLP:
                 temp = ' '.join(e[0] for e in element)
                 self.info.append(temp)
 
-    # 6. Executor
+    # 7. Executor
     def executer(self):
         self.Expander()
         self.tokenizer()
         self.corrector()
-        self.tagger()
-        self.Extractor()
         self.Detector()
-
-    # 7. Intent-Detector
-    def Detector(self):
-        Core.TextClassifier.Train()
-        Core.TextClassifier.Test()
-        Core.TextClassifier.result(self.text)
+        self.tagger()
+        #self.Extractor()
 
 # ====================================
 # Temporal : For testing purposes
@@ -110,8 +108,8 @@ class NLP:
 A = NLP()
 A.executer()
 print('Text =', A.text)
+print('Intent =', A.intent)
 print('Tokens =', A.tokens)
 print('Corrected Tokens =', A.corrected)
 print('Tagged Tokens =', A.tagged_tokens)
 print('Information =', A.info)
-print('Intent =', )
