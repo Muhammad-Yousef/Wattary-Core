@@ -59,10 +59,11 @@ class NLP:
     # 6. Information Extractor
     def extractor(self):
 
-        if self.intent in ('light-on', 'light-off', 'air-conditioning-on', 'air-conditioning-off'):
+        if self.intent in ('light-on', 'light-off', 'air-conditioning-on', 'air-conditioning-off',
+                           'television-off', 'television-on'):
             chunkGram = r"""
                
-               # A grammar for the pattern {<NN><IN><DT><NN><IN><DT><NN>}
+               # A grammar for the pattern [Switch/Turn on/off the device in the place]
                chunk:
                {<DT><NN>+<VBG>|<DT><NN>+}
                }<DT>{
@@ -80,7 +81,7 @@ class NLP:
             chunkGram = r"""
             
                 chunk:
-                {<VB><DT><NN><TO><CD><IN><DT><NN>}
+                {<VB><DT><NN><TO><CD><IN><DT><NN>+}
                 }<VB>{
                 }<DT>{
                 }<TO>{

@@ -12,6 +12,15 @@ train = [
     ('switch off the air conditioning', 'air-conditioning-off'),
     ('turn off the air conditioning', 'air-conditioning-off'),
 
+    ('switch on the television', 'television-on'),
+    ('switch on the tv', 'television-on'),
+    ('turn on the television', 'television-on'),
+    ('turn on the tv', 'television-on'),
+    ('switch off the television', 'television-off'),
+    ('switch off the tv', 'television-off'),
+    ('turn off the television', 'television-off'),
+    ('turn off the tv', 'television-off'),
+
     ('set the temperature to', 'temperature-update'),
     ('update the temperature to ', 'temperature-update'),
 
