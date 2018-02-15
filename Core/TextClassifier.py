@@ -3,13 +3,14 @@ from textblob.classifiers import NaiveBayesClassifier
 train = [
 
     ('switch on the light', 'light-on'),
-    ('switch the light on', 'light-on'),
     ('turn on the light', 'light-on'),
-    ('turn the light on', 'light-on'),
     ('switch off the light', 'light-off'),
-    ('switch the light off', 'light-off'),
-    ('turn the light off', 'light-off'),
     ('turn off the light', 'light-off'),
+
+    ('switch on the air conditioning', 'air-conditioning-on'),
+    ('turn on the air conditioning', 'air-conditioning-on'),
+    ('switch off the air conditioning', 'air-conditioning-off'),
+    ('turn off the air conditioning', 'air-conditioning-off'),
 
     ('set the temperature to', 'temperature-update'),
     ('update the temperature to ', 'temperature-update'),

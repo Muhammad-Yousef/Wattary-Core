@@ -1,9 +1,9 @@
 switch off the light in the
 turn off the light in the
-switch the light off in the
-turn the light off in the
-switch the light on in the
-turn the light on in the
+switch on the light in the
+turn on the light in the
+
+air conditioning
 
 set the temperature to in the
 update the temperature to in the
