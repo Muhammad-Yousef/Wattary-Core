@@ -11,15 +11,15 @@
 **Results:**
 1. Feed the module with an image.
 
-![Input image](Eye/imgs/3818.jpg)
+![Input image](imgs/3818.jpg)
 
 2. The returned images after merging:
 
-![Merged output](Eye/imgs/merge_from_ofoct.jpg)
+![Merged output](imgs/merge_from_ofoct.jpg)
 
 3- The provement:
 
-![Detecting Provement](Eye/imgs/Screenshot%20from%202018-02-16%2000-37-36.png)
+![Detecting Provement](imgs/Screenshot%20from%202018-02-16%2000-37-36.png)
 
 
 ## Step 1: Detecting Faces:
