@@ -1,34 +1,38 @@
-##################################### Imorting the Modules  ###########################################
-
-
-from flask import Flask
-from flask_socketio import SocketIO, send
+from flask import Flask, abort
+from flask import request
+from flask import jsonify
+from flask_cors import CORS
 from Core.sender import Sender
 from flask import render_template, render_template_string
 
 
-
-#######################################################################################################
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'mysecret'
-socketio = SocketIO(app)
-
-
+cors = CORS(app, resources={r"/analyze/*": {"origins": "*"}})
 clientName = 'user'
 TOPIC = 'PI'
 
+@app.route('/analyze', methods=['POST'])
+def analyze_data():
+    if not request.json or not 'message' in request.json:
+        abort(400)
+    message = request.json['message']
 
-#  an example of  switch the light on
-def lightOn(message):
-	send = Sender()
-	send.Conect(clientName)
-	send.send(clientName , TOPIC , message)
-	send.disconnect(clientName)
+    # NLP processing
+
+    send = Sender()
+    send.Conect(clientName)
+    send.send(clientName , TOPIC , message)
+    send.disconnect(clientName)
+
+    # Call reciever to get the current state
 
 
-@socketio.on('message')
-def handleMessage(msg):
-	lightOn(int(msg))
+    # NLG TO generate response
+
+
+    # save the data in db
+
+    return jsonify({'message': message}), 200
 
 
 
@@ -41,6 +45,6 @@ def homepage():
 
 
 
+
 if __name__ == '__main__':
 	app.run(debug=True, use_reloader=True)
-
