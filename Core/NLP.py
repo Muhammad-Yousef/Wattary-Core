@@ -4,7 +4,7 @@ import nltk
 from nltk.tokenize import regexp_tokenize
 import Core.spell
 import Core.IntentClassifier
-
+import Core.TenseClassifier
 
 class NLP:
 
@@ -13,6 +13,7 @@ class NLP:
         self.tokens = []
         self.corrected = []
         self.intent = ''
+        self.tense = 'imperative'
         self.tagged_tokens = []
         self.info = []
 
@@ -50,6 +51,7 @@ class NLP:
     # 4. Intent-Detector
     def detector(self):
         self.intent = Core.IntentClassifier.C.classify(' '.join(self.corrected))
+        self.tense = Core.TenseClassifier.C.classify(' '.join(self.corrected)) if 'inquiry' in self.intent else self.tense
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
     # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
@@ -131,8 +133,11 @@ class NLP:
         self.tokenizer()
         self.corrector()
         self.detector()
-        self.tagger()
-        self.extractor()
+
+        if 'inquiry' not in self.intent:
+            self.tagger()
+            self.extractor()
+
 
 # ====================================
 # Temporal : For testing purposes
@@ -141,6 +146,7 @@ while True:
     A = NLP()
     A.executor()
     print('Intent =', A.intent)
+    print('Tense =', A.tense)
     print('Text =', A.text)
     print('Tokens =', A.tokens)
     print('Corrected Tokens =', A.corrected)
