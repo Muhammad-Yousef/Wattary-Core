@@ -3,6 +3,8 @@ turn off the light in the
 switch on the light in the
 turn on the light in the
 
+cairo
+
 switch on the television
 switch on the tv
 turn on the television

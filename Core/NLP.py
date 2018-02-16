@@ -3,7 +3,7 @@ import re
 import nltk
 from nltk.tokenize import regexp_tokenize
 import Core.spell
-import Core.TextClassifier
+import Core.IntentClassifier
 
 
 class NLP:
@@ -43,13 +43,13 @@ class NLP:
     def tokenizer(self):
         self.tokens = regexp_tokenize(self.text, pattern="[\w'\.]+")
 
-    # 3. Spelling Correction | Unfinished yet => The corpora needs to be reinforced by the rest commands
+    # 3. Spelling Correction | Unfinished yet => The corpus needs to be reinforced by the rest commands
     def corrector(self):
         self.corrected = [Core.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
 
     # 4. Intent-Detector
     def detector(self):
-        self.intent = Core.TextClassifier.C.classify(' '.join(self.corrected))
+        self.intent = Core.IntentClassifier.C.classify(' '.join(self.corrected))
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
     # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
@@ -64,6 +64,7 @@ class NLP:
             chunkGram = r"""
                
                # A grammar for the pattern [Switch/Turn on/off the device in the place]
+               
                chunk:
                {<DT><NN>+<VBG>|<DT><NN>+}
                }<DT>{
