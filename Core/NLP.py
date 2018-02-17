@@ -13,7 +13,7 @@ class NLP:
         self.tokens = []
         self.corrected = []
         self.intent = ''
-        self.tense = 'imperative'
+        self.tense = ''
         self.tagged_tokens = []
         self.info = []
 
@@ -51,7 +51,11 @@ class NLP:
     # 4. Intent-Detector
     def detector(self):
         self.intent = Core.IntentClassifier.C.classify(' '.join(self.corrected))
-        self.tense = Core.TenseClassifier.C.classify(' '.join(self.corrected)) if 'inquiry' in self.intent else self.tense
+
+        if self.intent in ('greeting', 'status-inquiry', 'name-inquiry', 'age-inquiry'):
+            self.tense = ''
+        elif 'inquiry' not in self.intent:
+            self.tense = 'imperative'
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
     # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
@@ -134,7 +138,7 @@ class NLP:
         self.corrector()
         self.detector()
 
-        if 'inquiry' not in self.intent:
+        if self.intent not in ('greeting', 'status-inquiry', 'name-inquiry', 'age-inquiry') and 'inquiry' not in self.intent:
             self.tagger()
             self.extractor()
 
@@ -142,13 +146,12 @@ class NLP:
 # ====================================
 # Temporal : For testing purposes
 
-while True:
-    A = NLP()
-    A.executor()
-    print('Intent =', A.intent)
-    print('Tense =', A.tense)
-    print('Text =', A.text)
-    print('Tokens =', A.tokens)
-    print('Corrected Tokens =', A.corrected)
-    print('Tagged Tokens =', A.tagged_tokens)
-    print('Extracted Information =', A.info)
+A = NLP()
+A.executor()
+print('Intent =', A.intent)
+print('Tense =', A.tense)
+print('Text =', A.text)
+print('Tokens =', A.tokens)
+print('Corrected Tokens =', A.corrected)
+print('Tagged Tokens =', A.tagged_tokens)
+print('Extracted Information =', A.info)

@@ -1,3 +1,8 @@
+hello
+hi
+howdy
+hey
+
 switch off the light in the
 turn off the light in the
 switch on the light in the
@@ -5,6 +10,18 @@ turn on the light in the
 
 have you
 did you
+
+what's up
+what is up
+
+how are you
+doing
+how is it going
+
+what is your name
+
+what is your age
+how old are you
 
 cairo
 
