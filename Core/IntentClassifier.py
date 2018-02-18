@@ -9,16 +9,16 @@ train = [
     ('hey', 'greeting'),
     ('hi', 'greeting'),
 
-    ('how are you', 'status-inquiry'),
-    ('how is it going', 'status-inquiry'),
-    ('what\'s up', 'status-inquiry'),
-    ('how is it going with you', 'status-inquiry'),
+    ('how are you', 'status-query'),
+    ('how is it going', 'status-query'),
+    ('how is it going with you', 'status-query'),
 
-    ('what is your name', 'name-inquiry'),
-    ('tell me your name', 'name-inquiry'),
+    ('what is your name', 'name-query'),
+    ('tell me your name', 'name-query'),
 
-    ('how old are you', 'age-inquiry'),
-    ('what is your age', 'age-inquiry'),
+    ('how old', 'age-query'),
+    ('how old are you', 'age-query'),
+    ('what is your age', 'age-query'),
 
 
 # -------------------- Light ------------------------- #
@@ -29,11 +29,11 @@ train = [
     ('switch off the light', 'light-off'),
     ('turn off the light', 'light-off'),
 
-    ('did you switch on the light', 'light-on-inquiry'),
-    ('have you switched on the light', 'light-on-inquiry'),
+    ('did you switch on the light', 'light-on-query'),
+    ('have you switched on the light', 'light-on-query'),
 
-    ('did you switch off the light', 'light-off-inquiry'),
-    ('have you switched off the light', 'light-off-inquiry'),
+    ('did you switch off the light', 'light-off-query'),
+    ('have you switched off the light', 'light-off-query'),
 
 # -------------------- Temperature ------------------------- #
 
@@ -45,38 +45,48 @@ train = [
     ('switch on the air conditioning', 'air-conditioning-on'),
     ('turn on the air conditioning', 'air-conditioning-on'),
 
-    ('did you switch on the air conditioning', 'air-conditioning-on-inquiry'),
-    ('have you switched on the air conditioning', 'air-conditioning-on-inquiry'),
+    ('did you switch on the air conditioning', 'air-conditioning-on-query'),
+    ('have you switched on the air conditioning', 'air-conditioning-on-query'),
 
     ('switch off the air conditioning', 'air-conditioning-off'),
     ('turn off the air conditioning', 'air-conditioning-off'),
 
-    ('did you switch off the air conditioning', 'air-conditioning-off-inquiry'),
-    ('have you switched off the air conditioning', 'air-conditioning-off-inquiry'),
+    ('did you switch off the air conditioning', 'air-conditioning-off-query'),
+    ('have you switched off the air conditioning', 'air-conditioning-off-query'),
 
 # -------------------- TV ------------------------- #
 
     ('switch on the television', 'television-on'),
     ('turn on the television', 'television-on'),
 
-    ('did you switch on the television', 'television-on-inquiry'),
-    ('have you switched on the television', 'television-on-inquiry'),
+    ('did you switch on the television', 'television-on-query'),
+    ('have you switched on the television', 'television-on-query'),
 
     ('switch off the television', 'television-off'),
     ('turn off the television', 'television-off'),
 
-    ('did you switch off the television', 'television-off-inquiry'),
-    ('have you switched off the television', 'television-off-inquiry'),
+    ('did you switch off the television', 'television-off-query'),
+    ('have you switched off the television', 'television-off-query'),
 
 # -------------------- Elevator ------------------------- #
 
     ('call the elevator', 'elevator-calling'),
-    ('did you call the elevator', 'elevator-calling-inquiry'),
-    ('have you called the elevator', 'elevator-calling-inquiry'),
+    ('call the elevator', 'elevator-calling'),
+    ('did you call the elevator', 'elevator-calling-query'),
+    ('have you called the elevator', 'elevator-calling-query'),
+
+
+# -------------------- Car Engine ------------------------- #
+
+    ('switch on the car engine', 'car-engine-on'),
+    ('turn on the car engine', 'car-engine-on'),
+
+    ('switch off the car engine', 'car-engine-off'),
+    ('turn off the car engine', 'car-engine-off'),
 
 # -------------------- Weather inquiry ------------------------- #
 
-    ('what is the weather today in ', 'weather-inquiry')
+    ('what is the weather today in ', 'weather-query')
 
 ]
 

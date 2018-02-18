@@ -48,14 +48,16 @@ class NLP:
     def corrector(self):
         self.corrected = [Core.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
 
-    # 4. Intent-Detector
+    # 4. Intent & Tense Detection
     def detector(self):
         self.intent = Core.IntentClassifier.C.classify(' '.join(self.corrected))
 
-        if self.intent in ('greeting', 'status-inquiry', 'name-inquiry', 'age-inquiry'):
+        if self.intent in ('greeting', 'status-query', 'name-query', 'age-query', 'weather-query'):
             self.tense = ''
         elif 'inquiry' not in self.intent:
             self.tense = 'imperative'
+        else:
+            self.tense = Core.TenseClassifier.C.classify(' '.join(self.corrected))
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
     # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
@@ -66,7 +68,7 @@ class NLP:
     def extractor(self):
 
         if self.intent in ('light-on', 'light-off', 'air-conditioning-on', 'air-conditioning-off',
-                           'television-off', 'television-on'):
+                           'television-off', 'television-on', 'car-engine-on', 'car-engine-off'):
             chunkGram = r"""
                
                # A grammar for the pattern [Switch/Turn on/off the device in the place]
@@ -106,11 +108,11 @@ class NLP:
             
             """
 
-        elif self.intent == 'weather-inquiry':
+        elif self.intent == 'weather-query':
             chunkGram = r"""
             
                 chunk:
-                {<WP><VBZ><DT><NN><NN><IN><NN>+}
+                {<WP><VBZ><DT><NN><NN><IN><NN|NP>+}
                 }<WP>{
                 }<VBZ>{
                 }<DT>{
@@ -138,7 +140,7 @@ class NLP:
         self.corrector()
         self.detector()
 
-        if self.intent not in ('greeting', 'status-inquiry', 'name-inquiry', 'age-inquiry') and 'inquiry' not in self.intent:
+        if self.intent not in ('greeting', 'status-query', 'name-query', 'age-query') and 'query' not in self.intent:
             self.tagger()
             self.extractor()
 
@@ -146,12 +148,13 @@ class NLP:
 # ====================================
 # Temporal : For testing purposes
 
-A = NLP()
-A.executor()
-print('Intent =', A.intent)
-print('Tense =', A.tense)
-print('Text =', A.text)
-print('Tokens =', A.tokens)
-print('Corrected Tokens =', A.corrected)
-print('Tagged Tokens =', A.tagged_tokens)
-print('Extracted Information =', A.info)
+while True:
+    A = NLP()
+    A.executor()
+    print('Intent =', A.intent)
+    print('Tense =', A.tense)
+    print('Text =', A.text)
+    print('Tokens =', A.tokens)
+    print('Corrected Tokens =', A.corrected)
+    print('Tagged Tokens =', A.tagged_tokens)
+    print('Extracted Information =', A.info)

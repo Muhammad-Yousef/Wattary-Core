@@ -4,7 +4,9 @@ train = [
 
 
     ('did', 'past-simple'),
-    ('have', 'present-perfect')
+    ('have', 'present-perfect'),
+    ('did you', 'past-simple'),
+    ('have you', 'present-perfect')
 
 ]
 
