@@ -1,25 +1,24 @@
-# NOTE: this file requires NLTK
-
-#Importing the modules
+# Importing the modules
 import re
 import nltk
 from nltk.tokenize import regexp_tokenize
-from nltk.corpus import wordnet
-from nltk.tree import Tree
 import Core.spell
+import Core.IntentClassifier
+import Core.TenseClassifier
 
 class NLP:
 
     def __init__(self):
-        self.text = ""
+        self.text = input()
         self.tokens = []
+        self.corrected = []
+        self.intent = ''
+        self.tense = ''
         self.tagged_tokens = []
-        self.namedEnts = []
         self.info = []
 
-
     # 1. Expanding Contractions | Need to be improved - adding another contractions - and tested by all the possible commands contractions
-    def Expand(self):
+    def expander(self):
 
         replacement_patterns = [
             (r'wanna', 'want to'),
@@ -42,54 +41,120 @@ class NLP:
             self.text = re.sub(pattern, repl, self.text)
 
     # 2. Performing word tokenization over the resulted text and save the result into a new list of tokens called tokens
-    def tokenize(self):
-        self.tokens = regexp_tokenize(self.text, pattern = "[\w']+")
+    def tokenizer(self):
+        self.tokens = regexp_tokenize(self.text, pattern="[\w'\.]+")
 
-    # 3. Spelling Correction | Unfinished yet => The corpora needs to be reinforced by the rest commands
-    def correct(self):
-        self.tokens = [Core.spell.correction(token) for token in self.tokens]
+    # 3. Spelling Correction | Unfinished yet => The corpus needs to be reinforced by the rest commands
+    def corrector(self):
+        self.corrected = [Core.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
+
+    # 4. Intent & Tense Detection
+    def detector(self):
+        self.intent = Core.IntentClassifier.C.classify(' '.join(self.corrected))
+
+        if self.intent in ('greeting', 'status-query', 'name-query', 'age-query', 'weather-query'):
+            self.tense = ''
+        elif 'inquiry' not in self.intent:
+            self.tense = 'imperative'
+        else:
+            self.tense = Core.TenseClassifier.C.classify(' '.join(self.corrected))
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
-    # 4. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
-    def tag(self):
-        self.tagged_tokens = nltk.pos_tag(self.tokens)
-
-    # 5. Extracting Recognized Named-Entities such as : Person, Organization
-    def Recognize(self):
-        NER = nltk.ne_chunk(self.tagged_tokens)
-
-        for NE in NER:
-            if hasattr(NE, 'label'):
-                temp = NE.label(), ' '.join(N[0] for N in NE)
-                self.namedEnts.append(temp)
+    # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
+    def tagger(self):
+        self.tagged_tokens = nltk.pos_tag(self.corrected)
 
     # 6. Information Extractor
-    def Extract(self):
-        chunkGram = r"""
-        
-            # Light off
-            chunk:
-            {<VB><RP><DT><NN>}
-            }<VB>{
-            }<DT>{
+    def extractor(self):
+
+        if self.intent in ('light-on', 'light-off', 'air-conditioning-on', 'air-conditioning-off',
+                           'television-off', 'television-on', 'car-engine-on', 'car-engine-off'):
+            chunkGram = r"""
+               
+               # A grammar for the pattern [Switch/Turn on/off the device in the place]
+               
+               chunk:
+               {<DT><NN>+<VBG>|<DT><NN>+}
+               }<DT>{
+               
+               chunk:
+               {<NN><IN><DT>}
+               }<NN>{
+               }<DT>{
+               
+               chunk:
+               {<RP>}
+               
+            """
+        elif self.intent == 'temperature-update':
+            chunkGram = r"""
             
-            # Light on
+                chunk:
+                {<VB><DT><NN><TO><CD><IN><DT><NN>+}
+                }<VB>{
+                }<DT>{
+                }<TO>{
+                }<IN>{
             
-            # Temperature
-            chunk:
-            {<VB><DT><NN><TO><CD>}
-            }<VB><DT>{
-            }<TO>{
+            """
+
+        elif self.intent == 'elevator-calling':
+            chunkGram = r"""
             
-                    
-        """
+                chunk:
+                {<VB><DT><NN>}
+                }<VB>{
+                }<DT>{
+            
+            """
+
+        elif self.intent == 'weather-query':
+            chunkGram = r"""
+            
+                chunk:
+                {<WP><VBZ><DT><NN><NN><IN><NN|NP>+}
+                }<WP>{
+                }<VBZ>{
+                }<DT>{
+                }<IN>{
+                <NN>}{<NN>
+            
+            """
+
 
         chunkParser = nltk.RegexpParser(chunkGram)
         chunked = chunkParser.parse(self.tagged_tokens)
 
+        # Temporary: Should be deleted unless we are in presentation mode
         chunked.draw()
 
         for element in chunked:
             if hasattr(element, 'label'):
                 temp = ' '.join(e[0] for e in element)
                 self.info.append(temp)
+
+    # 7. Executor
+    def executor(self):
+        self.expander()
+        self.tokenizer()
+        self.corrector()
+        self.detector()
+
+        if self.intent not in ('greeting', 'status-query', 'name-query', 'age-query') and 'query' not in self.intent:
+            self.tagger()
+            self.extractor()
+
+
+# ====================================
+# Temporal : For testing purposes
+
+while True:
+    A = NLP()
+    A.executor()
+    print('Intent =', A.intent)
+    print('Tense =', A.tense)
+    print('Text =', A.text)
+    print('Tokens =', A.tokens)
+    print('Corrected Tokens =', A.corrected)
+    print('Tagged Tokens =', A.tagged_tokens)
+    print('Extracted Information =', A.info)
