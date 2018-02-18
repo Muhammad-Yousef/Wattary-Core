@@ -3,8 +3,8 @@ import re
 import nltk
 from nltk.tokenize import regexp_tokenize
 import Core.spell
-import Core.TextClassifier
-
+import Core.IntentClassifier
+import Core.TenseClassifier
 
 class NLP:
 
@@ -13,6 +13,7 @@ class NLP:
         self.tokens = []
         self.corrected = []
         self.intent = ''
+        self.tense = ''
         self.tagged_tokens = []
         self.info = []
 
@@ -43,13 +44,20 @@ class NLP:
     def tokenizer(self):
         self.tokens = regexp_tokenize(self.text, pattern="[\w'\.]+")
 
-    # 3. Spelling Correction | Unfinished yet => The corpora needs to be reinforced by the rest commands
+    # 3. Spelling Correction | Unfinished yet => The corpus needs to be reinforced by the rest commands
     def corrector(self):
         self.corrected = [Core.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
 
-    # 4. Intent-Detector
+    # 4. Intent & Tense Detection
     def detector(self):
-        self.intent = Core.TextClassifier.C.classify(' '.join(self.corrected))
+        self.intent = Core.IntentClassifier.C.classify(' '.join(self.corrected))
+
+        if self.intent in ('greeting', 'status-query', 'name-query', 'age-query', 'weather-query'):
+            self.tense = ''
+        elif 'inquiry' not in self.intent:
+            self.tense = 'imperative'
+        else:
+            self.tense = Core.TenseClassifier.C.classify(' '.join(self.corrected))
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
     # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
@@ -60,10 +68,11 @@ class NLP:
     def extractor(self):
 
         if self.intent in ('light-on', 'light-off', 'air-conditioning-on', 'air-conditioning-off',
-                           'television-off', 'television-on'):
+                           'television-off', 'television-on', 'car-engine-on', 'car-engine-off'):
             chunkGram = r"""
                
                # A grammar for the pattern [Switch/Turn on/off the device in the place]
+               
                chunk:
                {<DT><NN>+<VBG>|<DT><NN>+}
                }<DT>{
@@ -99,11 +108,11 @@ class NLP:
             
             """
 
-        elif self.intent == 'weather-inquiry':
+        elif self.intent == 'weather-query':
             chunkGram = r"""
             
                 chunk:
-                {<WP><VBZ><DT><NN><NN><IN><NN>+}
+                {<WP><VBZ><DT><NN><NN><IN><NN|NP>+}
                 }<WP>{
                 }<VBZ>{
                 }<DT>{
@@ -130,8 +139,11 @@ class NLP:
         self.tokenizer()
         self.corrector()
         self.detector()
-        self.tagger()
-        self.extractor()
+
+        if self.intent not in ('greeting', 'status-query', 'name-query', 'age-query') and 'query' not in self.intent:
+            self.tagger()
+            self.extractor()
+
 
 # ====================================
 # Temporal : For testing purposes
@@ -140,6 +152,7 @@ while True:
     A = NLP()
     A.executor()
     print('Intent =', A.intent)
+    print('Tense =', A.tense)
     print('Text =', A.text)
     print('Tokens =', A.tokens)
     print('Corrected Tokens =', A.corrected)
