@@ -20,7 +20,6 @@ train = [
     ('how old are you', 'age-query'),
     ('what is your age', 'age-query'),
 
-
 # -------------------- Light ------------------------- #
 
     ('switch on the light', 'light-on'),

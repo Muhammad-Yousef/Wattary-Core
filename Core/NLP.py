@@ -5,6 +5,7 @@ from nltk.tokenize import regexp_tokenize
 import Core.spell
 import Core.IntentClassifier
 import Core.TenseClassifier
+from Core.ChunkGrams import *
 
 class NLP:
 
@@ -69,57 +70,16 @@ class NLP:
 
         if self.intent in ('light-on', 'light-off', 'air-conditioning-on', 'air-conditioning-off',
                            'television-off', 'television-on', 'car-engine-on', 'car-engine-off'):
-            chunkGram = r"""
-               
-               # A grammar for the pattern [Switch/Turn on/off the device in the place]
-               
-               chunk:
-               {<DT><NN>+<VBG>|<DT><NN>+}
-               }<DT>{
-               
-               chunk:
-               {<NN><IN><DT>}
-               }<NN>{
-               }<DT>{
-               
-               chunk:
-               {<RP>}
-               
-            """
+            chunkGram = switchGram
+
         elif self.intent == 'temperature-update':
-            chunkGram = r"""
-            
-                chunk:
-                {<VB><DT><NN><TO><CD><IN><DT><NN>+}
-                }<VB>{
-                }<DT>{
-                }<TO>{
-                }<IN>{
-            
-            """
+            chunkGram = tempGram
 
         elif self.intent == 'elevator-calling':
-            chunkGram = r"""
-            
-                chunk:
-                {<VB><DT><NN>}
-                }<VB>{
-                }<DT>{
-            
-            """
+            chunkGram = elevGram
 
         elif self.intent == 'weather-query':
-            chunkGram = r"""
-            
-                chunk:
-                {<WP><VBZ><DT><NN><NN><IN><NN|NP>+}
-                }<WP>{
-                }<VBZ>{
-                }<DT>{
-                }<IN>{
-                <NN>}{<NN>
-            
-            """
+            chunkGram = weatherGram
 
 
         chunkParser = nltk.RegexpParser(chunkGram)
