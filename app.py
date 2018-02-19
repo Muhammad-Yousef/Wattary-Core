@@ -7,10 +7,13 @@ from flask import render_template, render_template_string
 
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/analyze/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/analyze/*" : {"origins": "*"}})
+cors1 = CORS(app, resources={r"/remote/*" : {"origins": "*"}})
 clientName = 'user'
 TOPIC = 'PI'
 
+
+################################################# analyze API  #######################################################
 @app.route('/analyze', methods=['POST'])
 def analyze_data():
     if not request.json or not 'message' in request.json:
@@ -33,6 +36,28 @@ def analyze_data():
     # save the data in db
 
     return jsonify({'message': message}), 200
+
+################################################# remote API  #######################################################
+
+@app.route('/remote', methods=['POST'])
+def remote_control():
+    if not request.json or not 'channel' in request.json:
+        abort(400)
+    channel = request.json['channel']
+
+
+
+    send = Sender()
+    send.Conect(clientName)
+    send.send(clientName , TOPIC , channel)
+    send.disconnect(clientName)
+
+    # Call reciever to get the current state
+
+
+    return jsonify({'response': "CH.NO " + channel}), 200
+
+
 
 
 
