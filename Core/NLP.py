@@ -68,18 +68,35 @@ class NLP:
     # 6. Information Extractor
     def extractor(self):
 
-        if self.intent in ('light-on', 'light-off', 'air-conditioning-on', 'air-conditioning-off',
-                           'television-off', 'television-on', 'car-engine-on', 'car-engine-off'):
-            chunkGram = switchGram
-
-        elif self.intent == 'temperature-update':
-            chunkGram = tempGram
-
-        elif self.intent == 'elevator-calling':
-            chunkGram = elevGram
+        if self.intent not in ('weather-query', 'greeting', 'status-query', 'name-query', 'age-query'):
+            chunkGram = r"""
+               
+            chunk:
+            {<DT><NN>+<VBG>|<DT><NN>+}
+            }<DT>{
+           
+            chunk:
+            {<NN><IN><DT>}
+            }<NN>{
+            }<DT>{
+           
+            chunk:
+            {<RP>}
+               
+        """
 
         elif self.intent == 'weather-query':
-            chunkGram = weatherGram
+            chunkGram = r"""
+            
+            chunk:
+            {<WP><VBZ><DT><NN><NN><IN><NN|NP>+}
+            }<WP>{
+            }<VBZ>{
+            }<DT>{
+            }<IN>{
+            <NN>}{<NN>
+            
+        """
 
 
         chunkParser = nltk.RegexpParser(chunkGram)
