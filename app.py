@@ -7,14 +7,14 @@ from flask import render_template, render_template_string
 
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/analyze/*" : {"origins": "*"}})
+cors = CORS(app, resources={r"/main/*" : {"origins": "*"}})
 cors1 = CORS(app, resources={r"/remote/*" : {"origins": "*"}})
 clientName = 'user'
 TOPIC = 'PI'
 
 
-################################################# analyze API  #######################################################
-@app.route('/analyze', methods=['POST'])
+################################################# Main API  #######################################################
+@app.route('/main', methods=['POST'])
 def analyze_data():
     if not request.json or not 'message' in request.json:
         abort(400)
