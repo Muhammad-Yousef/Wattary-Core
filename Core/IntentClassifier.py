@@ -32,36 +32,68 @@ train = [
 
     ('did you switch on the light', 'light-on-query'),
     ('have you switched on the light', 'light-on-query'),
+    ('did you turn on the light', 'light-on-query'),
+    ('have you turned on the light', 'light-on-query'),
+    ('did you open up the light', 'light-on-query'),
+    ('have you opened up the light', 'light-on-query'),
 
     ('did you switch off the light', 'light-off-query'),
     ('have you switched off the light', 'light-off-query'),
+    ('did you turn off the light', 'light-off-query'),
+    ('have you switched off the light', 'light-off-query'),
+    ('did you close the light', 'light-off-query'),
+    ('have you closed the light', 'light-off-query'),
 
 # -------------------- Temperature ------------------------- #
 
     ('set the temperature to', 'temperature-update'),
     ('update the temperature to ', 'temperature-update'),
+    ('set the air conditioning to', 'temperature-update'),
+    ('update the air conditioning to ', 'temperature-update'),
 
     ("did you set the temperature to", 'temperature-update-query'),
     ("did you set the air conditioner", 'temperature-update-query'),
     ("did you update the temperature to", "temperature-update-query"),
+    ("did you update the air conditioning to", "temperature-update-query"),
 
     ("have you set the temperature to", "temperature-update-query"),
     ("have you set the air conditioner to", "temperature-update-query"),
     ("have you updated the temperature to", "temperature-update-query"),
+    ("have you updated the air conditioning to", "temperature-update-query"),
 
 # -------------------- air conditioning ------------------------- #
 
     ('switch on the air conditioning', 'air-conditioning-on'),
     ('turn on the air conditioning', 'air-conditioning-on'),
 
+    ('switch on the air conditioner', 'air-conditioning-on'),
+    ('turn on the air conditioner', 'air-conditioning-on'),
+
     ('did you switch on the air conditioning', 'air-conditioning-on-query'),
+    ('did you turn on the air conditioning', 'air-conditioning-on-query'),
     ('have you switched on the air conditioning', 'air-conditioning-on-query'),
+    ('have you turned on the air conditioning', 'air-conditioning-on-query'),
+
+    ('did you switch on the air conditioner', 'air-conditioning-on-query'),
+    ('did you turn on the air conditioner', 'air-conditioning-on-query'),
+    ('have you switched on the air conditioner', 'air-conditioning-on-query'),
+    ('have you turned on the air conditioner', 'air-conditioning-on-query'),
 
     ('switch off the air conditioning', 'air-conditioning-off'),
     ('turn off the air conditioning', 'air-conditioning-off'),
 
+    ('switch off the air conditioner', 'air-conditioning-off'),
+    ('turn off the air conditioner', 'air-conditioning-off'),
+
     ('did you switch off the air conditioning', 'air-conditioning-off-query'),
+    ('did you turn off the air conditioning', 'air-conditioning-off-query'),
     ('have you switched off the air conditioning', 'air-conditioning-off-query'),
+    ('have you turned off the air conditioning', 'air-conditioning-off-query'),
+
+    ('did you switch off the air conditioner', 'air-conditioning-off-query'),
+    ('did you turn off the air conditioner', 'air-conditioning-off-query'),
+    ('have you switched off the air conditioner', 'air-conditioning-off-query'),
+    ('have you turned off the air conditioner', 'air-conditioning-off-query'),
 
 # -------------------- TV ------------------------- #
 
@@ -104,6 +136,7 @@ train = [
 
 # -------------------- Door ------------------------- #
 
+    ('open the door', 'door-opening'),
     ('open the door', 'door-opening'),
     ('did you open the door', 'door-opening-query'),
     ('have you opened the door', 'door-opening-query'),
