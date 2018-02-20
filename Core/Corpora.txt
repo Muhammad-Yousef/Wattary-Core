@@ -11,6 +11,9 @@ turn on the light in the
 switched
 turned
 
+open
+opened
+
 car
 engine
 

@@ -5,12 +5,11 @@ from nltk.tokenize import regexp_tokenize
 import Core.spell
 import Core.IntentClassifier
 import Core.TenseClassifier
-from Core.ChunkGrams import *
 
 class NLP:
 
     def __init__(self):
-        self.text = input()
+        self.text = ''
         self.tokens = []
         self.corrected = []
         self.intent = ''
@@ -55,7 +54,7 @@ class NLP:
 
         if self.intent in ('greeting', 'status-query', 'name-query', 'age-query', 'weather-query'):
             self.tense = ''
-        elif 'inquiry' not in self.intent:
+        elif 'query' not in self.intent:
             self.tense = 'imperative'
         else:
             self.tense = Core.TenseClassifier.C.classify(' '.join(self.corrected))
@@ -72,16 +71,21 @@ class NLP:
             chunkGram = r"""
                
             chunk:
-            {<DT><NN>+<VBG>|<DT><NN>+}
+            {<DT><NN>+<VBG>|<DT><NN|NNS>+}
             }<DT>{
-           
+            
             chunk:
             {<NN><IN><DT>}
             }<NN>{
             }<DT>{
-           
+            
             chunk:
-            {<RP>}
+            {<VB|VBN><RP|IN>}
+            }<VB>{
+            }<VBN>{
+            
+            chunk:
+            {<CD>}
                
         """
 
@@ -135,3 +139,4 @@ while True:
     print('Corrected Tokens =', A.corrected)
     print('Tagged Tokens =', A.tagged_tokens)
     print('Extracted Information =', A.info)
+    print()
