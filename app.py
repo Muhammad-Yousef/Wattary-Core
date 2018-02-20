@@ -7,8 +7,12 @@ from flask import render_template, render_template_string
 
 
 app = Flask(__name__)
+
 cors = CORS(app, resources={r"/main/*" : {"origins": "*"}})
 cors1 = CORS(app, resources={r"/remote/*" : {"origins": "*"}})
+cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
+
+
 clientName = 'user'
 TOPIC = 'PI'
 
@@ -58,6 +62,26 @@ def remote_control():
     return jsonify({'response': "CH.NO " + channel}), 200
 
 
+
+################################################# Air conditioner  API  #######################################################
+
+@app.route('/conditioner', methods=['POST'])
+def air_conditioner():
+    if not request.json or not 'command' in request.json:
+        abort(400)
+    command = request.json['command']
+
+
+
+    send = Sender()
+    send.Conect(clientName)
+    send.send(clientName , TOPIC , command)
+    send.disconnect(clientName)
+
+    # Call reciever to get the current state
+
+
+    return jsonify({'response': "The command you choose is " + command}), 200
 
 
 
