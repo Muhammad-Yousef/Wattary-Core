@@ -6,12 +6,13 @@ import Core.spell
 import Core.IntentClassifier
 import Core.TenseClassifier
 
+from Mouth.Mouth import *
 from Core.Test import *
 
 class NLP:
 
     def __init__(self):
-        self.text = ''
+        self.text = input()
         self.tokens = []
         self.corrected = []
         self.intent = ''
@@ -122,26 +123,24 @@ class NLP:
         self.tokenizer()
         self.corrector()
         self.detector()
-        self.tagger()
-        self.extractor()
+
+        if self.intent not in ('greeting', 'status-query', 'name-query', 'age-query'):
+            self.tagger()
+            self.extractor()
 
 
 # ====================================
 # Temporal : For testing purposes
 
 while True:
-
-    for command in commands:
-        A = NLP()
-        A.text = command
-        A.executor()
-        print('Intent =', A.intent)
-        print('Tense =', A.tense)
-        print('Text =', A.text)
-        print('Tokens =', A.tokens)
-        print('Corrected Tokens =', A.corrected)
-        print('Tagged Tokens =', A.tagged_tokens)
-        print('Extracted Information =', A.info)
-        print()
-
+    A = NLP()
+    A.executor()
+    print('Intent =', A.intent)
+    print('Tense =', A.tense)
+    print('Text =', A.text)
+    print('Tokens =', A.tokens)
+    print('Corrected Tokens =', A.corrected)
+    print('Tagged Tokens =', A.tagged_tokens)
+    print('Extracted Information =', A.info)
+    print()
 

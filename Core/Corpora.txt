@@ -35,6 +35,11 @@ what is your age
 how old are you
 with
 
+tell
+me
+your
+name
+
 cairo
 
 switch on the television
