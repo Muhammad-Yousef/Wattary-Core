@@ -6,13 +6,11 @@ import Core.spell
 import Core.IntentClassifier
 import Core.TenseClassifier
 
-from Mouth.Mouth import *
-from Core.Test import *
 
 class NLP:
 
     def __init__(self):
-        self.text = input()
+        self.text = ''
         self.tokens = []
         self.corrected = []
         self.intent = ''
