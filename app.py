@@ -3,21 +3,41 @@ from flask import request
 from flask import jsonify
 from flask_cors import CORS
 from Core.sender import Sender
-from flask import render_template, render_template_string
+from flask import render_template, render_template_string ,request
+import requests
 
 
 app = Flask(__name__)
 
+############################################## allow access ###################################################
+
 cors = CORS(app, resources={r"/main/*" : {"origins": "*"}})
 cors1 = CORS(app, resources={r"/remote/*" : {"origins": "*"}})
 cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
+
+###############################################################################################################
+
 
 
 clientName = 'user'
 TOPIC = 'PI'
 
 
+
+################################################# weather API Function  ############################################
+
+
+def get_temperature(city):
+    r = requests.get('http://api.openweathermap.org/data/2.5/weather?q='+city+',eg&appid= ')
+    json_object = r.json()
+    temp_k = float(json_object['main']['temp'])
+    temp_c = temp_k -  273.15
+    return temp_c
+
+
+
 ################################################# Main API  #######################################################
+
 @app.route('/main', methods=['POST'])
 def analyze_data():
     if not request.json or not 'message' in request.json:
@@ -30,6 +50,10 @@ def analyze_data():
     send.Conect(clientName)
     send.send(clientName , TOPIC , message)
     send.disconnect(clientName)
+
+
+    print(get_temperature('alexandria')) # this line to test the weather api only
+
 
     # Call reciever to get the current state
 
