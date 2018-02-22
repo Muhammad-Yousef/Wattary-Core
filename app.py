@@ -12,7 +12,7 @@ app = Flask(__name__)
 ############################################## allow access ###################################################
 
 cors = CORS(app, resources={r"/main/*" : {"origins": "*"}})
-cors1 = CORS(app, resources={r"/remote/*" : {"origins": "*"}})
+cors1 = CORS(app, resources={r"/tv/*" : {"origins": "*"}})
 cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
 
 ###############################################################################################################
@@ -65,9 +65,9 @@ def analyze_data():
 
     return jsonify({'message': message}), 200
 
-################################################# remote API  #######################################################
+################################################# tv API  #######################################################
 
-@app.route('/remote', methods=['POST'])
+@app.route('/tv', methods=['POST'])
 def remote_control():
     if not request.json or not 'channel' in request.json:
         abort(400)
