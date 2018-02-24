@@ -14,6 +14,14 @@ turned
 open
 opened
 
+router
+coffee machine
+water tap
+
+who
+is
+that
+
 room
 
 oven

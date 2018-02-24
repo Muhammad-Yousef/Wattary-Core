@@ -6,6 +6,7 @@ import Core.spell
 import Core.IntentClassifier
 import Core.TenseClassifier
 
+from Core.Testing import *
 
 class NLP:
 
@@ -17,6 +18,7 @@ class NLP:
         self.tense = ''
         self.tagged_tokens = []
         self.info = []
+        self.information = {}
 
     # 1. Expanding Contractions | Need to be improved - adding another contractions - and tested by all the possible commands contractions
     def expander(self):
@@ -108,14 +110,18 @@ class NLP:
         chunked = chunkParser.parse(self.tagged_tokens)
 
         # Temporary: Should be deleted unless we are in presentation mode
-        chunked.draw()
+        #chunked.draw()
 
         for element in chunked:
             if hasattr(element, 'label'):
                 temp = ' '.join(e[0] for e in element)
                 self.info.append(temp)
 
-    # 7. Executor
+    # 7. Organizer : Under construction
+    #def organizer(self):
+
+
+    # 8. Executor
     def executor(self):
         self.expander()
         self.tokenizer()
@@ -125,17 +131,19 @@ class NLP:
         if self.intent not in ('greeting', 'status-query', 'name-query', 'age-query'):
             self.tagger()
             self.extractor()
+            #self.organizer()
 
 
 # ====================================
 # Temporal : For testing purposes
 
-while True:
+for command in commands:
     A = NLP()
+    A.text = command
     A.executor()
+    print('Text =', A.text)
     print('Intent =', A.intent)
     print('Tense =', A.tense)
-    print('Text =', A.text)
     print('Tokens =', A.tokens)
     print('Corrected Tokens =', A.corrected)
     print('Tagged Tokens =', A.tagged_tokens)

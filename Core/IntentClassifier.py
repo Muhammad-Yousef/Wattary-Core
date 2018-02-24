@@ -123,6 +123,68 @@ train = [
     ('did you turn off the tv', 'television-off-query'),
     ('have you turned off the tv', 'television-off-query'),
 
+# -------------------- Coffe Machine ------------------------- #
+
+    ('switch on the coffee machine', 'coffee-machine-on'),
+    ('turn on the coffee machine', 'coffee-machine-on'),
+    ('open up the coffee machine', 'coffee-machine-on'),
+
+    ('switch off the coffee machine', 'coffee-machine-off'),
+    ('turn off the coffee machine', 'coffee-machine-off'),
+    ('close the coffee machine', 'coffee-machine-off'),
+
+    ('did you switch on the coffee machine', 'coffee-machine-on-query'),
+    ('have you switched on the coffee machine', 'coffee-machine-on-query'),
+    ('did you turn on the coffee machine', 'coffee-machine-on-query'),
+    ('have you turned on the coffee machine', 'coffee-machine-on-query'),
+    ('did you open up the coffee machine', 'coffee-machine-on-query'),
+    ('have you opened up the coffee machine', 'coffee-machine-on-query'),
+
+    ('did you switch off the coffee machine', 'coffee-machine-off-query'),
+    ('have you switched off the coffee machine', 'coffee-machine-off-query'),
+    ('did you turn off the coffee machine', 'coffee-machine-off-query'),
+    ('have you switched off the coffee machine', 'coffee-machine-off-query'),
+    ('did you close the coffee machine', 'coffee-machine-off-query'),
+    ('have you closed the coffee machine', 'coffee-machine-off-query'),
+
+# -------------------- Router ------------------------- #
+
+    ('switch on the router', 'router-on'),
+    ('turn on the router', 'router-on'),
+    ('open up the router', 'router-on'),
+
+    ('switch off the router', 'router-off'),
+    ('turn off the router', 'router-off'),
+    ('close the router', 'router-off'),
+
+    ('did you switch on the router', 'router-on-query'),
+    ('have you switched on the router', 'router-on-query'),
+    ('did you turn on the router', 'router-on-query'),
+    ('have you turned on the router', 'router-on-query'),
+    ('did you open up the router', 'router-on-query'),
+    ('have you opened up the router', 'router-on-query'),
+
+    ('did you switch off the router', 'router-off-query'),
+    ('have you switched off the router', 'router-off-query'),
+    ('did you turn off the router', 'router-off-query'),
+    ('have you switched off the router', 'router-off-query'),
+    ('did you close the router', 'router-off-query'),
+    ('have you closed the router', 'router-off-query'),
+
+# -------------------- Water Tap ------------------------- #
+
+    ('open the water tap', 'water-tap-on'),
+    ('open the water tap', 'water-tap-on'),
+
+    ('close the water tap', 'water-tap-off'),
+    ('close the water tap', 'water-tap-off'),
+
+    ('did you open the water tap', 'water-tap-on-query'),
+    ('have you opened the water tap', 'water-tap-on-query'),
+
+    ('did you close the water tap', 'water-tap-off-query'),
+    ('have you closed the water tap', 'water-tap-off-query'),
+
 # -------------------- Elevator ------------------------- #
 
     ('call the elevator', 'elevator-calling'),
@@ -136,6 +198,7 @@ train = [
     ('open the door', 'door-opening'),
     ('did you open the door', 'door-opening-query'),
     ('have you opened the door', 'door-opening-query'),
+    ('have you opened the door', 'door-opening-query'),
 
 # -------------------- Car Engine ------------------------- #
 
@@ -145,6 +208,7 @@ train = [
     ('turn on the car engine', 'car-engine-on'),
     ('did you switch on the car engine', 'car-engine-on-query'),
     ('have you switched on the car engine', 'car-engine-on-query'),
+    ('have you switched on the car engine', 'car-engine-on-query'),
 
     ('switch off the car engine', 'car-engine-off'),
     ('switch off the engine of the car', 'car-engine-off'),
@@ -152,10 +216,36 @@ train = [
     ('turn off the car engine', 'car-engine-off'),
     ('did you switch off the car engine', 'car-engine-off-query'),
     ('have you switched off the car engine', 'car-engine-off-query'),
+    ('have you switched off the car engine', 'car-engine-off-query'),
+
+# -------------------- Car Door ------------------------- #
+
+    ('open the car door', 'car-door-opening'),
+    ('open the car door', 'car-door-opening'),
+    ('open the door of the car', 'car-door-opening'),
+    ('open the door of the car', 'car-door-opening'),
+
+    ('close the car door', 'car-door-closing'),
+    ('close the door of the car', 'car-door-closing'),
+
+    ('did you open the car door', 'car-door-opening-query'),
+    ('did you open the door of the car', 'car-door-opening-query'),
+
+    ('have you opened the car door', 'car-door-opening-query'),
+    ('have you opened door of the car', 'car-door-opening-query'),
+
+    ('did you close the car door', 'car-door-closing-query'),
+    ('did you close the door of the car', 'car-door-closing-query'),
+    ('have you closed the car door', 'car-door-closing-query'),
+    ('have you closed door of the car', 'car-door-closing-query'),
 
 # -------------------- Weather inquiry ------------------------- #
 
-    ('what is the weather today in ', 'weather-query')
+    ('what is the weather today in ', 'weather-query'),
+
+# -------------------- visitor inquiry ------------------------- #
+
+    ('who is that', 'visitor-query')
 
 ]
 
