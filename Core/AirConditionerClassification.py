@@ -3,98 +3,110 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.tree import  DecisionTreeClassifier
-from sklearn.cross_validation import train_test_split
-'''
-Air=np.asarray([(1,16,30,32,1),
-                (2,16.30,29,32,1),
-                (3,16.25,28,30,1),
-                (4,17,29,31,1),
-                (5,16.45,25,28,0),
-                (6,16.55,25,28,0),
-                (7,16.30,24,27,0),
-                (8,16,30,32,1),
-                (9,16.30,29,32,1),
-                (10,16.25,28,30,1),
-                (11,17,29,31,1),
-                (12,16.45,25,28,0),
-                (13,16.55,25,28,0),
-                (14,16.30,24,27,0),
-                (1, 16, 30, 32, 1),
-                (2, 16.30, 29, 32, 1),
-                (3, 16.25, 28, 30, 1),
-                (4, 17, 29, 31, 1),
-                (5, 16.45, 25, 28, 0),
-                (6, 16.55, 25, 28, 0),
-                (7, 16.30, 24, 27, 0),
-                (8, 16, 30, 32, 1),
-                (9, 16.30, 29, 32, 1),
-                (10, 16.25, 28, 30, 1),
-                (11, 17, 29, 31, 1),
-                (12, 16.45, 25, 28, 0),
-                (13, 16.55, 25, 28, 0),
-                (14, 16.30, 24, 27, 0),
-                (1,16,30,32,1),
-                (2,16.30,29,32,1),
-                (3,16.25,28,30,1),
-                (4,17,29,31,1),
-                (5,16.45,25,28,0),
-                (6,16.55,25,28,0),
-                (7,16.30,24,27,0),
-                (8,16,30,32,1),
-                (9,16.30,29,32,1),
-                (10,16.25,28,30,1),
-                (11,17,29,31,1),
-                (12,16.45,25,28,0),
-                (13,16.55,25,28,0),
-                (14,16.30,24,27,0),
-                (1, 16, 30, 32, 1),
-                (2, 16.30, 29, 32, 1),
-                (3, 16.25, 28, 30, 1),
-                (4, 17, 29, 31, 1),
-                (5, 16.45, 25, 28, 0),
-                (6, 16.55, 25, 28, 0),
-                (7, 16.30, 24, 27, 0),
-                (8, 16, 30, 32, 1),
-                (9, 16.30, 29, 32, 1),
-                (10, 16.25, 28, 30, 1),
-                (11, 17, 29, 31, 1),
-                (12, 16.45, 25, 28, 0),
-                (13, 16.55, 25, 28, 0),
-                (14, 16.30, 24, 27, 0),
-                ],
-                 dtype=float)
-'''
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import Imputer
+from sklearn.svm import SVC
 
-DataSetCSV=pd.read_csv('DataSets/weather_madrid.csv',usecols=['MaxTemperatureC','CET','MinTemperatureC'])
-#convert the array into Datafarme
-df=pd.DataFrame(DataSetCSV)
-df['UserValue']=np.zeros(6812)
+class AirClassification:
 
-#df[(df['MaxTemperatureC'] >21) & (df['MinTemperatureC'] > 8) &(df['UserValue']==0)]
+    Score=0.0
+    TestSetSize=0.0
+    TrainSetSize=0.0
+    Predaction=0
 
-print(np.where(df[(df['MaxTemperatureC'] >21) & (df['MinTemperatureC'] > 8) &(df['UserValue']==0)]))
 
-#adding the Columns name for the DataSet
-#df.columns=['day','date','interior val','exterior val','user_value']
-#df.head(5)
+    def __init__(self,DataSet):
+        self.DataSet=DataSet
 
-#Y=(np.zeros(6812))
-X=df.iloc[:,0:4]
 
-#print(X)
+    def DateConverter(self):
+         DataSet=self.DataSet
 
-#slicing the DataSet into X and Y
-#X,Y =df.iloc[:,0:4],df.iloc[:,4]
-#X_train,X_test,Y_train,Y_test=train_test_split(X,Y,random_state=1,stratify=Y)
+         DataSet.CET = pd.to_datetime(DataSet.CET, format='%Y-%m-%d')
+         DataSet['year'] = DataSet.CET.dt.year
+         DataSet['dayofyear'] = DataSet.CET.dt.dayofyear
+         self.DataSet=DataSet
+         return self.DataSet
 
-'''
-Clssifier=DecisionTreeClassifier(criterion='entropy',random_state=0)
-#fitting the Classfier in DataSet
-Clssifier.fit(X,Y)
 
-print(str(Clssifier.predict(np.array([(8,16.35,25,32)],dtype=float))).strip("[]."))
-print(Clssifier.score(X,Y)*10)
-'''
+    # convert the Data Set to Datafarme
+    def DataToDF(self,DataSet):
+        df=self.DataSet
+        df = pd.DataFrame(DataSet)
+        self.DataSet=df.iloc[:,1:5]
+        return self.DataSet
+
+    #Clianing the Data set
+    def DataPreprocess(self,Dataset):
+        df=self.DataSet
+        imputer=Imputer(missing_values='NaN',strategy='mean',axis=0)
+        imputer =imputer.fit(df.iloc[:,0:2])
+        df.iloc[:,0:2]=imputer.transform(df.iloc[:,0:2])
+        self.DataSet=df
+        return self.DataSet
+
+     #creat a column that contine user values
+    def addValues(self,DataSet):
+        df=self.DataSet
+          #df[(df['MaxTemperatureC'] >21) & (df['MinTemperatureC'] > 8) &(df['UserValue']==0)]
+          # #df['UserValue']=np.where(df[(df['MaxTemperatureC'] >21) & (df['MinTemperatureC'] > 8)],'true','false')
+        df['UserVal']=np.where((df['MaxTemperatureC']>21),'yes','no')
+        #print(len(df[(df['UserVal']=='yes')]))
+        df['UserVal']=pd.factorize(df['UserVal'])[0]
+        self.DataSet=df
+        print(len(DataSet[(DataSet['UserVal']==1)]))
+
+        return self.DataSet
+
+
+
+    def Model_fitting(self):
+        df=self.DataSet
+        X=df.iloc[:,0:4].values
+        Y=df.iloc[:,4:5].values
+
+        #slicing the DataSet into Train and Test
+        X_train,X_test,Y_train,Y_test=train_test_split( X,Y,test_size=0.20,random_state=1,stratify=Y)
+
+        self.TestSetSize=len(X_test)+len(Y_test)
+        self.TrainSetSize=len(X_train)+len(Y_train)
+        Clssifier=DecisionTreeClassifier(criterion='entropy',random_state=0)
+       #Clssifier=SVC()
+        #fitting the Classfier in DataSet
+
+        Clssifier.fit(X_test,Y_test)
+        self.Score=Clssifier.score(X_train,Y_train)
+
+
+        self.Predaction=str(Clssifier.predict(np.array([(22,3,2020,5)],dtype=float))).strip("[].")
+
+
+    def display(self):
+           print(self.Score*100)
+
+           print(self.TestSetSize)
+
+           print(self.TrainSetSize)
+
+           if self.Predaction =='0':
+               print("OFF")
+           elif self.Predaction =='1':
+                print("ON")
+
+
+
+DataSetCSV=pd.read_csv('DataSets/weather_madrid.csv',usecols=['CET','MaxTemperatureC','MinTemperatureC'],parse_dates=['CET'])
+cl=AirClassification(DataSetCSV)
+csv=cl.__init__(DataSetCSV)
+DateConverter= cl.DateConverter()
+df=cl.DataToDF(DateConverter)
+prepro=cl.DataPreprocess(df)
+userVal=cl.addValues(prepro)
+cl.Model_fitting()
+cl.display()
+
+#print(Clssifier.score(X,Y))
+
 
 '''
 fig=plt.figure()
