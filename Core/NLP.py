@@ -118,7 +118,39 @@ class NLP:
                 self.info.append(temp)
 
     # 7. Organizer : Under construction
-    #def organizer(self):
+    def organizer(self):
+        flag = 0
+        for piece in self.info:
+            if piece.isdigit():
+                flag = 1
+
+        if len(self.info) == 3 and flag == 0:
+            if self.info[0] == 'up':
+                self.info[0] = 'on'
+            self.information = {'State':self.info[0], 'Appliance':self.info[1], 'Location':self.info[2]}
+        elif len(self.info) == 3 and flag == 1:
+            self.information = {'Appliance':self.info[0], 'Degree':self.info[1], 'Location':self.info[2]}
+        elif len(self.info) == 2 and self.info[0] in ('on', 'off', 'up'):
+            self.information = {'State':self.info[0], 'Appliance':self.info[1]}
+        elif len(self.info) == 2 and self.info[0] not in ('on', 'off', 'up'):
+            if 'on' in self.intent or 'up' in self.intent or 'opening' in self.intent:
+                state = 'on'
+            elif 'off' in self.intent or 'closing' in self.intent:
+                state = 'off'
+
+            self.information = {'State':state, 'Appliance':self.info[0], 'Location':self.info[1]}
+
+        elif len(self.info) == 1:
+            if 'calling' in self.intent or 'opening' in self.intent:
+                self.information = {'Appliance':self.info[0]}
+            else:
+                if 'on' in self.intent or 'up' in self.intent:
+                    state = 'on'
+                elif 'off' in self.intent:
+                    state = 'off'
+
+                self.information = {'State':state, 'Appliance':self.info[0]}
+
 
 
     # 8. Executor
@@ -131,7 +163,7 @@ class NLP:
         if self.intent not in ('greeting', 'status-query', 'name-query', 'age-query'):
             self.tagger()
             self.extractor()
-            #self.organizer()
+            self.organizer()
 
 
 # ====================================
@@ -141,12 +173,13 @@ for command in commands:
     A = NLP()
     A.text = command
     A.executor()
-    print('Text =', A.text)
-    print('Intent =', A.intent)
-    print('Tense =', A.tense)
-    print('Tokens =', A.tokens)
-    print('Corrected Tokens =', A.corrected)
-    print('Tagged Tokens =', A.tagged_tokens)
-    print('Extracted Information =', A.info)
+    #print('Text =', A.text)
+    #print('Intent =', A.intent)
+    #print('Tense =', A.tense)
+    #print('Tokens =', A.tokens)
+    #print('Corrected Tokens =', A.corrected)
+    #print('Tagged Tokens =', A.tagged_tokens)
+    #print('Extracted Information =', A.info)
+    print('Extracted Information Dictionary =', A.information)
     print()
 

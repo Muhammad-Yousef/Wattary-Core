@@ -27,21 +27,18 @@ commands = [
     "switch off the air conditioning in the living room",
     "turn on the air conditioner in the bedroom",
     "turn off the air conditioning in the living room",
-    "turn on the oven in the kitchen",
     "turn off the television in the children room",
 
     "did you switch on the air conditioner in the bedroom",
     "did you switch off the air conditioning in the living room",
     "did you turn on the air conditioner in the bedroom",
     "did you turn off the air conditioning in the living room",
-    "did you turn on the oven in the kitchen",
     "did you turn off the television in the children room",
 
     "have you switched on the air conditioner in the bedroom",
     "have you switched off the air conditioning in the living room",
     "have you turned on the air conditioner in the bedroom",
     "have you turned off the air conditioning in the living room",
-    "have you turned on the oven in the kitchen",
     "have you turned off the television in the children room",
 
     "set the temperature to 15 in the living room",
@@ -104,25 +101,21 @@ commands = [
 
     "call the elevator",
     "open the door",
-    "switch off the engine",
-    "switch on the car engine",
-    "open the car door",
-    "close the car door",
+    "switch off the engine of the car",
+    "switch on the engine of the car",
+    "open the door of the car",
+    "close the door of the car",
 
     "did you call the elevator",
     "did you open the door",
-    "did you switch off the car engine",
-    "did you switch on the car engine",
+    "did you switch off the engine of the car",
+    "did you switch on the engine of the car",
 
     "have you called the elevator yet",
     "have you opened the door",
-    "have you switched off the car engine",
-    "have you switched on the car engine",
+    "have you switched off the engine of the car",
+    "have you switched on the engine of the car",
 
     "switch on the engine of the car",
-
-    "did you switch on the engine of the car",
-
-    "have you switched on the engine of the car"
 
 ]

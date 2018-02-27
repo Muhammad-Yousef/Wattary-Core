@@ -196,6 +196,7 @@ train = [
 
     ('open the door', 'door-opening'),
     ('open the door', 'door-opening'),
+    ('open the door', 'door-opening'),
     ('did you open the door', 'door-opening-query'),
     ('have you opened the door', 'door-opening-query'),
     ('have you opened the door', 'door-opening-query'),
@@ -204,6 +205,7 @@ train = [
 
     ('switch on the car engine', 'car-engine-on'),
     ('switch on the engine of the car', 'car-engine-on'),
+    ('switch on the engine of the car', 'car-engine-on'),
     ('turn on the engine of the car', 'car-engine-on'),
     ('turn on the car engine', 'car-engine-on'),
     ('did you switch on the car engine', 'car-engine-on-query'),
@@ -211,6 +213,7 @@ train = [
     ('have you switched on the car engine', 'car-engine-on-query'),
 
     ('switch off the car engine', 'car-engine-off'),
+    ('switch off the engine of the car', 'car-engine-off'),
     ('switch off the engine of the car', 'car-engine-off'),
     ('turn off the engine of the car', 'car-engine-off'),
     ('turn off the car engine', 'car-engine-off'),
