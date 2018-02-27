@@ -2,11 +2,11 @@
 import re
 import nltk
 from nltk.tokenize import regexp_tokenize
-import Core.spell
-import Core.IntentClassifier
-import Core.TenseClassifier
+import Core.NLP.spell
+import Core.NLP.IntentClassifier
+import Core.NLP.TenseClassifier
 
-from Core.Testing import *
+from Core.NLP.Testing import *
 
 class NLP:
 
@@ -49,18 +49,18 @@ class NLP:
 
     # 3. Spelling Correction | Unfinished yet => The corpus needs to be reinforced by the rest commands
     def corrector(self):
-        self.corrected = [Core.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
+        self.corrected = [Core.NLP.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
 
     # 4. Intent & Tense Detection
     def detector(self):
-        self.intent = Core.IntentClassifier.C.classify(' '.join(self.corrected))
+        self.intent = Core.NLP.IntentClassifier.C.classify(' '.join(self.corrected))
 
         if self.intent in ('greeting', 'status-query', 'name-query', 'age-query', 'weather-query'):
             self.tense = ''
         elif 'query' not in self.intent:
             self.tense = 'imperative'
         else:
-            self.tense = Core.TenseClassifier.C.classify(' '.join(self.corrected))
+            self.tense = Core.NLP.TenseClassifier.C.classify(' '.join(self.corrected))
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
     # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens
@@ -154,7 +154,8 @@ class NLP:
 
 
     # 8. Executor
-    def executor(self):
+    def execute(self, text):
+        self.text = text
         self.expander()
         self.tokenizer()
         self.corrector()
@@ -164,22 +165,4 @@ class NLP:
             self.tagger()
             self.extractor()
             self.organizer()
-
-
-# ====================================
-# Temporal : For testing purposes
-
-for command in commands:
-    A = NLP()
-    A.text = command
-    A.executor()
-    #print('Text =', A.text)
-    #print('Intent =', A.intent)
-    #print('Tense =', A.tense)
-    #print('Tokens =', A.tokens)
-    #print('Corrected Tokens =', A.corrected)
-    #print('Tagged Tokens =', A.tagged_tokens)
-    #print('Extracted Information =', A.info)
-    print('Extracted Information Dictionary =', A.information)
-    print()
 
