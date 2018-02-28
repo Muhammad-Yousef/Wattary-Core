@@ -70,7 +70,7 @@ class NLP:
     # 6. Information Extractor
     def extractor(self):
 
-        if self.intent not in ('weather-query', 'greeting', 'status-query', 'name-query', 'age-query'):
+        if self.intent not in ('weather-query', 'greeting', 'status-query', 'name-query', 'age-query', 'movie-recommendation', 'series-recommendation'):
             chunkGram = r"""
 
             chunk:
@@ -105,6 +105,16 @@ class NLP:
 
         """
 
+        elif 'recommendation' in self.intent:
+            chunkGram = r"""
+            
+            chunk:
+            {<JJ>?<NN>+}
+            <JJ>}{<NN>
+            <NN>}{<NN>
+            
+            """
+
 
         chunkParser = nltk.RegexpParser(chunkGram)
         chunked = chunkParser.parse(self.tagged_tokens)
@@ -133,12 +143,14 @@ class NLP:
         elif len(self.info) == 2 and self.info[0] in ('on', 'off', 'up'):
             self.information = {'State':self.info[0], 'Appliance':self.info[1]}
         elif len(self.info) == 2 and self.info[0] not in ('on', 'off', 'up'):
-            if 'on' in self.intent or 'up' in self.intent or 'opening' in self.intent:
+            if 'recommendation' in self.intent:
+                self.information = {'Category': self.info[0], 'Type': self.info[1]}
+            elif 'on' in self.intent or 'up' in self.intent or 'opening' in self.intent:
                 state = 'on'
+                self.information = {'State': state, 'Appliance': self.info[0], 'Location': self.info[1]}
             elif 'off' in self.intent or 'closing' in self.intent:
                 state = 'off'
-
-            self.information = {'State':state, 'Appliance':self.info[0], 'Location':self.info[1]}
+                self.information = {'State': state, 'Appliance': self.info[0], 'Location': self.info[1]}
 
         elif len(self.info) == 1:
             if 'calling' in self.intent or 'opening' in self.intent:
@@ -165,3 +177,17 @@ class NLP:
             self.tagger()
             self.extractor()
             self.organizer()
+
+
+# Testing purposes
+
+#A = NLP()
+#A.execute('recommend me a romance movie')
+#print('Text = ', A.text)
+#print('Intent = ', A.intent)
+#print('Tense = ', A.tense)
+#print('Tokens = ', A.tokens)
+#print('Corrected Tokens = ', A.corrected)
+#print('Tagged Tokens = ', A.tagged_tokens)
+#print('Information = ', A.info)
+#print('Extracted information Dictionary = ', A.information)

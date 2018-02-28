@@ -248,7 +248,21 @@ train = [
 
 # -------------------- visitor inquiry ------------------------- #
 
-    ('who is that', 'visitor-query')
+    ('who is that', 'visitor-query'),
+
+# -------------------- Movies Recommendation ------------------------- #
+
+    ('recommend me a movie', 'movie-recommendation'),
+    ('recommend me a movie', 'movie-recommendation'),
+    ('recommend me a movie', 'movie-recommendation'),
+    ('recommend me a movie', 'movie-recommendation'),
+    ('recommend me a movie', 'movie-recommendation'),
+
+    ('recommend me a series', 'series-recommendation'),
+    ('recommend me a series', 'series-recommendation'),
+    ('recommend me a series', 'series-recommendation'),
+    ('recommend me a series', 'series-recommendation'),
+    ('recommend me a series', 'series-recommendation'),
 
 ]
 
