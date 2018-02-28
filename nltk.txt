@@ -1,0 +1,8 @@
+wordnet
+pros_cons
+reuters
+brown
+punkt
+averaged_perceptron_tagger
+conll2000
+movie_reviews

@@ -2,7 +2,7 @@ gunicorn
 certifi==2017.11.5
 click==6.7
 Flask==0.12.2
-Flask-Cors==3.0.3
+Flask-Cors
 Flask-Login==0.4.0
 Flask-SocketIO==2.9.2
 Flask-WTF==0.14.2
@@ -23,5 +23,5 @@ SQLAlchemy==1.1.13
 Werkzeug==0.12.2
 WTForms==2.1
 paho-mqtt
-flask-cors
 requests
+textblob
