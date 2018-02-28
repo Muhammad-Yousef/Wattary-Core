@@ -8,13 +8,14 @@ class Mouth:
 
     def __init__(self):
         self.sentences = []
+        self.respone = ''
 
     def generate(self, grammar):
         for sentence in generate(grammar, n = 20):
             self.sentences.append((' '.join(sentence)))
 
     def choose(self):
-        print(random.choice(self.sentences))
+        self.respone = random.choice(self.sentences)
 
     def speak(self, intent, tense):
         if intent == 'greeting':
