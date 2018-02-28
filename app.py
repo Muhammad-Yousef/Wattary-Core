@@ -23,11 +23,11 @@ cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
 
 
 clientName = 'user'
-TOPIC = 'PI'
+TOPIC = 'pi'
 EAR = NLP()
 send = Sender()
 Mouth = Mouth()
-
+send = Sender()
 
 
 def recmmend(mgenra):
@@ -72,13 +72,59 @@ def analyze_data():
     except (RuntimeError, TypeError, NameError , KeyError):
         pass
 
+                                ################# Light Cycle ##################
+    try:
+        if EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'on':
+            code = lightCodeON[EAR.information['Location']]
+            print(code)
+
+            send.Conect(clientName)
+            send.send(clientName , TOPIC , code)
+            send.disconnect(clientName)
+        elif EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'off':
+            code = lightCodeOff[EAR.information['Location']]
+
+            send.Conect(clientName)
+            send.send(clientName , TOPIC , code)
+            send.disconnect(clientName)
+    except (RuntimeError, TypeError, NameError , KeyError):
+        pass
 
 
-                                    ################ Hardware  #################
-    #
-    # send.Conect(clientName)
-    # send.send(clientName , TOPIC , message)
-    # send.disconnect(clientName)
+#save
+
+########################################       tv Cycle                 ##########################################
+
+
+    try:
+        if EAR.information['Appliance'] == 'television':
+            code = tvCode[EAR.information['State']]
+            print(code)
+
+            send.Conect(clientName)
+            send.send(clientName , TOPIC , code)
+            send.disconnect(clientName)
+    except (RuntimeError, TypeError, NameError , KeyError):
+        pass
+
+
+    #######################################    coffee machine Cycle   #########################################
+
+
+    try:
+        if EAR.information['Appliance'] == 'coffee machine':
+            code = coffeeCode[EAR.information['State']]
+            print(code)
+
+            send.Conect(clientName)
+            send.send(clientName , TOPIC , code)
+            send.disconnect(clientName)
+    except (RuntimeError, TypeError, NameError , KeyError):
+        pass
+
+
+
+
 
 
     # Call reciever to get the current state
@@ -87,8 +133,8 @@ def analyze_data():
 
 
 
-                                    ################ Mouth  #################
-    # NLG TO generate response
+
+
 
 
 
@@ -104,9 +150,10 @@ def analyze_data():
 
 
 
+                                    ################ Mouth  #################
 
-    resonse = Mouth.speak(EAR.intent , EAR.tense)
-    return jsonify({'message': response}), 200
+    Mouth.speak(EAR.intent , EAR.tense)
+    return jsonify({'message': Mouth.respone}), 200
 
 ################################################# tv API  #######################################################
 

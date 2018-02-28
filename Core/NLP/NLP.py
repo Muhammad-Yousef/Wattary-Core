@@ -111,12 +111,12 @@ class NLP:
 
         elif 'recommendation' in self.intent:
             chunkGram = r"""
-            
+
             chunk:
             {<JJ>?<NN>+}
             <JJ>}{<NN>
             <NN>}{<NN>
-            
+
             """
 
 
@@ -189,18 +189,18 @@ class NLP:
 
 # Testing purposes
 
-A = NLP()
-B = Mouth()
-for command in commands:
-    A.execute(command)
-    print('Text = ', A.text)
-    print('Intent = ', A.intent)
-    print('Tense = ', A.tense)
-    print('Tokens = ', A.tokens)
-    print('Tagged Tokens = ', A.tagged_tokens)
-    print('Information = ', A.info)
-    print('Extracted information Dictionary = ', A.information)
-    print()
-    print('Wattary Response =', end = ' ')
-    B.speak(A.intent, A.tense)
-    print(B.respone)
+# A = NLP()
+# B = Mouth()
+# for command in commands:
+#     A.execute(command)
+#     print('Text = ', A.text)
+#     print('Intent = ', A.intent)
+#     print('Tense = ', A.tense)
+#     print('Tokens = ', A.tokens)
+#     print('Tagged Tokens = ', A.tagged_tokens)
+#     print('Information = ', A.info)
+#     print('Extracted information Dictionary = ', A.information)
+#     print()
+#     print('Wattary Response =', end = ' ')
+#     B.speak(A.intent, A.tense)
+#     print(B.respone)
