@@ -8,7 +8,7 @@ import requests
 from Core.NLP.NLP import NLP
 from Core.checker import *
 from Core.RECOMMENDER import *
-
+from Core.Mouth.Mouth import *
 
 app = Flask(__name__)
 
@@ -26,6 +26,7 @@ clientName = 'user'
 TOPIC = 'PI'
 EAR = NLP()
 send = Sender()
+Mouth = Mouth()
 
 
 
@@ -63,19 +64,21 @@ def analyze_data():
 
                                     ################ EAR  #################
     EAR.execute(message)
-    if EAR.information['Type'] == 'movie':
-        genra = EAR.information['Category']
-        movie = recmmend(genra)
-        return jsonify({'message': 'Here is your Movie : '+movie}), 200
-
+    try:
+        if EAR.information['Type'] == 'movie':
+            genra = EAR.information['Category']
+            movie = recmmend(genra)
+            return jsonify({'message': 'Here is your Movie : '+movie}), 200
+    except (RuntimeError, TypeError, NameError , KeyError):
+        pass
 
 
 
                                     ################ Hardware  #################
-
-    send.Conect(clientName)
-    send.send(clientName , TOPIC , message)
-    send.disconnect(clientName)
+    #
+    # send.Conect(clientName)
+    # send.send(clientName , TOPIC , message)
+    # send.disconnect(clientName)
 
 
     # Call reciever to get the current state
@@ -102,8 +105,8 @@ def analyze_data():
 
 
 
-
-    return jsonify({'message': EAR.information}), 200
+    resonse = Mouth.speak(EAR.intent , EAR.tense)
+    return jsonify({'message': response}), 200
 
 ################################################# tv API  #######################################################
 
