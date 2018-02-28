@@ -36,7 +36,7 @@ def recmmend(mgenra):
     opt = A.Model(A.listOfValues)
     recomendedItem = A.outPutHandling(opt)
     return recomendedItem
-test = []
+
 
 
 ################################################# weather API Function  ############################################
@@ -63,12 +63,10 @@ def analyze_data():
 
                                     ################ EAR  #################
     EAR.execute(message)
-    # if EAR.information['Type'] == 'movie':
-    #     genra = EAR.information['Category']
-    #     test.append(genra)
-    #     movie = recmmend(genra)
-    #     print(test)
-    #     return jsonify({'message': 'Here is your Movie : '+genra}), 200
+    if EAR.information['Type'] == 'movie':
+        genra = EAR.information['Category']
+        movie = recmmend(genra)
+        return jsonify({'message': 'Here is your Movie : '+movie}), 200
 
 
 
