@@ -16,7 +16,7 @@ cors = CORS(app, resources={r"/main/*" : {"origins": "*"}})
 cors1 = CORS(app, resources={r"/tv/*" : {"origins": "*"}})
 cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
 
-###############################################################################################################
+###################################### instances and variables #################################################
 
 
 
@@ -46,10 +46,17 @@ def analyze_data():
         abort(400)
     message = request.json['message']
 
-    # NLP
+
+
+                                    ################ EAR  #################
     EAR.execute(message)
 
 
+
+
+
+
+                                    ################ Hardware  #################
     send = Sender()
     send.Conect(clientName)
     send.send(clientName , TOPIC , message)
@@ -59,10 +66,27 @@ def analyze_data():
     # Call reciever to get the current state
 
 
+
+
+
+                                    ################ Mouth  #################
     # NLG TO generate response
 
 
+
+
+
+
+
+                                    ################ Memory  #################
     # save the data in db
+
+
+
+
+
+
+
 
     return jsonify({'message': EAR.information}), 200
 
