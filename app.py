@@ -5,6 +5,7 @@ from flask_cors import CORS
 from Core.sender import Sender
 from flask import render_template, render_template_string ,request
 import requests
+from Core.NLP.NLP import NLP
 
 
 app = Flask(__name__)
@@ -21,6 +22,7 @@ cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
 
 clientName = 'user'
 TOPIC = 'PI'
+test = NLP()
 
 
 
@@ -44,7 +46,8 @@ def analyze_data():
         abort(400)
     message = request.json['message']
 
-    # NLP processing
+    test.execute(message)
+
 
     send = Sender()
     send.Conect(clientName)
@@ -52,7 +55,7 @@ def analyze_data():
     send.disconnect(clientName)
 
 
-    print(get_temperature('alexandria')) # this line to test the weather api only
+    #print(get_temperature('alexandria')) # this line to test the weather api only
 
 
     # Call reciever to get the current state
@@ -63,7 +66,7 @@ def analyze_data():
 
     # save the data in db
 
-    return jsonify({'message': message}), 200
+    return jsonify({'message': test.information}), 200
 
 ################################################# tv API  #######################################################
 

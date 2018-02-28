@@ -72,29 +72,29 @@ class NLP:
 
         if self.intent not in ('weather-query', 'greeting', 'status-query', 'name-query', 'age-query'):
             chunkGram = r"""
-               
+
             chunk:
             {<DT><NN>+<VBG>|<DT><NN|NNS>+}
             }<DT>{
-            
+
             chunk:
             {<NN><IN><DT>}
             }<NN>{
             }<DT>{
-            
+
             chunk:
             {<VB|VBN><RP|IN>}
             }<VB>{
             }<VBN>{
-            
+
             chunk:
             {<CD>}
-               
+
         """
 
         elif self.intent == 'weather-query':
             chunkGram = r"""
-            
+
             chunk:
             {<WP><VBZ><DT><NN><NN><IN><NN|NP>+}
             }<WP>{
@@ -102,7 +102,7 @@ class NLP:
             }<DT>{
             }<IN>{
             <NN>}{<NN>
-            
+
         """
 
 
@@ -165,4 +165,3 @@ class NLP:
             self.tagger()
             self.extractor()
             self.organizer()
-

@@ -1,10 +1,13 @@
 import re
 from collections import Counter
+import os
+
+
 
 def words(TEXT):
     return re.findall(r'\w+', TEXT.lower())
 
-WORDS = Counter(words(open('Corpora.txt').read()))
+WORDS = Counter(words(open('Core/NLP/Corpora.txt').read()))
 
 def P(word, N=sum(WORDS.values())):
     "Probability of `word`."
