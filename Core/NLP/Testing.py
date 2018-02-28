@@ -2,6 +2,22 @@
 
 commands = [
 
+    'Hello',
+    'howdy',
+    'Hi',
+    'hey',
+
+    'what is your name',
+
+    'how are you',
+    'how are you doing',
+    'how is it going with you',
+    'how are you today wattary',
+
+    'call the elevator',
+
+
+
     "switch on the light in the bedroom",
     "switch off the light in the living room",
     "turn on the light in the kitchen",
