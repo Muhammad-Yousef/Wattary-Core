@@ -57,6 +57,8 @@ class NLP:
 
         if self.intent in ('greeting', 'status-query', 'name-query', 'age-query', 'weather-query'):
             self.tense = ''
+        elif 'inquiry' in self.intent:
+            self.tense = 'inquiry'
         elif 'query' not in self.intent:
             self.tense = 'imperative'
         else:
@@ -70,7 +72,7 @@ class NLP:
     # 6. Information Extractor
     def extractor(self):
 
-        if self.intent not in ('weather-query', 'greeting', 'status-query', 'name-query', 'age-query', 'movie-recommendation', 'series-recommendation'):
+        if self.intent not in ('weather-inquiry', 'greeting', 'status-query', 'name-query', 'age-query', 'movie-recommendation', 'series-recommendation'):
             chunkGram = r"""
 
             chunk:
@@ -92,11 +94,11 @@ class NLP:
 
         """
 
-        elif self.intent == 'weather-query':
+        elif self.intent == 'weather-inquiry':
             chunkGram = r"""
 
             chunk:
-            {<WP><VBZ><DT><NN><NN><IN><NN|NP>+}
+            {<WP><VBZ><DT><NN><NN><IN><NNP|NN>+}
             }<WP>{
             }<VBZ>{
             }<DT>{
@@ -122,6 +124,8 @@ class NLP:
         # Temporary: Should be deleted unless we are in presentation mode
         #chunked.draw()
 
+        self.info = []
+
         for element in chunked:
             if hasattr(element, 'label'):
                 temp = ' '.join(e[0] for e in element)
@@ -134,7 +138,9 @@ class NLP:
             if piece.isdigit():
                 flag = 1
 
-        if len(self.info) == 3 and flag == 0:
+        if 'inquiry' in self.intent:
+            self.information = {'Inquiry': self.info[0], 'Date': self.info[1], 'Location': self.info[2]}
+        elif len(self.info) == 3 and flag == 0:
             if self.info[0] == 'up':
                 self.info[0] = 'on'
             self.information = {'State':self.info[0], 'Appliance':self.info[1], 'Location':self.info[2]}
@@ -158,10 +164,10 @@ class NLP:
             else:
                 if 'on' in self.intent or 'up' in self.intent:
                     state = 'on'
+                    self.information = {'State': state, 'Appliance': self.info[0]}
                 elif 'off' in self.intent:
                     state = 'off'
-
-                self.information = {'State':state, 'Appliance':self.info[0]}
+                    self.information = {'State': state, 'Appliance': self.info[0]}
 
 
 
@@ -181,13 +187,15 @@ class NLP:
 
 # Testing purposes
 
-A = NLP()
-A.execute('what is the weather in Cairo')
-print('Text = ', A.text)
-print('Intent = ', A.intent)
-print('Tense = ', A.tense)
-print('Tokens = ', A.tokens)
-print('Corrected Tokens = ', A.corrected)
-print('Tagged Tokens = ', A.tagged_tokens)
-print('Information = ', A.info)
-print('Extracted information Dictionary = ', A.information)
+#A = NLP()
+
+#for command in commands:
+#    A.execute(command)
+ #   print('Text = ', A.text)
+  #  print('Intent = ', A.intent)
+   # print('Tense = ', A.tense)
+    #print('Tokens = ', A.tokens)
+    #print('Tagged Tokens = ', A.tagged_tokens)
+   # print('Information = ', A.info)
+   # print('Extracted information Dictionary = ', A.information)
+  #  print()

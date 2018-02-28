@@ -244,7 +244,9 @@ train = [
 
 # -------------------- Weather inquiry ------------------------- #
 
-    ('what is the weather today in ', 'weather-query'),
+    ('what is the weather today in ', 'weather-inquiry'),
+    ('what is the weather tomorrow in ', 'weather-inquiry'),
+    ('what is the weather', 'weather-inquiry'),
 
 # -------------------- visitor inquiry ------------------------- #
 

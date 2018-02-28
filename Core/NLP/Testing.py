@@ -118,4 +118,9 @@ commands = [
 
     "switch on the engine of the car",
 
+    'recommend me a comedy movie to see',
+    'recommend me a drama series to see',
+
+    'what is the weather tomorrow in Cairo'
+
 ]

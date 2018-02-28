@@ -64,6 +64,10 @@ your
 name
 
 cairo
+london
+new york
+alexandria
+palo alto
 
 switch on the television
 switch on the tv
