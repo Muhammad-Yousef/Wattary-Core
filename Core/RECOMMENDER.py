@@ -46,7 +46,7 @@ class RECOMMENDER:
         and Getting the nearest value to the desired values in the data set
         """
 
-        self.Data = self.dataSet.ix[:, (1, 4, 10)].values
+        self.Data = self.dataSet.ix[:, (9,25)].values
 
         self.Neighbors = NearestNeighbors(n_neighbors=1).fit(self.Data)
 
@@ -74,13 +74,13 @@ class RECOMMENDER:
         # cast it again to Integer
         self.Index = int(self.newOutput)
 
-        self.recommendedItem = self.dataSet.iloc[self.Index]
+        self.recommendedItem = self.dataSet.iloc[self.Index,11]
         return self.recommendedItem
 
 
 # --------------------------------------------------Just for Testing---------------------------------------#
-Cars = pd.read_csv('DataSets/mtcars.csv')
-x = RECOMMENDER(Cars, [21, 150, 4])
-out = x.Model(x.listOfValues)
-recomendedItem = x.outPutHandling(out)
-print(recomendedItem)
+# Cars = pd.read_csv('DataSets/mtcars.csv')
+# x = RECOMMENDER(Cars, [21, 150, 4])
+# out = x.Model(x.listOfValues)
+# recomendedItem = x.outPutHandling(out)
+# print(recomendedItem)

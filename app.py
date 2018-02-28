@@ -6,6 +6,8 @@ from Core.sender import Sender
 from flask import render_template, render_template_string ,request
 import requests
 from Core.NLP.NLP import NLP
+from Core.checker import *
+from Core.RECOMMENDER import *
 
 
 app = Flask(__name__)
@@ -23,7 +25,18 @@ cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
 clientName = 'user'
 TOPIC = 'PI'
 EAR = NLP()
+send = Sender()
 
+
+
+def recmmend(mgenra):
+    Movies = pd.read_csv('Core/DataSets/movie_metadata.csv')
+    gn = MoviesGenra[mgenra]
+    A = RECOMMENDER(Movies, [gn,5])
+    opt = A.Model(A.listOfValues)
+    recomendedItem = A.outPutHandling(opt)
+    return recomendedItem
+test = []
 
 
 ################################################# weather API Function  ############################################
@@ -50,14 +63,18 @@ def analyze_data():
 
                                     ################ EAR  #################
     EAR.execute(message)
-
-
+    # if EAR.information['Type'] == 'movie':
+    #     genra = EAR.information['Category']
+    #     test.append(genra)
+    #     movie = recmmend(genra)
+    #     print(test)
+    #     return jsonify({'message': 'Here is your Movie : '+genra}), 200
 
 
 
 
                                     ################ Hardware  #################
-    send = Sender()
+
     send.Conect(clientName)
     send.send(clientName , TOPIC , message)
     send.disconnect(clientName)
