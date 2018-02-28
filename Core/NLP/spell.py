@@ -1,7 +1,5 @@
 import re
 from collections import Counter
-import os
-
 
 
 def words(TEXT):

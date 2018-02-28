@@ -22,7 +22,7 @@ cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
 
 clientName = 'user'
 TOPIC = 'PI'
-test = NLP()
+EAR = NLP()
 
 
 
@@ -46,16 +46,14 @@ def analyze_data():
         abort(400)
     message = request.json['message']
 
-    test.execute(message)
+    # NLP
+    EAR.execute(message)
 
 
     send = Sender()
     send.Conect(clientName)
     send.send(clientName , TOPIC , message)
     send.disconnect(clientName)
-
-
-    #print(get_temperature('alexandria')) # this line to test the weather api only
 
 
     # Call reciever to get the current state
@@ -66,7 +64,7 @@ def analyze_data():
 
     # save the data in db
 
-    return jsonify({'message': test.information}), 200
+    return jsonify({'message': EAR.information}), 200
 
 ################################################# tv API  #######################################################
 
