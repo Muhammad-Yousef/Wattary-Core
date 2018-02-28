@@ -181,13 +181,13 @@ class NLP:
 
 # Testing purposes
 
-#A = NLP()
-#A.execute('recommend me a romance movie')
-#print('Text = ', A.text)
-#print('Intent = ', A.intent)
-#print('Tense = ', A.tense)
-#print('Tokens = ', A.tokens)
-#print('Corrected Tokens = ', A.corrected)
-#print('Tagged Tokens = ', A.tagged_tokens)
-#print('Information = ', A.info)
-#print('Extracted information Dictionary = ', A.information)
+A = NLP()
+A.execute('what is the weather in Cairo')
+print('Text = ', A.text)
+print('Intent = ', A.intent)
+print('Tense = ', A.tense)
+print('Tokens = ', A.tokens)
+print('Corrected Tokens = ', A.corrected)
+print('Tagged Tokens = ', A.tagged_tokens)
+print('Information = ', A.info)
+print('Extracted information Dictionary = ', A.information)
