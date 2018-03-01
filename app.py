@@ -24,10 +24,10 @@ cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
 
 clientName = 'user'
 TOPIC = 'pi'
-EAR = NLP()
+#EAR = NLP()
 send = Sender()
-Mouth = Mouth()
-send = Sender()
+#Mouth = Mouth()
+#send = Sender()
 
 
 def recmmend(mgenra):
@@ -61,7 +61,8 @@ def analyze_data():
     message = request.json['message']
 
 
-
+    EAR = NLP()
+    Mou = Mouth()
                                     ################ EAR  #################
     EAR.execute(message)
     try:
@@ -152,8 +153,8 @@ def analyze_data():
 
                                     ################ Mouth  #################
 
-    Mouth.speak(EAR.intent , EAR.tense)
-    return jsonify({'message': Mouth.respone}), 200
+    Mou.speak(EAR.intent , EAR.tense)
+    return jsonify({'message': Mou.respone}), 200
 
 ################################################# tv API  #######################################################
 
