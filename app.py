@@ -17,6 +17,7 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/main/*" : {"origins": "*"}})
 cors1 = CORS(app, resources={r"/tv/*" : {"origins": "*"}})
 cors2 = CORS(app, resources={r"/conditioner/*" : {"origins": "*"}})
+cors3 = CORS(app, resources={r"/signin/*" : {"origins": "*"}})
 
 ###################################### instances and variables #################################################
 
@@ -49,6 +50,27 @@ def get_temperature(city):
     temp_k = float(json_object['main']['temp'])
     temp_c = temp_k -  273.15
     return temp_c
+
+
+################################################# SignIn #######################################################
+
+@app.route('/signin', methods=['POST'])
+def SignIn():
+    if not request.json or not 'data' in request.json:
+        abort(400)
+        '''
+         pull the user data from the json requests
+            - Username
+            - image URL
+            - 4 digit pin code (Not Confirmed)
+
+        '''
+
+        # invoke the Memory and Eye Function
+
+
+
+    return jsonify({'response': "Done"}), 200
 
 
 
