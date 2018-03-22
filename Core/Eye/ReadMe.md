@@ -1,41 +1,68 @@
 # WATTARY Eye:
 
-**This part consists of 2 steps:**
-- [x] Extracting faces from an image (Detecting).
-- [ ] Recognize faces from a saved data.
+**To Do:**
+- [x] Write Eye API.
+- [x] Write The Docs For Eye.
+- [ ] Check Import Modules.
 
 **Dependencies:**
 - dlib *[requires cmake >= 2.8.13]*.
 - sci-kit learn *(skimage)*.
+- numpy
 
-**Results:**
-1. Feed the module with an image.
-
-![Input image](imgs/3818.jpg)
-
-2. The returned images after merging:
-
-![Merged output](imgs/merge_from_ofoct.jpg)
-
-3- The provement:
-
-![Detecting Provement](imgs/Screenshot%20from%202018-02-16%2000-37-36.png)
-
-
-## Step 1: Detecting Faces:
-
+**To Use Eye:**
+```python
+from Eye import eye
+```
+Or
+```python
+import Eye.eye
+```
+Or
+```python
+import Eye.eye as anyName
+```
 **Note: A face must be more than 100px*100px to be detected.**
 
-**To detect faces from any image use `faceDetector.py`, you can import it in your work by typing:**
+**To add a user to the database**
+use function register(params)
+- this function takes 2 parameters:
+    1- User name. Ex: Sayed Mahmoud
+    2- a full url of his picture. Ex: https://www.pictures.com/img_002314562.jpg
 
+- and returning 1 value:
+    1- code. Ex: 101.
+
+**code meaning:**
+   101: this means the operation succeeded.
+   102: this means that I can not read the picture (not Exist).
+   103: this means that I can not find any faces in the picture (retake a picture)
+   104: this means that the user is exist.
+   105: this means a memory (database) error.
+
+Ex:
 ```python
-import Eye.faceDetector
+code = register('Ahmed Abdeldaim', 'https://www.pictures.com/img_002314562.jpg')
 ```
-or
+
+**To recognize a face from a picture**
+use function login(params)
+- this function takes 1 parameters:
+   1- a full url of his picture. Ex: https://www.pictures.com/img_002314562.jpg
+
+- and returning 2 value:
+   1- code. Ex: 201.
+   2- userID (if exist else null)
+
+code meaning:
+   201: this means that the user is exist.
+   202: this means that I can not read the picture (not Exist).
+   203: this means that I can not find any faces in the picture (retake a picture)
+   204: this means that the user is exist.
+   205: this means a memory (database) error.
+   206: this means that I can not recognize this person.
+
+Ex:
 ```python
-from Eye import faceDetector
+code, userID = login('https://www.pictures.com/img_002314562.jpg')
 ```
-
-The detector module contains a function called `detectFaces()` which takes a parameters [the path of the image] and it will return the detected faces.
-
-
