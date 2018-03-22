@@ -1,5 +1,5 @@
 #
-# Memory API Version 0.27
+# Memory API Version 1.0
 #
 # This module plays as a mid-way communicator between the database and users
 # To easily Read, Modify or Insert data.
@@ -10,25 +10,25 @@
 #
 # Database Schema:
 # ---------------------------------------------------------------------------------------------------------
-# - Table Name(*)   | column1(type) | column2(type)     | column3(type) ...                               -
+# - Table Name(*)   | column1(type)   | column2(type)     | column3(type) ...                             -
 # ---------------------------------------------------------------------------------------------------------
-# - users(1)        | user_id(int)   | user_name(string)  | user_face(string)  | a_t(string)                 -
+# - users(1)        | user_id(int)   | user_name(string)  | user_face(string)  | a_t(string)              -
 # ---------------------------------------------------------------------------------------------------------
-# - light(2)        | user_id(int)   | val(bool)         | u_val(bool)       | flag(bool)                  -
+# - light(2)        | user_id(int)   | val(bool)         | u_val(bool)       | flag(bool)                 -
 # ---------------------------------------------------------------------------------------------------------
-# - air_con(2)      | user_id(int)   | o_val(int)        | in_val(int)       | u_val(int)   | flag(int)    -
+# - air_con(2)      | user_id(int)   | o_val(int)        | in_val(int)       | u_val(int)   | flag(int)   -
 #  ---------------------------------------------------------------------------------------------------------
-# - tv(2)           | user_id(int)   | val(int)          | u_val(int)        | flag(bool)                  -
+# - tv(2)           | user_id(int)   | val(int)          | u_val(int)        | flag(bool)                 -
 # ---------------------------------------------------------------------------------------------------------
-# - light_DS(3)     | user_id(int)   | val(bool)         | day(int)          | date(date)   | time(time)   -
+# - light_DS(3)     | user_id(int)   | val(bool)         | day(int)          | date(date)   | time(time)  -
 # ---------------------------------------------------------------------------------------------------------
-# - air_con_DS(3)   | user_id(int)   | val(int)          | day(int)          | date(date)   | time(time)   -
+# - air_con_DS(3)   | user_id(int)   | val(int)          | day(int)          | date(date)   | time(time)  -
 # ---------------------------------------------------------------------------------------------------------
-# - tv_DS(3)        | user_id(int)   | val(int)          | day(int)          | date(date)   | time(time)   -
+# - tv_DS(3)        | user_id(int)   | val(int)          | day(int)          | date(date)   | time(time)  -
 # ---------------------------------------------------------------------------------------------------------
-# - camera(4)       | user_id(int)   | src(string)                                                         -
+# - camera(4)       | user_id(int)   | src(string)                                                        -
 # ---------------------------------------------------------------------------------------------------------
-# - user_pref(5)    | user_id(int)                                                                         -
+# - user_pref(5)    | user_id(int)                                                                        -
 # ---------------------------------------------------------------------------------------------------------
 # *:
 #   1: contains users basic data.
@@ -185,6 +185,28 @@ def getValues(tableName, columnNames, user_id):
         return 103, data
 
 
+def getValuesAll(tableName, columnNames):
+    data = None
+    cur = connect()
+    if cur is not False:
+        try:
+            columnNamesStr = ', '.join(columnNames)
+            # execute a statement
+            cur.execute("SELECT " + columnNamesStr + " FROM " + tableName)
+            # fetch data
+            return 401, cur.fetchall()
+
+        except (Exception, psycopg2.ProgrammingError) as error:
+            if 'column' in str(error) and 'not exist' in str(error):
+                return 405, data
+            elif 'relation' in str(error) and 'not exist' in str(error):
+                return 404, data
+            else:
+                return error, data
+    else:
+        return 403, data
+
+
 def insertValues(tableName, data):
     cur = connect()
     if cur is not False:
@@ -246,4 +268,3 @@ def modifyValues(tableName, data, user_id):
                 return error
     else:
         return 303
-
