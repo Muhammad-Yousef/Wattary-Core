@@ -25,3 +25,4 @@ WTForms==2.1
 paho-mqtt
 requests
 textblob
+psycopg2

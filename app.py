@@ -78,7 +78,7 @@ def get_temperature(city):
 
 @app.route('/signin', methods=['POST'])
 def SignIn():
-    if not request.json or not 'data' in request.json:
+    if not request.json or not 'pohtoUrl' in request.json:
         abort(400)
         '''
          pull the user data from the json requests
@@ -89,8 +89,9 @@ def SignIn():
         '''
 
         # invoke the Memory and Eye Function
-
-    return jsonify({'response': "Done"}), 200
+    image = request.json['pohtoUrl']
+    print(image)
+    return jsonify({'response': image}), 200
 
 
 ################################################# Main API  #######################################################
