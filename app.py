@@ -39,6 +39,7 @@ cors = CORS(app, resources={r"/main/*": {"origins": "*"}})
 cors1 = CORS(app, resources={r"/tv/*": {"origins": "*"}})
 cors2 = CORS(app, resources={r"/conditioner/*": {"origins": "*"}})
 cors3 = CORS(app, resources={r"/signin/*": {"origins": "*"}})
+cors4 = CORS(app, resources={r"/signup/*": {"origins": "*"}})
 
 ###################################### instances and variables #################################################
 
@@ -74,22 +75,41 @@ def get_temperature(city):
     return temp_c
 
 
+
+
+
+
+
+################################################# SignUp #######################################################
+
+
+@app.route('/signup', methods=['POST'])
+def SignUp():
+    if not request.json or not 'PhotoUrl' in request.json and 'UserName' in request.json:
+        abort(400)
+        '''
+        pull the user data from the json requests
+        - Username
+        - image URL
+        - 4 digit pin code (Not Confirmed)
+
+        '''
+
+    # invoke the Memory and Eye Function
+    image = request.json['PhotoUrl']
+    userName = request.json['UserName']
+    test = image + userName
+    return jsonify({'response': test}), 200
+
 ################################################# SignIn #######################################################
 
 @app.route('/signin', methods=['POST'])
 def SignIn():
-    if not request.json or not 'pohtoUrl' in request.json:
+    if not request.json or not 'PhotoUrl' in request.json:
         abort(400)
-        '''
-         pull the user data from the json requests
-            - Username
-            - image URL
-            - 4 digit pin code (Not Confirmed)
 
-        '''
-
-        # invoke the Memory and Eye Function
-    image = request.json['pohtoUrl']
+    # invoke the Memory and Eye Function
+    image = request.json['PhotoUrl']
     print(image)
     return jsonify({'response': image}), 200
 
