@@ -104,6 +104,19 @@ def SignUp():
     
     if checker.register(userName, imageURL) == 101:
         return jsonify({'response': "Operation succeeded. New User added to database"}), 200
+     
+        elif checker.register(userName, imageURL) == 102:
+        return jsonify({'response': "Cannot read the picture (not Exist)."}), 102
+      
+        elif checker.register(userName, imageURL) == 103:
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 103
+     
+        elif checker.register(userName, imageURL) == 104:
+        return jsonify({'response': "This user is exist."}), 104
+     
+        elif checker.register(userName, imageURL) == 105:
+        return jsonify({'response': "There's a problem in the database."}), 105
+
 
 ################################################# SignIn #######################################################
 
@@ -117,6 +130,18 @@ def SignIn():
     
     if checker.login(imageURL) == 201:
         return jsonify({'response': "Operation succeeded."}), 200
+        
+        elif checker.login(imageURL) == 202:
+        return jsonify({'response': "Cannot read the picture (not Exist)."}), 202
+       
+        elif checker.login(imageURL) == 203:
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 203
+        
+        elif checker.login(imageURL) == 205:
+        return jsonify({'response': "There's a problem in the database."}), 205
+        
+        elif checker.login(imageURL) == 206:
+        return jsonify({'response': "Cannot recognize this person."}), 206
 
 ################################################# Main API  #######################################################
 
