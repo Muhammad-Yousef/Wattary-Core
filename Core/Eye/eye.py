@@ -58,8 +58,9 @@
 #   code, userID = login('https://www.pictures.com/img_002314562.jpg')
 #
 # Import the database API from the parent directory.
-from Wattary.Memory import Memory
-from faceRecognitionDemo import recognize
+from Core.Memory.memory import *
+#from faceRecognitionDemo
+from recognize import *
 from skimage import io
 import numpy
 
