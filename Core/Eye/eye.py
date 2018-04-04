@@ -65,11 +65,6 @@ import numpy
 
 
 def register(userName, imgPath):
-    #   101: this means the operation succeeded.
-    #   102: this means that I can not read the picture (not Exist).
-    #   103: this means that I can not find any faces in the picture (retake a picture)
-    #   104: this means that the user is exist.
-    #   105: this means a memory (database) error.
     try:
         img = io.imread(imgPath)
     except:
@@ -77,7 +72,7 @@ def register(userName, imgPath):
     code, disc = recognize.getDiscriptor(img)
     if code == 103:
         return code
-    code = checkUser(disc)
+    code, u = checkUser(disc)
     if code:
         return code
     face_descriptor = ', '.join(str(i) for i in list(disc))
@@ -91,7 +86,18 @@ def register(userName, imgPath):
 
 
 def login(imgPath):
-    pass
+    try:
+        img = io.imread(imgPath)
+    except:
+        return 202
+    code, disc = recognize.getDiscriptor(img)
+    if code == 203:
+        return code
+    code, u = checkUser(disc)
+    if code == 104:
+        return 201, u
+    else:
+        return 206, ''
 
 
 def checkUser(discriptor):
@@ -108,10 +114,6 @@ def checkUser(discriptor):
 
     if userName != 'Unknown':
         # IF user is Exist
-        return 104
+        return 104, userName
     else:
-        return 0
-
-
-if __name__ == "__main__":
-    print(register('Abdo', "abdo.jpg"))
+        return 0, userName
