@@ -15,7 +15,7 @@ from Core.Memory import memory
 import logging
 
 ### Importing the Eye Module ### 
-from Core.Eye import eye
+from Core.Eye import eye as checker
 
 
 ############################################## Configurations ############################################
@@ -102,19 +102,20 @@ def SignUp():
     imageURL = request.json['PhotoUrl']
     userName = request.json['UserName']
     
+    # Adding new User in the database with his username and his image
     if checker.register(userName, imageURL) == 101:
         return jsonify({'response': "Operation succeeded. New User added to database"}), 200
-     
-        elif checker.register(userName, imageURL) == 102:
+    # Case 2 that if the image doesn't exist (URL Error)
+    elif checker.register(userName, imageURL) == 102:
         return jsonify({'response': "Cannot read the picture (not Exist)."}), 102
-      
-        elif checker.register(userName, imageURL) == 103:
+    # Case 3: If the image isn't contain any faces
+    elif checker.register(userName, imageURL) == 103:
         return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 103
-     
-        elif checker.register(userName, imageURL) == 104:
+    # Case 4: If the user image and username is already exist
+    elif checker.register(userName, imageURL) == 104:
         return jsonify({'response': "This user is exist."}), 104
-     
-        elif checker.register(userName, imageURL) == 105:
+    # Case 5: DataBase connection error or adding error.
+    elif checker.register(userName, imageURL) == 105:
         return jsonify({'response': "There's a problem in the database."}), 105
 
 
@@ -128,19 +129,20 @@ def SignIn():
     # invoke the Memory and Eye Function
     imageURL = request.json['PhotoUrl']
     
+    # Login with the image of the user
     if checker.login(imageURL) == 201:
         return jsonify({'response': "Operation succeeded."}), 200
-        
-        elif checker.login(imageURL) == 202:
+    # Case 2 that if the image doesn't exist (URL Error)
+    elif checker.login(imageURL) == 202:
         return jsonify({'response': "Cannot read the picture (not Exist)."}), 202
-       
-        elif checker.login(imageURL) == 203:
+    # Case 3: If the image isn't contain any faces   
+    elif checker.login(imageURL) == 203:
         return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 203
-        
-        elif checker.login(imageURL) == 205:
+    # Case 5: DataBase connection error or adding error.
+    elif checker.login(imageURL) == 205:
         return jsonify({'response': "There's a problem in the database."}), 205
-        
-        elif checker.login(imageURL) == 206:
+    # Case 6: If Wattary doesn't recognize this person or he is not a user.
+    elif checker.login(imageURL) == 206:
         return jsonify({'response': "Cannot recognize this person."}), 206
 
 ################################################# Main API  #######################################################
