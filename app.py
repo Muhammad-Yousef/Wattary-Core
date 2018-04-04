@@ -14,6 +14,9 @@ from Core.Mouth.Mouth import *
 from Core.Memory import memory
 import logging
 
+### Importing the Eye Module ### 
+from Core.Eye import eye
+
 
 ############################################## Configurations ############################################
 
@@ -96,10 +99,11 @@ def SignUp():
         '''
 
     # invoke the Memory and Eye Function
-    image = request.json['PhotoUrl']
+    imageURL = request.json['PhotoUrl']
     userName = request.json['UserName']
-    test = image + userName
-    return jsonify({'response': test}), 200
+    
+    if checker.register(userName, imageURL) == 101:
+        return jsonify({'response': "Operation succeeded. New User added to database"}), 200
 
 ################################################# SignIn #######################################################
 
@@ -109,10 +113,10 @@ def SignIn():
         abort(400)
 
     # invoke the Memory and Eye Function
-    image = request.json['PhotoUrl']
-    print(image)
-    return jsonify({'response': image}), 200
-
+    imageURL = request.json['PhotoUrl']
+    
+    if checker.login(imageURL) == 201:
+        return jsonify({'response': "Operation succeeded."}), 200
 
 ################################################# Main API  #######################################################
 
