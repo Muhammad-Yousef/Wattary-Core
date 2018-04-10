@@ -11,19 +11,31 @@
  - Python >= 3.5
  ```shell
  # Instal postgres
- $ brew install postgres
+ $ sudo apt-get install postgres
  
- # Create DBs
+ # Add the installed Folder to linux search PATH
+ $ export PATH="/usr/lib/postgresql/<VERSION>/bin:$PATH"
+ 
+ # Create DBs in "/usr/local/var/postgres" .. This path is not essinitial, you can choose yours.
  $ initdb /usr/local/var/postgres
  
- # Create the initial user
- $ /usr/local/Cellar/postgresql/<version>/bin/createuser -s postgres
- 
- # To start the server
+ # To start the server .. "/usr/local/var/postgres" replace it with your path
  $ pg_ctl -D /usr/local/var/postgres -l logfile start
  
- # Login to the postgres console
+ # Change Password of the postgres user
+ $ sudo nano /etc/postgresql/9.5/main/pg_hba.conf
+ 
+ 1- Replace `local   all             postgres                                peer` to 'local   all             postgres                                trust'
+ 2- Save the file
+ 3- close the file
+ 4- restart server `sudo service postgresql restart`
+ 
+ # In another terminal type
  $ sudo -su postgres
+ $ psql
+ # ALTER USER postgres with password 'your-password';
+ 
+ # Press CTRL+D to return to th postgres user
  
  # create a DB
  $ createdb wattary
@@ -31,8 +43,22 @@
  # create a user(must be the same name of the DB)
  $ createuser --interactive
  
+ # Return to the first terminal where the file `pg_hba.conf` is opened
+ 1- Replace `local   all             postgres                                trust` to 'local   all             postgres                                md5'
+ 2- Save the file
+ 3- close the file
+ 4- restart server `sudo service postgresql restart`
+ 5- Close this terminal
+ 
+ # Return to the 2nd terminal
+ $ psql
+ # ALTER USER wattary with password 'your-password';
+ # Press CTRL+D
+ 
  # Login to the SQL comman line from the new user
- $ psql -U wattary
+ $ psql -U wattary -h 127.0.0.1 wattary
+ 
+ # PASTE the tables commands
  ```
 
  To use this module well:
