@@ -61,6 +61,12 @@
  # PASTE the tables commands
  ```
 
+**To start postgres after closing: **
+```shell
+# To start the server .. "/usr/local/var/postgres" replace it with your path
+$ pg_ctl -D /usr/local/var/postgres -l logfile start
+```
+
  To use this module well:
  please read the following lines.
 
