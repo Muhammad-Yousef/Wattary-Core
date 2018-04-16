@@ -3,12 +3,25 @@
 **To Do:**
 - [x] Write Eye API.
 - [x] Write The Docs For Eye.
-- [ ] Check Import Modules.
+
+**Please Note: the descriptors are saved in a CSV file NOT in the database.**
 
 **Dependencies:**
 - dlib *[requires cmake >= 2.8.13]*.
 - sci-kit learn *(skimage)*.
 - numpy
+
+**Instalation of Dependencies:**
+
+
+1- dlib:
+```shell
+$ pip install dlib
+```
+2- scikit learn:
+```shell
+$ pip install scikit-learn
+```
 
 **To Use Eye:**
 ```python
@@ -34,12 +47,14 @@ use function register(params)
     1- code. Ex: 101.
 
 **code meaning:**
-   101: this means the operation succeeded.
-   102: this means that I can not read the picture (not Exist).
-   103: this means that I can not find any faces in the picture (retake a picture)
-   104: this means that the user is exist.
-   105: this means a memory (database) error.
 
+    101: this means the operation succeeded.
+    102: this means that I can not read the picture (not Exist).
+    103: this means that I can not find any faces in the picture (retake a picture)
+    104: this means that the user is exist.
+    105: this means a memory (database) error.
+   
+   
 Ex:
 ```python
 code = register('Ahmed Abdeldaim', 'https://www.pictures.com/img_002314562.jpg')
@@ -54,14 +69,14 @@ use function login(params)
    1- code. Ex: 201.
    2- userID (if exist else null)
 
-code meaning:
-   201: this means that the user is exist.
-   202: this means that I can not read the picture (not Exist).
-   203: this means that I can not find any faces in the picture (retake a picture)
-   204: this means that the user is exist.
-   205: this means a memory (database) error.
-   206: this means that I can not recognize this person.
+**code meaning:**
 
+    201: this means that the user is exist.    
+    202: this means that I can not read the picture (not Exist).
+    203: this means that I can not find any faces in the picture (retake a picture)
+    204: this means that I can not recognize this person.
+    
+    
 Ex:
 ```python
 code, userID = login('https://www.pictures.com/img_002314562.jpg')
