@@ -160,8 +160,9 @@ $ pg_ctl -D /usr/local/var/postgres -l logfile start
    1. table name. Ex: air_con_DS.
    2. a dictionary of columns and the values you want. Ex: {'o_val': 33, 'in_val': 22}.
 
- - and returning 1 value:
+ - and returning 2 values:
    1. code. Ex: 201.
+   1. the inserted id.
 
    code meaning:
    
@@ -172,7 +173,7 @@ $ pg_ctl -D /usr/local/var/postgres -l logfile start
 
  Ex:
  ```python
-   code = memory.insertValues('air_con_DS', {'o_val': 33, 'in_val': 22})
+   code, userID = memory.insertValues('air_con_DS', {'o_val': 33, 'in_val': 22})
    if code == 202:
        logging.warning('the user_id is not exist.')
    elif code == 203:
