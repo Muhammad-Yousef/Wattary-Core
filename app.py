@@ -133,6 +133,10 @@ def SignIn():
     code, userID = checker.login(imageURL)
     if code == 201:
         return jsonify({'response': "Operation succeeded." + userID}), 200
+    else:
+        print(code)
+        return jsonify({'response': "Operation"}),200
+    # TODO
     # # Case 2 that if the image doesn't exist (URL Error)
     # elif checker.login(imageURL) == 202:
     #     return jsonify({'response': "Cannot read the picture (not Exist)."}), 202
@@ -145,6 +149,8 @@ def SignIn():
     # # Case 6: If Wattary doesn't recognize this person or he is not a user.
     # elif checker.login(imageURL) == 206:
     #     return jsonify({'response': "Cannot recognize this person."}), 206
+
+    # If user is not exist TODO
 
 ################################################# Main API  #######################################################
 
