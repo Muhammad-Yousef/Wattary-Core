@@ -4,7 +4,6 @@ CREATE TABLE users (
     user_name varchar(255) DEFAULT '',
     user_face varchar(255) DEFAULT '',
     a_t varchar(255) DEFAULT '',
-    face_descriptor numeric []
 );
 
 CREATE TABLE light (
