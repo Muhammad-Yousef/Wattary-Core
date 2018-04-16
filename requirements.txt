@@ -27,3 +27,5 @@ requests
 textblob
 psycopg2
 scikit-image
+dlib
+psycopg2-binary

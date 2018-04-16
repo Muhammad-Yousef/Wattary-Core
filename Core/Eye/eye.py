@@ -1,5 +1,5 @@
 # Please Fix the path to use this model well
-import Memory
+from Core.Memory import memory as Memory
 from skimage import io
 import csv
 import dlib
@@ -86,5 +86,3 @@ def login(imgPath):
         # If user is not exist
     else:
         return 204, ''
-
-
