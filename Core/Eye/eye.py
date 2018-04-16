@@ -1,12 +1,11 @@
-# Please Fix the path to use this model well
 from Core.Memory import memory as Memory
 from skimage import io
 import csv
 import dlib
 import numpy
 
-predictor_path = './models/shape_predictor_5_face_landmarks.dat'
-face_rec_model_path = './models/dlib_face_recognition_resnet_model_v1.dat'
+predictor_path = './Core/Eye/models/shape_predictor_5_face_landmarks.dat'
+face_rec_model_path = './Core/Eye/models/dlib_face_recognition_resnet_model_v1.dat'
 
 detector = dlib.get_frontal_face_detector()
 sp = dlib.shape_predictor(predictor_path)
@@ -39,7 +38,7 @@ def register(userName, imgPath):
         return 103
 
     code, ID = Memory.insertValues('users', {'user_name': userName})
-    with open('./users_descriptors.csv', 'a') as o:
+    with open('/home/omarovee/Wattary/Wattary-Core/Core/Eye/users_descriptors.csv', 'a') as o:
         fieldnames = ['user_ID', 'descriptor']
         writer = csv.DictWriter(o, fieldnames=fieldnames)
         writer.writerow({'user_ID': ID, 'descriptor': face_descriptor})
@@ -54,7 +53,7 @@ def login(imgPath):
     try:
         img = io.imread(imgPath)
     except:
-        return 202
+        return 202,''
 
     dets = detector(img, 1)
     face_descriptor = ''
@@ -70,7 +69,7 @@ def login(imgPath):
     val = 0.5
     user_id = 0
 
-    with open('./users_descriptors.csv') as csvfile:
+    with open('/home/omarovee/Wattary/Wattary-Core/Core/Eye/users_descriptors.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             j = numpy.asarray(row['descriptor'].split('\n'), dtype='float32')

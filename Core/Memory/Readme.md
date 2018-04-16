@@ -1,63 +1,64 @@
 
  Memory API Version 0.27
- 
+
  This module plays as a mid-way communicator between the database and users
  To easily Read, Modify or Insert data.
- 
+
  Written By: Ahmed Abdeldaim
- 
+
   Depandacies:
  - Postgresql-v10.2
  - Python >= 3.5
  ```shell
  # Instal postgres
  $ sudo apt-get install postgres
- 
+
  # Add the installed Folder to linux search PATH
- $ export PATH="/usr/lib/postgresql/<VERSION>/bin:$PATH"
- 
+ $ export PATH="/usr/lib/postgresql/9.5/bin:$PATH"
+
  # Create DBs in "/usr/local/var/postgres" .. This path is not essinitial, you can choose yours.
- $ initdb /usr/local/var/postgres
- 
+ $ initdb /home/omarovee/Documents/postgress
+
  # To start the server .. "/usr/local/var/postgres" replace it with your path
- $ pg_ctl -D /usr/local/var/postgres -l logfile start
- 
+ $ pg_ctl -D /home/omarovee/Documents/postgress -l logfile start
+
+
  # Change Password of the postgres user
  $ sudo nano /etc/postgresql/9.5/main/pg_hba.conf
- 
+
  1- Replace `local   all             postgres                                peer` to 'local   all             postgres                                trust'
  2- Save the file
  3- close the file
  4- restart server `sudo service postgresql restart`
- 
+
  # In another terminal type
  $ sudo -su postgres
  $ psql
  # ALTER USER postgres with password 'your-password';
- 
+
  # Press CTRL+D to return to th postgres user
- 
+
  # create a DB
  $ createdb wattary
- 
+
  # create a user(must be the same name of the DB)
  $ createuser --interactive
- 
+
  # Return to the first terminal where the file `pg_hba.conf` is opened
  1- Replace `local   all             postgres                                trust` to 'local   all             postgres                                md5'
  2- Save the file
  3- close the file
  4- restart server `sudo service postgresql restart`
  5- Close this terminal
- 
+
  # Return to the 2nd terminal
  $ psql
  # ALTER USER wattary with password 'your-password';
  # Press CTRL+D
- 
+
  # Login to the SQL comman line from the new user
  $ psql -U wattary -h 127.0.0.1 wattary
- 
+
  # PASTE the tables commands
  ```
 
@@ -99,12 +100,12 @@ $ pg_ctl -D /usr/local/var/postgres -l logfile start
    4. contains the latest images which passed to the camera.
    5. contains the user preferences>
 
- 
+
  **Notes:**
  1. We don't need to add date and time columns in dataset tables because they will added automaticly.
  2. In dataset tables the date and time will be based on the date and time of the server.
- 
- 
+
+
  To load this module in your script, use:
  ```python
  from Memory import memory
@@ -132,7 +133,7 @@ $ pg_ctl -D /usr/local/var/postgres -l logfile start
    2. a dictionary with the values. Ex: {'o_val': 33, 'in_val': 24, 'flag': true}
 
    code meaning:
-   
+
    101: this means the operation succeeded.
    102: this means that the user-ID is not exist and the dictionary will be None.
    103: this means failed to connect to the database and the dictionary will be None.
@@ -165,7 +166,7 @@ $ pg_ctl -D /usr/local/var/postgres -l logfile start
    1. the inserted id.
 
    code meaning:
-   
+
    201: this means the operation succeeded.
    203: this means failed to connect to the database.
    204: this means wrong table name.
@@ -196,13 +197,13 @@ $ pg_ctl -D /usr/local/var/postgres -l logfile start
    1. code. Ex: 301.
 
    code meaning:
-   
-   301: this means the operation succeeded. 
-   302: this means that the user-ID is not exist. 
-   303: this means failed to connect to the database. 
-   304: this means wrong table name. 
-   305: this means wrong columns name. 
-   306: this can't use this function for this type of table. 
+
+   301: this means the operation succeeded.
+   302: this means that the user-ID is not exist.
+   303: this means failed to connect to the database.
+   304: this means wrong table name.
+   305: this means wrong columns name.
+   306: this can't use this function for this type of table.
 
  Ex:
  ```python
@@ -214,4 +215,3 @@ $ pg_ctl -D /usr/local/var/postgres -l logfile start
    elif code != 301:
        logging.warning('unrecognized code: ' + code)
 ```
-

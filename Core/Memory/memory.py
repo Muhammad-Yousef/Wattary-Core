@@ -142,7 +142,7 @@ conn = None
 def connect():
     try:
         global conn
-        conn = psycopg2.connect(host="localhost", database="wattary", user="wattary", password="seven23")
+        conn = psycopg2.connect(host="localhost", database="wattary", user="wattary", password="12345")
         # create a cursor
         cur = conn.cursor()
         return cur
