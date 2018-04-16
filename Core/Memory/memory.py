@@ -142,7 +142,7 @@ conn = None
 def connect():
     try:
         global conn
-        conn = psycopg2.connect(host="localhost", database="wattary", user="wattary", password="")
+        conn = psycopg2.connect(host="localhost", database="wattary", user="wattary", password="seven23")
         # create a cursor
         cur = conn.cursor()
         return cur
@@ -218,20 +218,21 @@ def insertValues(tableName, data):
             columnNamesStr = ', '.join(columnNames)
             valuesStr = "', '".join(values)
             # execute a statement
-            cur.execute("INSERT INTO " + tableName + "(" + columnNamesStr + ") VALUES('" + valuesStr + "')")
+            cur.execute("INSERT INTO " + tableName + "(" + columnNamesStr + ") VALUES('" + valuesStr + "') RETURNING user_id")
             # fetch data
             conn.commit()
+            ID = cur.fetchone()[0]
             cur.close()
-            return 201
+            return 201, ID
         except (Exception, psycopg2.Error) as error:
             if 'column' in str(error) and 'not exist' in str(error):
-                return 205
+                return 205, ''
             elif 'relation' in str(error) and 'not exist' in str(error):
-                return 204
+                return 204, ''
             else:
-                return error
+                return error, ''
     else:
-        return 203
+        return 203, ''
 
 
 def modifyValues(tableName, data, user_id):
