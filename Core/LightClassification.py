@@ -36,21 +36,19 @@ class Light:
 
         # Evaluate the accuracy of the model
 
-        # SVC Accuracy
-        print("SVC : ", (self.Cls.score(train, target) * 100), '%')
+        # SVC Accuracy                              # GaussianNB Accuracy
+        return self.Cls.score(train, target) * 100, self.Cls.score(train, target) * 100
 
-        # GaussianNB Accuracy
-        print("GaussianNB : ", (self.Cls.score(train, target) * 100), '%')
 
-    def predict(self, testvalues=np.array([], dtype=np.float32)):
+
+
+    def predict(self, dayNum, time, roomNum):
         """
         I will print the output of this function for now until we connect to the Hardware brunch
         """
-        # SVC Prediction
-        print("SVC : " + str(self.Cls.predict(testvalues)).strip("[]."))
-
-        # GaussianNB Prediction
-        print("GaussianNB : " + str(self.Cls2.predict(testvalues)).strip("[]."))
+        testvalues = np.array([(dayNum, time, roomNum)], dtype=np.float32)
+        # SVC Prediction                     # GaussianNB Prediction
+        return self.Cls.predict(testvalues), self.Cls2.predict(testvalues)
 
 
 # --------------------------------------------------Just for Testing---------------------------------------#
@@ -171,7 +169,7 @@ x, y = df.iloc[:, 0:3], df.iloc[:, 3]
 
 obj1 = Light(df)
 obj1.fit(x, y)
-values = np.array([(3, 14, 1),
-                   (4, 16.30, 1),
-                   (5, 15.30, 1)], dtype=np.float32)
-obj1.predict(values)
+
+print(obj1.predict(3, 14, 1))
+print(obj1.predict(4, 16.30, 1))
+print(obj1.predict(5, 15.30, 1))
