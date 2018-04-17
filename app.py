@@ -102,20 +102,22 @@ def SignUp():
     imageURL = request.json['PhotoUrl']
     userName = request.json['UserName']
 
+    code = checker.register(userName, imageURL)
     # Adding new User in the database with his username and his image
-    if checker.register(userName, imageURL) == 101:
+    # Case 1: this means the operation succeeded.
+    if code == 101:
         return jsonify({'response': "Operation succeeded. New User added to database"}), 200
-    # Case 2 that if the image doesn't exist (URL Error)
-    elif checker.register(userName, imageURL) == 102:
+    # Case 2: this means that I can not read the picture (not Exist).
+    elif code == 102:
         return jsonify({'response': "Cannot read the picture (not Exist)."}), 102
-    # Case 3: If the image isn't contain any faces
-    elif checker.register(userName, imageURL) == 103:
+    # Case 3: this means that I can not find any faces in the picture (retake a picture)
+    elif code == 103:
         return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 103
-    # Case 4: If the user image and username is already exist
-    elif checker.register(userName, imageURL) == 104:
+    # Case 4: this means that the user is exist.
+    elif code == 104:
         return jsonify({'response': "This user is exist."}), 104
-    # Case 5: DataBase connection error or adding error.
-    elif checker.register(userName, imageURL) == 105:
+    # Case 5: this means a memory (database) error.
+    elif code == 105:
         return jsonify({'response': "There's a problem in the database."}), 105
 
 
@@ -131,26 +133,18 @@ def SignIn():
 
     # Login with the image of the user
     code, userID = checker.login(imageURL)
+    # Case 1 this mean that the user is exist.
     if code == 201:
         return jsonify({'response': "Operation succeeded." + userID}), 200
-    else:
-        print(code)
-        return jsonify({'response': "Operation"}),200
-    # TODO
-    # # Case 2 that if the image doesn't exist (URL Error)
-    # elif checker.login(imageURL) == 202:
-    #     return jsonify({'response': "Cannot read the picture (not Exist)."}), 202
-    # # Case 3: If the image isn't contain any faces
-    # elif checker.login(imageURL) == 203:
-    #     return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 203
-    # # Case 5: DataBase connection error or adding error.
-    # elif checker.login(imageURL) == 205:
-    #     return jsonify({'response': "There's a problem in the database."}), 205
-    # # Case 6: If Wattary doesn't recognize this person or he is not a user.
-    # elif checker.login(imageURL) == 206:
-    #     return jsonify({'response': "Cannot recognize this person."}), 206
-
-    # If user is not exist TODO
+    # Case 2 this means that I can not read the picture (not Exist).
+    elif code == 202:
+        return jsonify({'response': "Cannot read the picture (not Exist)."}), 202
+    # Case 3: this means that I can not find any faces in the picture (retake a picture).
+    elif code == 203:
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 203
+    # Case 4: this means that I can not recognize this person.
+    elif code == 204:
+        return jsonify({'response': "I can not recognize this person."}), 204
 
 ################################################# Main API  #######################################################
 
