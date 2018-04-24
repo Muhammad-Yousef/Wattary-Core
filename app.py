@@ -144,7 +144,7 @@ def SignIn():
         return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 203
     # Case 4: this means that I can not recognize this person.
     elif code == 204:
-        return jsonify({'response': "I can not recognize this person."}), 204
+        return jsonify({'response': "I can not recognize this person."}), 200
 
 ################################################# Main API  #######################################################
 

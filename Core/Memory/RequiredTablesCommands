@@ -8,10 +8,11 @@ CREATE TABLE users (
 
 CREATE TABLE light (
     user_id serial primary key,
-    val boolean DEFAULT 0,
-    u_val boolean DEFAULT 0,
-    flag boolean DEFAULT 0
+    val integer DEFAULT 0,
+    u_val integer DEFAULT 0,
+    flag integer DEFAULT 0
 );
+
 
 CREATE TABLE air_con (
     user_id serial primary key,
@@ -30,7 +31,7 @@ CREATE TABLE tv (
 
 CREATE TABLE light_DS (
     user_id serial primary key,
-    val boolean DEFAULT 0,
+    val integer DEFAULT 0,
     day integer DEFAULT 0,
     date date DEFAULT CURRENT_DATE,
     time time DEFAULT CURRENT_TIME
