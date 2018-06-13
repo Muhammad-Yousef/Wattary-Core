@@ -43,7 +43,8 @@ cors1 = CORS(app, resources={r"/tv/*": {"origins": "*"}})
 cors2 = CORS(app, resources={r"/conditioner/*": {"origins": "*"}})
 cors3 = CORS(app, resources={r"/signin/*": {"origins": "*"}})
 cors4 = CORS(app, resources={r"/signup/*": {"origins": "*"}})
-cors4 = CORS(app, resources={r"/signup/web*": {"origins": "*"}})
+cors5 = CORS(app, resources={r"/signup/web*": {"origins": "*"}})
+cors6 = CORS(app, resources={r"/signin/web*": {"origins": "*"}})
 ###################################### instances and variables #################################################
 
 
