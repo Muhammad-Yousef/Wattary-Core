@@ -12,6 +12,30 @@ sp = dlib.shape_predictor(predictor_path)
 facerec = dlib.face_recognition_model_v1(face_rec_model_path)
 
 
+def register_password(user_name, user_pass, user_email):
+    # Check if the user is exist
+    query = "SELECT user_name FROM users WHERE user_name = '" + user_name + "'"
+    code, _ = Memory.selectValue(query)
+    if code == 501:
+        # 104: this means that the user is exist.
+        return 104
+    # If the user is not exist
+    code = Memory.insertValues('users', {'user_name': user_name, 'user_pass': user_pass, 'user_email': user_email})
+    if code == 201:
+        return 101
+    else:
+        return 105
+
+
+def login_password(user_name, user_pass):
+    query = "SELECT user_name FROM users WHERE user_name = '" + user_name + "' AND user_pass = '" + user_pass + "'"
+    code, user_name = Memory.selectValue(query)
+    if code == 501:
+        return code, user_name
+    else:
+        return code, ''
+
+
 def register(userName, imgPath):
     # Check if the user is exist
     code, user_id = login(imgPath)
@@ -53,7 +77,7 @@ def login(imgPath):
     try:
         img = io.imread(imgPath)
     except:
-        return 202,''
+        return 202, ''
 
     dets = detector(img, 1)
     face_descriptor = ''
@@ -81,7 +105,13 @@ def login(imgPath):
 
     # If user is exist
     if user_id != 0:
-        return 201, user_id
-        # If user is not exist
+        query = "SELECT user_name FROM users WHERE user_ID = '" + user_id + "'"
+        code, user_name = Memory.selectValue(query)
+        if code == 501:
+            return 201, user_name
+        else:
+            # Error in the database
+            return 205, user_id
+    # If user is not exist
     else:
         return 204, ''
