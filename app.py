@@ -156,7 +156,7 @@ def analyze_data():
 
     EAR = NLP()
     Mou = Mouth()
-    ################ EAR  #################
+    ################ RECOMMENDER  #################
     EAR.execute(message)
     try:
         if EAR.information['Type'] == 'movie':
@@ -171,16 +171,23 @@ def analyze_data():
         if EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'on':
             code = lightCodeON[EAR.information['Location']]
             print(code)
+            print(Devices[EAR.information['Location']])
+            if Devices[EAR.information['Location']] == '1':
+                return jsonify({'message': "it's already on "}), 207
 
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
+            Devices[EAR.information['Location']] = '1'
+            print(Devices[EAR.information['Location']])
         elif EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'off':
             code = lightCodeOff[EAR.information['Location']]
-
+            if Devices[EAR.information['Location']] == '0':
+                return jsonify({'message': "it's already off "}), 207
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
+            Devices[EAR.information['Location']] = '0'
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
@@ -193,10 +200,23 @@ def analyze_data():
         if EAR.information['Appliance'] == 'television':
             code = tvCode[EAR.information['State']]
             print(code)
+            print(Devices["tv"])
+            
+            if code == '17' and Devices["tv"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '18' and Devices["tv"] == '0':
+                return jsonify({'message': "it's already off "}), 207
 
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
+
+            if code == '17':
+                Devices["tv"] = '1'
+            if code == '18':
+                Devices["tv"] = '0'
+
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
@@ -207,10 +227,23 @@ def analyze_data():
         if EAR.information['Appliance'] == 'coffee machine':
             code = coffeeCode[EAR.information['State']]
             print(code)
+            print(Devices["coffeMachine"])
+
+            if code == '21' and Devices["coffeMachine"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '22' and Devices["coffeMachine"] == '0':
+                return jsonify({'message': "it's already off "}), 207
 
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
+
+            if code == '21':
+                Devices["coffeMachine"] = '1'
+            if code == '22':
+                Devices["coffeMachine"] = '0'
+
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
