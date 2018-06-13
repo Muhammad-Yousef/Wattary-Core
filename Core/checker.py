@@ -47,41 +47,41 @@ tvCode = {
 
 }
 
-class CHECKER:
+# class CHECKER:
+#
+#     def __init__(self):
+Devices =  {
 
-    def __init__(self):
-        self.Devices =  {
-
-                "room1":'0',
-                "room2":'0',
-                "living-room":'0',
+                "bedroom":'0',
                 "bathroom":'0',
-                "kitchen":'0',
-                #"room1":'0',
+                "living-room":'0',
+                "hallway":'0',
+                "tv": '0',
+                "coffeMachine":'0'
 
         }
 
-
-    def checkStatus(self, device):
-        if self.Devices[device] == '0':
-            return 0
-        elif self.Devices[device] == '1':
-            return 1
-
-
-    def toggleStatus(self, device):
-        if self.Devices[device] == '0':
-            self.Devices[device] = '1'
-        elif self.Devices[device] == '1':
-            self.Devices[device] = '0'
-
-
-    def isOn(self,device):
-        if self.Devices[device] == '1':
-            return True
-        else:
-            return False
-
+    #
+    # def checkStatus(self, device):
+    #     if self.Devices[device] == '0':
+    #         return False
+    #     elif self.Devices[device] == '1':
+    #         return True
+    #
+    #
+    # def toggleStatus(self, device):
+    #     if self.Devices[device] == '0':
+    #         self.Devices[device] = '1'
+    #     elif self.Devices[device] == '1':
+    #         self.Devices[device] = '0'
+    #
+    #
+    # def isOn(self,device):
+    #     if self.Devices[device] == '1':
+    #         return True
+    #     else:
+    #         return False
+    #
 
 
 
