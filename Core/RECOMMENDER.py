@@ -8,7 +8,15 @@ import pandas as pd
 import sklearn
 from sklearn.neighbors import NearestNeighbors
 
+csv=pd.read_csv('DataSets/movies_metadata.csv',usecols=['genres'])
+df=pd.DataFrame(csv)
+print(df['genres'])
 
+movieCSV= pd.read_csv('DataSets/movies_metadata.csv',usecols=['adult','id','genres','original_language','title','overview','release_date','runtime','vote_average'])
+print(movieCSV.head(2))
+
+
+'''
 # ----------------------------------------------------- Recommender Class -----------------------------------#
 class RECOMMENDER:
     def __init__(self, dataset, testValues=[]):
@@ -77,7 +85,7 @@ class RECOMMENDER:
         self.recommendedItem = self.dataSet.iloc[self.Index,11]
         return self.recommendedItem
 
-
+'''
 # --------------------------------------------------Just for Testing---------------------------------------#
 # Cars = pd.read_csv('DataSets/mtcars.csv')
 # x = RECOMMENDER(Cars, [21, 150, 4])

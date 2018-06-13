@@ -1,8 +1,9 @@
 #importing some library for the model
+
 import pandas as pd
 import numpy as np
-from matplotlib import pyplot as plt
-from sklearn.tree import  DecisionTreeClassifier
+
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import Imputer
 from sklearn.svm import SVC
@@ -13,7 +14,6 @@ class AirClassification:
     TestSetSize=0.0
     TrainSetSize=0.0
     Predaction=0
-
 
     def __init__(self,DataSet):
         self.DataSet=DataSet
@@ -26,6 +26,7 @@ class AirClassification:
          DataSet['year'] = DataSet.CET.dt.year
          DataSet['dayofyear'] = DataSet.CET.dt.dayofyear
          self.DataSet=DataSet
+
          return self.DataSet
 
 
@@ -71,27 +72,28 @@ class AirClassification:
         self.TestSetSize=len(X_test)+len(Y_test)
         self.TrainSetSize=len(X_train)+len(Y_train)
         Clssifier=DecisionTreeClassifier(criterion='entropy',random_state=0)
-       #Clssifier=SVC()
+        #Clssifier=SVC()
         #fitting the Classfier in DataSet
 
         Clssifier.fit(X_test,Y_test)
         self.Score=Clssifier.score(X_train,Y_train)
 
-
-        self.Predaction=str(Clssifier.predict(np.array([(22,3,2020,5)],dtype=float))).strip("[].")
+# frist is Max Temp And secound is MinTem thrid is Year fourth is Day
+        self.Predaction=str(Clssifier.predict(np.array([(22,3,2018,5)],dtype=float))).strip("[].")
 
 
     def display(self):
-           print(self.Score*100)
+           print("Score is :"+str(self.Score*100))
 
-           print(self.TestSetSize)
+          # print(self.DataSet.columns)
+           print("Data set size :"+str(self.TestSetSize))
 
            print(self.TrainSetSize)
 
            if self.Predaction =='0':
-               print("OFF")
+               print("Air conditioner is OFF")
            elif self.Predaction =='1':
-                print("ON")
+                print("Air conditioner is ON")
 
 
 
@@ -106,10 +108,3 @@ cl.Model_fitting()
 cl.display()
 
 #print(Clssifier.score(X,Y))
-
-
-'''
-fig=plt.figure()
-ax=fig.add_subplot(1,1,1)
-ax.hist(X,bins=3)
-plt.show()'''
