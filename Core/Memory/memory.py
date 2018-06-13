@@ -142,7 +142,7 @@ conn = None
 def connect():
     try:
         global conn
-        conn = psycopg2.connect(host="localhost", database="wattary", user="wattary", password="12345")
+        conn = psycopg2.connect(host="localhost", database="wattary", user="wattary", password="seven23")
         # create a cursor
         cur = conn.cursor()
         return cur
@@ -218,21 +218,20 @@ def insertValues(tableName, data):
             columnNamesStr = ', '.join(columnNames)
             valuesStr = "', '".join(values)
             # execute a statement
-            cur.execute("INSERT INTO " + tableName + "(" + columnNamesStr + ") VALUES('" + valuesStr + "') RETURNING user_id")
+            cur.execute("INSERT INTO " + tableName + "(" + columnNamesStr + ") VALUES('" + valuesStr + "')")
             # fetch data
             conn.commit()
-            ID = cur.fetchone()[0]
             cur.close()
-            return 201, ID
+            return 201
         except (Exception, psycopg2.Error) as error:
             if 'column' in str(error) and 'not exist' in str(error):
-                return 205, ''
+                return 205
             elif 'relation' in str(error) and 'not exist' in str(error):
-                return 204, ''
+                return 204
             else:
-                return error, ''
+                return error
     else:
-        return 203, ''
+        return 203
 
 
 def modifyValues(tableName, data, user_id):
@@ -269,3 +268,30 @@ def modifyValues(tableName, data, user_id):
                 return error
     else:
         return 303
+
+
+def selectValue(query):
+    cur = connect()
+    if cur is not False:
+        try:
+            cur.execute(query)
+            # fetch data
+            row = cur.fetchone()
+
+            if cur.rowcount > 0:
+                output = row[0]
+                row = cur.fetchone()
+                cur.close()
+                return 501, output
+            else:
+                return 502, ''
+
+        except (Exception, psycopg2.Error) as error:
+            if 'column' in str(error) and 'not exist' in str(error):
+                return 505, ''
+            elif 'relation' in str(error) and 'not exist' in str(error):
+                return 504, ''
+            else:
+                return error
+    else:
+        return 503, ''
