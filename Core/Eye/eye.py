@@ -1,4 +1,8 @@
-from Core.Memory import memory as Memory
+import sys
+sys.path.append('./Core/Memory')
+sys.path.append('./Core/Eye/models')
+sys.path.append('./Core/Eye')
+import memory as Memory
 from skimage import io
 import csv
 import dlib
@@ -62,7 +66,7 @@ def register(userName, imgPath):
         return 103
 
     code, ID = Memory.insertValues('users', {'user_name': userName})
-    with open('/home/omarovee/Wattary/Wattary-Core/Core/Eye/users_descriptors.csv', 'a') as o:
+    with open('./Core/Eye/users_descriptors.csv', 'a') as o:
         fieldnames = ['user_ID', 'descriptor']
         writer = csv.DictWriter(o, fieldnames=fieldnames)
         writer.writerow({'user_ID': ID, 'descriptor': face_descriptor})
@@ -93,7 +97,7 @@ def login(imgPath):
     val = 0.5
     user_id = 0
 
-    with open('/home/omarovee/Wattary/Wattary-Core/Core/Eye/users_descriptors.csv') as csvfile:
+    with open('./Core/Eye/users_descriptors.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             j = numpy.asarray(row['descriptor'].split('\n'), dtype='float32')

@@ -2,21 +2,26 @@ from flask import Flask, abort
 from flask import request
 from flask import jsonify
 from flask_cors import CORS
-from Core.sender import Sender
+import sys
+sys.path.append('./Core')
+sys.path.append('./Core/NLP')
+sys.path.append('./Core/Mouth')
+sys.path.append('./Core/Eye')
+from sender import Sender
 from flask import render_template, render_template_string, request
 import requests
-from Core.NLP.NLP import NLP
-from Core.checker import *
-from Core.RECOMMENDER import *
-from Core.Mouth.Mouth import *
+from NLP import NLP
+from checker import *
+from RECOMMENDER import *
+from Mouth import *
 import datetime
-from Core.AirCond import *
+from AirCond import *
 ### Importing the Database Module ###
-from Core.Memory import memory
+from Memory import memory
 import logging
 
 ### Importing the Eye Module ###
-from Core.Eye import eye as checker
+import eye as checker
 
 
 ############################################## Configurations ############################################
@@ -378,4 +383,4 @@ def homepage():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+    app.run(debug=True, use_reloader=True,host='0.0.0.0' )
