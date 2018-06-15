@@ -9,7 +9,8 @@ from Core.NLP.NLP import NLP
 from Core.checker import *
 from Core.RECOMMENDER import *
 from Core.Mouth.Mouth import *
-
+import datetime
+from Core.AirCond import *
 ### Importing the Database Module ###
 from Core.Memory import memory
 import logging
@@ -45,6 +46,7 @@ cors3 = CORS(app, resources={r"/signin/*": {"origins": "*"}})
 cors4 = CORS(app, resources={r"/signup/*": {"origins": "*"}})
 cors5 = CORS(app, resources={r"/signup/web*": {"origins": "*"}})
 cors6 = CORS(app, resources={r"/signin/web*": {"origins": "*"}})
+cors7 = CORS(app, resources={r"/learn*": {"origins": "*"}})
 ###################################### instances and variables #################################################
 
 
@@ -67,6 +69,17 @@ def recommend(mgenra):
     recomendedItem = A.outPutHandling(opt)
     return recomendedItem
 
+##########################################################################################################
+@app.route('/learn', methods=['POST'])
+def Learn():
+    if not request.json or not 'hours' in request.json and 'minutes' in request.json:
+        abort(400)
+    DateTime=datetime.datetime.now()
+    Interior_Value=30
+    Exterior_Value=35
+    obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
+    res = obj.display()
+    return jsonify({'response': res}), 200
 
 ################################################# weather API Function  ############################################
 

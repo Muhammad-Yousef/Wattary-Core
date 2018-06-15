@@ -5,7 +5,7 @@
 # Importing the modules
 import numpy as np
 import pandas as pd
-from pandas.tests.scalar import timestamp
+#from pandas.tests.scalar import timestamp
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
@@ -55,9 +55,9 @@ class AirCond:
            print("DataSet Train size:"+str( self.TrainSetSize))
 
            if self.Predaction =='0':
-               print("Air conditioner is OFF")
+               return ("Air conditioner is OFF")
            elif self.Predaction =='1':
-                print("Air conditioner is ON")
+               return ("Air conditioner is ON")
 
 # ------------------------- Main ----------------------------#
 DateTime=np.asarray([
@@ -142,9 +142,9 @@ Exterior_Value=35
     4- Interior_Value
     5- Exterior_Value
 """
-#obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
+obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
    # displaying the description of the prediction
-#obj.display()
+obj.display()
 
 # dectionry for saving the values
 
@@ -169,6 +169,4 @@ while Time <= 24:
     H=H+1
     Time+=1
 
-print(grades.items())
-
-
+#print(grades.items())
