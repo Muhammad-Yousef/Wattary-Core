@@ -43,7 +43,8 @@ cors1 = CORS(app, resources={r"/tv/*": {"origins": "*"}})
 cors2 = CORS(app, resources={r"/conditioner/*": {"origins": "*"}})
 cors3 = CORS(app, resources={r"/signin/*": {"origins": "*"}})
 cors4 = CORS(app, resources={r"/signup/*": {"origins": "*"}})
-
+cors5 = CORS(app, resources={r"/signup/web*": {"origins": "*"}})
+cors6 = CORS(app, resources={r"/signin/web*": {"origins": "*"}})
 ###################################### instances and variables #################################################
 
 
@@ -84,6 +85,30 @@ def get_temperature(city):
 
 
 ################################################# SignUp #######################################################
+@app.route('/signup/web', methods=['POST'])
+def SignUpWeb():
+    if not request.json or not 'password' in request.json and 'UserName' in request.json and 'email' in request.json:
+        abort(400)
+
+    username = request.json['UserName']
+    password = request.json['password']
+    email = request.json['email']
+    code = checker.register_password(username,password,email)
+    print(code)
+    if code == 101:
+        return jsonify({'response': "Operation succeeded. New User added to database"}), 200
+    elif code == 104:
+        return jsonify({'response': "This user is exist."}), 200
+
+    elif code == 105:
+        return jsonify({'response': "There's a problem in the database."}), 105
+
+
+
+
+
+
+
 
 
 @app.route('/signup', methods=['POST'])
@@ -123,6 +148,25 @@ def SignUp():
 
 ################################################# SignIn #######################################################
 
+@app.route('/signin/web', methods=['POST'])
+def SignInWeb():
+    if not request.json or not 'password' in request.json and 'UserName' in request.json:
+        abort(400)
+
+
+    username = request.json['UserName']
+    password = request.json['password']
+    code,uname = checker.login_password(username,password)
+    if code == 501:
+        return jsonify({'response': "welcome " + uname }), 200
+    # Case 2: this means that I can not read the picture (not Exist).
+    else:
+        return jsonify({'respone':"user name or password is incorrect"}), 209
+
+
+
+
+
 @app.route('/signin', methods=['POST'])
 def SignIn():
     if not request.json or not 'PhotoUrl' in request.json:
@@ -144,7 +188,7 @@ def SignIn():
         return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 203
     # Case 4: this means that I can not recognize this person.
     elif code == 204:
-        return jsonify({'response': "I can not recognize this person."}), 200
+        return jsonify({'response': "I can not recognize this person."}), 204
 
 ################################################# Main API  #######################################################
 
@@ -201,7 +245,7 @@ def analyze_data():
             code = tvCode[EAR.information['State']]
             print(code)
             print(Devices["tv"])
-            
+
             if code == '17' and Devices["tv"] == '1':
                 return jsonify({'message': "it's already on "}), 207
 
