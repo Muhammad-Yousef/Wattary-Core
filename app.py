@@ -74,7 +74,7 @@ def recommend(mgenra):
     recomendedItem = A.outPutHandling(opt)
     return recomendedItem
 
-##########################################################################################################
+######################################  learnin ######################################################
 @app.route('/learn', methods=['POST'])
 def Learn():
     if not request.json or not 'hours' in request.json and 'minutes' in request.json:
@@ -84,7 +84,7 @@ def Learn():
     Exterior_Value=35
     obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
     res = obj.display()
-    return jsonify({'response': res}), 200
+    return jsonify({'Air Conditioner': res}), 200
 
 ################################################# weather API Function  ############################################
 
@@ -176,7 +176,10 @@ def SignInWeb():
     password = request.json['password']
     code,uname = checker.login_password(username,password)
     if code == 501:
-        return jsonify({'response': "welcome " + uname }), 200
+        return jsonify({'response': "welcome " + uname,
+        'userName':uname
+        
+         }), 200
     # Case 2: this means that I can not read the picture (not Exist).
     else:
         return jsonify({'respone':"user name or password is incorrect"}), 209
@@ -197,7 +200,9 @@ def SignIn():
     code, userID = checker.login(imageURL)
     # Case 1 this mean that the user is exist.
     if code == 201:
-        return jsonify({'response': "Operation succeeded." + userID}), 200
+        return jsonify({'response': "Operation succeeded." + userID,
+        'userName': userID
+        }), 200
     # Case 2 this means that I can not read the picture (not Exist).
     elif code == 202:
         return jsonify({'response': "Cannot read the picture (not Exist)."}), 202

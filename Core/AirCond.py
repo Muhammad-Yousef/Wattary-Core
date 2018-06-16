@@ -55,9 +55,9 @@ class AirCond:
            print("DataSet Train size:"+str( self.TrainSetSize))
 
            if self.Predaction =='0':
-               return ("Air conditioner is OFF")
+               return TRUE
            elif self.Predaction =='1':
-               return ("Air conditioner is ON")
+               return False
 
 # ------------------------- Main ----------------------------#
 DateTime=np.asarray([
