@@ -219,7 +219,7 @@ def insertValues(tableName, data):
             columnNamesStr = ', '.join(columnNames)
             valuesStr = "', '".join(values)
             # execute a statement
-            cur.execute("INSERT INTO " + tableName + "(" + columnNamesStr + ") VALUES('" + valuesStr + "')")
+            cur.execute("INSERT INTO " + tableName + "(" + columnNamesStr + ") VALUES('" + valuesStr + "') RETURNING user_id")
             # fetch data
             conn.commit()
             cur.close()

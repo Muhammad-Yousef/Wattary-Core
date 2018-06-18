@@ -65,7 +65,7 @@ def register(userName, imgPath):
         # 103: this means that I can not find any faces in the picture (retake a picture)
         return 103
 
-    code = Memory.insertValues('users', {'user_name': userName})
+    code , ID = Memory.insertValues('users', {'user_name': userName})
     with open('./Core/Eye/users_descriptors.csv', 'a') as o:
         fieldnames = ['user_ID', 'descriptor']
         writer = csv.DictWriter(o, fieldnames=fieldnames)
