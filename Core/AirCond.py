@@ -55,7 +55,7 @@ class AirCond:
            print("DataSet Train size:"+str( self.TrainSetSize))
 
            if self.Predaction =='0':
-               return TRUE
+               return True
            elif self.Predaction =='1':
                return False
 
