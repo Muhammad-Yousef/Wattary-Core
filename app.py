@@ -24,11 +24,14 @@ import logging
 import eye as checker
 
 
+
 ############################################## Configurations ############################################
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
+Interior_Value = 0
+Exterior_Value = 0
         ### Database Configuration ###
 # POSTGRES = {
 #     'user': 'postgres',
@@ -66,6 +69,7 @@ send = Sender()
 db = memory
 
 
+
 def recommend(mgenra):
     Movies = pd.read_csv('Core/DataSets/movie_metadata.csv')
     gn = MoviesGenra[mgenra]
@@ -73,15 +77,28 @@ def recommend(mgenra):
     opt = A.Model(A.listOfValues)
     recomendedItem = A.outPutHandling(opt)
     return recomendedItem
+######################################  tempretures ######################################################
+@app.route('/temp', methods=['POST'])
+def getTemp():
+    if not request.json or not 'i_val' in request.json and 'e_val' in request.json :
+        abort(400)
+    global Interior_Value
+    Interior_Value = request.json['i_val']
+    global Exterior_Value
+    Exterior_Value = request.json['e_val']
+    return jsonify({'res': 'done'}), 200
 
 ######################################  learnin ######################################################
 @app.route('/learn', methods=['POST'])
 def Learn():
     if not request.json or not 'hours' in request.json and 'minutes' in request.json:
         abort(400)
+
+    print(Interior_Value)  
+    print(Exterior_Value)  
+    int(Interior_Value)
+    int(Exterior_Value)
     DateTime=datetime.datetime.now()
-    Interior_Value=30
-    Exterior_Value=35
     obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
     res = obj.display()
     return jsonify({'Air Conditioner': res}), 200
@@ -119,7 +136,7 @@ def SignUpWeb():
         return jsonify({'response': "This user is exist."}), 200
 
     elif code == 105:
-        return jsonify({'response': "There's a problem in the database."}), 105
+        return jsonify({'response': "There's a problem in the database."}), 200
 
 
 
@@ -152,16 +169,16 @@ def SignUp():
         return jsonify({'response': "Operation succeeded. New User added to database"}), 200
     # Case 2: this means that I can not read the picture (not Exist).
     elif code == 102:
-        return jsonify({'response': "Cannot read the picture (not Exist)."}), 102
+        return jsonify({'response': "Cannot read the picture (not Exist)."}), 200
     # Case 3: this means that I can not find any faces in the picture (retake a picture)
     elif code == 103:
-        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 103
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 200
     # Case 4: this means that the user is exist.
     elif code == 104:
-        return jsonify({'response': "This user is exist."}), 104
+        return jsonify({'response': "This user is exist."}), 200
     # Case 5: this means a memory (database) error.
     elif code == 105:
-        return jsonify({'response': "There's a problem in the database."}), 105
+        return jsonify({'response': "There's a problem in the database."}), 200
 
 
 ################################################# SignIn #######################################################
@@ -182,7 +199,7 @@ def SignInWeb():
          }), 200
     # Case 2: this means that I can not read the picture (not Exist).
     else:
-        return jsonify({'respone':"user name or password is incorrect"}), 209
+        return jsonify({'respone':"user name or password is incorrect"}), 200
 
 
 
@@ -205,13 +222,13 @@ def SignIn():
         }), 200
     # Case 2 this means that I can not read the picture (not Exist).
     elif code == 202:
-        return jsonify({'response': "Cannot read the picture (not Exist)."}), 202
+        return jsonify({'response': "Cannot read the picture (not Exist)."}), 200
     # Case 3: this means that I can not find any faces in the picture (retake a picture).
     elif code == 203:
-        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 203
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 200
     # Case 4: this means that I can not recognize this person.
     elif code == 204:
-        return jsonify({'response': "I can not recognize this person."}), 204
+        return jsonify({'response': "I can not recognize this person."}), 200
 
 ################################################# Main API  #######################################################
 
