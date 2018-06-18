@@ -223,14 +223,14 @@ def insertValues(tableName, data):
             # fetch data
             conn.commit()
             cur.close()
-            return 201
+            return 201,ID
         except (Exception, psycopg2.Error) as error:
             if 'column' in str(error) and 'not exist' in str(error):
-                return 205
+                return 205,''
             elif 'relation' in str(error) and 'not exist' in str(error):
-                return 204
+                return 204,''
             else:
-                return error
+                return error,''
     else:
         return 203
 
