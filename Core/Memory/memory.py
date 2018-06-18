@@ -222,6 +222,7 @@ def insertValues(tableName, data):
             cur.execute("INSERT INTO " + tableName + "(" + columnNamesStr + ") VALUES('" + valuesStr + "') RETURNING user_id")
             # fetch data
             conn.commit()
+            ID = cur.fetchone()[0]
             cur.close()
             return 201,ID
         except (Exception, psycopg2.Error) as error:
