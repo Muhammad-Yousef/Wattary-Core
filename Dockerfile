@@ -8,7 +8,8 @@ RUN apt-get install software-properties-common -y
 RUN add-apt-repository ppa:george-edison55/cmake-3.x -y
 RUN apt-get update -y
 RUN apt-get install cmake -y
-ADD . /
+copy . /
+VOLUME [ "/Core" ] 
 WORKDIR /
 RUN pip install -r requirements.txt
 RUN python -m textblob.download_corpora -y
