@@ -233,7 +233,7 @@ def insertValues(tableName, data):
             else:
                 return error,''
     else:
-        return 203
+        return 203,''
 
 
 def modifyValues(tableName, data, user_id):
