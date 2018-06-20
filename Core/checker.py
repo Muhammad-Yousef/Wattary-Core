@@ -60,7 +60,11 @@ Devices =  {
                 "coffeMachine":'0'
 
         }
-
+learn = {
+    "bedroom":"1",
+    "hallway":"2",
+    "bathroom":"3"
+}
     #
     # def checkStatus(self, device):
     #     if self.Devices[device] == '0':

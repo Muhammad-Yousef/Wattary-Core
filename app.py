@@ -19,6 +19,7 @@ from AirCond import *
 ### Importing the Database Module ###
 from Memory import memory
 import logging
+from LightClassification import *
 
 ### Importing the Eye Module ###
 import eye as checker
@@ -99,6 +100,9 @@ def Learn():
     int(Interior_Value)
     int(Exterior_Value)
     DateTime=datetime.datetime.now()
+    bedroom = obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['bedroom']))
+    hallway = obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['hallway'])
+    bathroom = obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['bathroom'])
     obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
     res = obj.display()
     return jsonify({'Air Conditioner': res}), 200
@@ -131,12 +135,18 @@ def SignUpWeb():
     code = checker.register_password(username,password,email)
     print(code)
     if code == 101:
-        return jsonify({'response': "Operation succeeded. New User added to database"}), 200
+        return jsonify({'response': "Operation succeeded. New User added to database",
+        'state':'101'
+        
+        }), 200
     elif code == 104:
-        return jsonify({'response': "This user is exist."}), 200
-
+        return jsonify({'response': "This user is exist.",
+        'state':'104'
+        }), 200
     elif code == 105:
-        return jsonify({'response': "There's a problem in the database."}), 200
+        return jsonify({'response': "There's a problem in the database.",
+        'state':'105'
+        }), 200
 
 
 
