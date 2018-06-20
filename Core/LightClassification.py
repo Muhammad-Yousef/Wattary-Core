@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
-import random
+import datetime
 class Light:
     def __init__(self, data):
         """
@@ -33,8 +33,8 @@ class Light:
         df = self.dataSet
         # Assign The TrainingExamples Columns And Target Columns
         X, Y = df.iloc[:, 0:4], df.iloc[:, 4]
-        print(X)
-        print(Y)
+        #print(X)
+        #print(Y)
         # slicing the DataSet into Train and Test
         #X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.80, random_state=1, stratify=Y)
         # Fit The Data
@@ -283,7 +283,7 @@ dataDF.columns = ['Hour', 'Minutes', 'RoomNum', 'User_Value']
 bigData = pd.concat([DateTimeDF, dataDF], axis=1)
 #bigData = bigData.drop(['DateTime'], axis=1)
 #print(bigData)
-obj = Light(bigData)
+obj1 = Light(bigData)
 RoomNum = 1
 DateTime = datetime.datetime.now()
 #obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, RoomNum)

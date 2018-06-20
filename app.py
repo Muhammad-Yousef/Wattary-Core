@@ -100,12 +100,19 @@ def Learn():
     int(Interior_Value)
     int(Exterior_Value)
     DateTime=datetime.datetime.now()
-    bedroom = obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['bedroom']))
-    hallway = obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['hallway'])
-    bathroom = obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['bathroom'])
+    bedroom = obj1.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['bedroom']))
+    hallway = obj1.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['hallway']))
+    bathroom = obj1.FitAndPredict(DateTime.date().toordinal(),DateTime.hour,DateTime.minute, int(learn['bathroom']))
     obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
     res = obj.display()
-    return jsonify({'Air Conditioner': res}), 200
+    return jsonify({
+        'Air Conditioner': res,
+        'bedroom-light':bedroom,
+        'hallway-light':hallway,
+        'bathroom-light':bathroom
+        
+
+    }), 200
 
 ################################################# weather API Function  ############################################
 
@@ -371,13 +378,13 @@ def analyze_data():
     return jsonify({'message': Mou.respone}), 200
 
 
-################################################# tv API  #######################################################
+################################################# remote API  #######################################################
 
-@app.route('/tv', methods=['POST'])
+@app.route('/remote', methods=['POST'])
 def remote_control():
-    if not request.json or not 'channel' in request.json:
+    if not request.json or not 'code' in request.json:
         abort(400)
-    channel = request.json['channel']
+    channel = request.json['code']
 
     send = Sender()
     send.Conect(clientName)
@@ -390,23 +397,23 @@ def remote_control():
     return jsonify({'response': "CH.NO " + channel}), 200
 
 
-################################################# Air conditioner  API  #######################################################
+# ################################################# Air conditioner  API  #######################################################
 
-@app.route('/conditioner', methods=['POST'])
-def air_conditioner():
-    if not request.json or not 'command' in request.json:
-        abort(400)
-    command = request.json['command']
+# @app.route('/conditioner', methods=['POST'])
+# def air_conditioner():
+#     if not request.json or not 'command' in request.json:
+#         abort(400)
+#     command = request.json['command']
 
-    send = Sender()
-    send.Conect(clientName)
-    send.send(clientName, TOPIC, command)
-    send.disconnect(clientName)
+#     send = Sender()
+#     send.Conect(clientName)
+#     send.send(clientName, TOPIC, command)
+#     send.disconnect(clientName)
 
-    # Call reciever to get the current state
+#     # Call reciever to get the current state
 
 
-    return jsonify({'response': "The command you choose is " + command}), 200
+#     return jsonify({'response': "The command you choose is " + command}), 200
 
 
 @app.route('/')
