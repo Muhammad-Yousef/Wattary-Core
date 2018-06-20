@@ -24,7 +24,7 @@ def register_password(user_name, user_pass, user_email):
         # 104: this means that the user is exist.
         return 104
     # If the user is not exist
-    code = Memory.insertValues('users', {'user_name': user_name, 'user_pass': user_pass, 'user_email': user_email})
+    code,ID = Memory.insertValues('users', {'user_name': user_name, 'user_pass': user_pass, 'user_email': user_email})
     if code == 201:
         return 101
     else:
