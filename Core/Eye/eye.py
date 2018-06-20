@@ -70,7 +70,7 @@ def register(userName, imgPath, user_pass):
     if code == 201:
         return 101
     else:
-        return 105
+        return code
 
 
 def login(imgPath):
