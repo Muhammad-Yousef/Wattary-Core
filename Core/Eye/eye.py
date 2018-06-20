@@ -40,7 +40,7 @@ def login_password(user_name, user_pass):
         return code, ''
 
 
-def register(userName, imgPath):
+def register(userName, imgPath, user_pass):
     # Check if the user is exist
     code, user_id = login(imgPath)
     if code == 201:
@@ -65,7 +65,7 @@ def register(userName, imgPath):
         # 103: this means that I can not find any faces in the picture (retake a picture)
         return 103
 
-    code , ID = Memory.insertValues('users', {'user_name': userName})
+   code, ID = Memory.insertValues('users', {'user_name': userName, 'user_pass': user_pass})
     with open('./Core/Eye/users_descriptors.csv', 'a') as o:
         fieldnames = ['user_ID', 'descriptor']
         writer = csv.DictWriter(o, fieldnames=fieldnames)
