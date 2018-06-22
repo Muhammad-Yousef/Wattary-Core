@@ -68,7 +68,7 @@ def register(userName, imgPath, user_pass):
         for k, d in enumerate(dets):
             is_face = True
             shape = sp(img, d)
-            face_descriptor = numpy.asarray(list(facerec.compute_face_descriptor(img, shape)), dtype='float32')
+            face_descriptor = facerec.compute_face_descriptor(img, shape)
 
         if is_face:
             break
