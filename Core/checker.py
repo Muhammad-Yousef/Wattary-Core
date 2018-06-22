@@ -27,12 +27,16 @@ lightCodeON = {
     "bedroom":'11',
     "bathroom":'13',
     "hallway":'15',
+    "kitchen":'23',
+    "living room":'25',
 }
 lightCodeOff = {
 
     "bedroom":'12',
     "bathroom":'14',
     "hallway":'16',
+    "kitchen":'24',
+    "living room":'26',
 }
 coffeeCode = {
 
@@ -46,7 +50,27 @@ tvCode = {
     "off":'18'
 
 }
+refrigerator = {
 
+    "on":'27',
+    "off":'28'
+
+}
+curtain = {
+
+    "on":'29',
+    "off":'30'
+
+}
+elevator = {
+
+    "call":'31',
+
+}
+airConditioner = {
+    "on":'52',
+    "off":'53'
+}
 # class CHECKER:
 #
 #     def __init__(self):
@@ -54,10 +78,14 @@ Devices =  {
 
                 "bedroom":'0',
                 "bathroom":'0',
-                "living-room":'0',
+                "living room":'0',
                 "hallway":'0',
                 "tv": '0',
-                "coffeMachine":'0'
+                "coffeMachine":'0',
+                "kitchen":'0',
+                "refrigerator":'0',
+                "curtain":'0',
+                "air conditioner":'0'
 
         }
 learn = {

@@ -165,7 +165,7 @@ def SignUpWeb():
 
 @app.route('/signup', methods=['POST'])
 def SignUp():
-    if not request.json or not 'PhotoUrl' in request.json and 'UserName' in request.json:
+    if not request.json and not 'PhotoUrl' in request.json and 'UserName' in request.json and 'password' in request.json:
         abort(400)
         '''
         pull the user data from the json requests
@@ -178,8 +178,9 @@ def SignUp():
     # invoke the Memory and Eye Function
     imageURL = request.json['PhotoUrl']
     userName = request.json['UserName']
+    userpass = request.json['password']
 
-    code = checker.register(userName, imageURL)
+    code = checker.register(userName, imageURL, userpass)
     # Adding new User in the database with his username and his image
     # Case 1: this means the operation succeeded.
     if code == 101:
@@ -235,17 +236,24 @@ def SignIn():
     # Case 1 this mean that the user is exist.
     if code == 201:
         return jsonify({'response': "Operation succeeded." + userID,
-        'userName': userID
+        'userName': userID,
+        "code":True
         }), 200
     # Case 2 this means that I can not read the picture (not Exist).
     elif code == 202:
-        return jsonify({'response': "Cannot read the picture (not Exist)."}), 200
+        return jsonify({'response': "Cannot read the picture (not Exist).",
+        "code":False
+        }), 200
     # Case 3: this means that I can not find any faces in the picture (retake a picture).
     elif code == 203:
-        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 200
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture).",
+        "code":False
+        }), 200
     # Case 4: this means that I can not recognize this person.
     elif code == 204:
-        return jsonify({'response': "I can not recognize this person."}), 200
+        return jsonify({'response': "I can not recognize this person.",
+        "code":False
+        }), 200
 
 ################################################# Main API  #######################################################
 
