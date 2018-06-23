@@ -50,13 +50,13 @@ tvCode = {
     "off":'18'
 
 }
-refrigerator = {
+fridge = {
 
     "on":'27',
     "off":'28'
 
 }
-curtain = {
+curtains = {
 
     "on":'29',
     "off":'30'
@@ -83,8 +83,8 @@ Devices =  {
                 "tv": '0',
                 "coffeMachine":'0',
                 "kitchen":'0',
-                "refrigerator":'0',
-                "curtain":'0',
+                "fridge":'0',
+                "curtains":'0',
                 "air conditioner":'0'
 
         }

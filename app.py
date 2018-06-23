@@ -348,7 +348,7 @@ def analyze_data():
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
 
-            if code == '21':
+            if code == '21':        
                 Devices["coffeMachine"] = '1'
             if code == '22':
                 Devices["coffeMachine"] = '0'
@@ -356,8 +356,83 @@ def analyze_data():
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
-        # Call reciever to get the current state
+    #######################   air conditioning   ##############################
+    try:
+        if EAR.information['Appliance'] == 'air conditioner':
+            code = airConditioner[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
 
+            if code == '52' and Devices["air conditioner"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '53' and Devices["air conditioner"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '52':
+                Devices["air conditioner"] = '1'
+            if code == '53':
+                Devices["air conditioner"] = '0'
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass    
+
+    ###############################  Curtains  ######################################
+    try:
+        if EAR.information['Appliance'] == 'curtains':
+            code = curtains[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
+
+            if code == '29' and Devices["curtains"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '30' and Devices["curtains"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '29':
+                Devices["curtains"] = '1'
+            if code == '30':
+                Devices["curtains"] = '0'
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+
+        pass  
+  ################################    Fridge    ###################################
+    try:
+        if EAR.information['Appliance'] == 'fridge':
+            code = fridge[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
+
+            if code == '27' and Devices["fridge"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '28' and Devices["fridge"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '27':
+                Devices["fridge"] = '1'
+            if code == '28':
+                Devices["fridge"] = '0'
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass  
+
+        # Elvator 
+        # Weather
 
 
 
