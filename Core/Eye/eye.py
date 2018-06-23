@@ -57,7 +57,7 @@ def register(userName, imgPath, user_pass):
         # 102: this means that I can not read the picture (not Exist).
         return 102
 
-    img = down_scale(img)
+  #  img = down_scale(img)
     img = img_as_ubyte(img)
     for i in range(3):
         if i == 1:
@@ -98,7 +98,7 @@ def login(imgPath):
     except:
         return 202, ''
 
-    img = down_scale(img)
+  #  img = down_scale(img)
     img = img_as_ubyte(img)
     for i in range(3):
         if i == 1:
