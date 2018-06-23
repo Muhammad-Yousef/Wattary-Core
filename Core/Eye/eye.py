@@ -148,7 +148,7 @@ def down_scale(image):
     dim = image.shape[:2]
     if min(dim) > 800:
         min_size = 800
-        r = min_size / image.shape[1]
+        r = (min_size / image.shape[1]) + 0.0000000001
         dim = (int(image.shape[0] * r), min_size)
 
         # perform the actual resizing of the image and show it
