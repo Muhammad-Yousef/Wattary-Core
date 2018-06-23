@@ -259,10 +259,10 @@ def SignIn():
 
 @app.route('/main', methods=['POST'])
 def analyze_data():
-    if not request.json or not 'message' in request.json:
+    if not request.json and not 'message' in request.json and 'userName' in request.json:
         abort(400)
     message = request.json['message']
-
+    username = request.json['userName']
     EAR = NLP()
     Mou = Mouth()
     ################ RECOMMENDER  #################
@@ -287,6 +287,9 @@ def analyze_data():
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
+            code,id = memory.selectValue("SELECT user_id FROM users WHERE user_name = '{}' ".format(username))
+            val = 1
+            memory.insertValues('light_DS', {'user_id': id, 'room_num':int(learn[EAR.information['Location']]), 'val':val})
             Devices[EAR.information['Location']] = '1'
             print(Devices[EAR.information['Location']])
         elif EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'off':
@@ -296,6 +299,8 @@ def analyze_data():
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
+            code,id = memory.selectValue("SELECT user_id FROM users WHERE user_name = '{}' ".format(username))
+            memory.insertValues('light_DS', {'user_id': id, 'room_num':int(learn[EAR.information['Location']])})
             Devices[EAR.information['Location']] = '0'
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
@@ -374,8 +379,14 @@ def analyze_data():
             send.disconnect(clientName)
 
             if code == '52':
+                code,id = memory.selectValue("SELECT user_id FROM users WHERE user_name = '{}' ".format(username))
+                val = 1
+                memory.insertValues('air_con_DS', {'o_val': Interior_Value, 'in_val': Exterior_Value,'user_id':id , 'val':val})
                 Devices["air conditioner"] = '1'
             if code == '53':
+                code,id = memory.selectValue("SELECT user_id FROM users WHERE user_name = '{}' ".format(username))
+                val = 0
+                memory.insertValues('air_con_DS', {'o_val': Interior_Value, 'in_val': Exterior_Value,'user_id':id , 'val':val})
                 Devices["air conditioner"] = '0'
 
     except (RuntimeError, TypeError, NameError, KeyError):
