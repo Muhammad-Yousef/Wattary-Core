@@ -12,7 +12,7 @@ from flask import render_template, render_template_string, request
 import requests
 from NLP import NLP
 from checker import *
-from RECOMMENDER import *
+#from RECOMMENDER import *
 from Mouth import *
 import datetime
 from AirCond import *
@@ -222,7 +222,8 @@ def SignInWeb():
     code,uname,uid = checker.login_password(username,password)
     if code == 501:
         return jsonify({'response': "welcome " + uname,
-        'userName':uid
+        'userName': uname,
+        'userID':uid
         
          }), 200
     # Case 2: this means that I can not read the picture (not Exist).
@@ -246,7 +247,8 @@ def SignIn():
     # Case 1 this mean that the user is exist.
     if code == 201:
         return jsonify({'response': "Operation succeeded." + userID,
-        'userName': userID,
+        'userName': userName,
+        'userID':userID,
         "code":True
         }), 200
     # Case 2 this means that I can not read the picture (not Exist).
@@ -269,10 +271,10 @@ def SignIn():
 
 @app.route('/main', methods=['POST'])
 def analyze_data():
-    if not request.json and not 'message' in request.json and 'userName' in request.json:
+    if not request.json and not 'message' in request.json and 'userID' in request.json:
         abort(400)
     message = request.json['message']
-    username = request.json['userName']
+    userid = request.json['userID']
     EAR = NLP()
     Mou = Mouth()
     ################ RECOMMENDER  #################
@@ -297,9 +299,8 @@ def analyze_data():
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
-            code,id = memory.selectValue("SELECT user_id FROM users WHERE user_name = '{}' ".format(username))
             val = 1
-            memory.insertValues('light_DS', {'user_id': id, 'room_num':int(learn[EAR.information['Location']]), 'val':val})
+            memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']]), 'val':val})
             Devices[EAR.information['Location']] = '1'
             print(Devices[EAR.information['Location']])
         elif EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'off':
@@ -309,8 +310,8 @@ def analyze_data():
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
-            code,id = memory.selectValue("SELECT user_id FROM users WHERE user_name = '{}' ".format(username))
-            memory.insertValues('light_DS', {'user_id': id, 'room_num':int(learn[EAR.information['Location']])})
+    
+            memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']])})
             Devices[EAR.information['Location']] = '0'
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
@@ -389,14 +390,14 @@ def analyze_data():
             send.disconnect(clientName)
 
             if code == '52':
-                code,id = memory.selectValue("SELECT user_id FROM users WHERE user_name = '{}' ".format(username))
+                
                 val = 1
-                memory.insertValues('air_con_DS', {'o_val': Interior_Value, 'in_val': Exterior_Value,'user_id':id , 'val':val})
+                memory.insertValues('air_con_DS', {'external_val': Interior_Value, 'internal_val': Exterior_Value,'user_id':int(userid) , 'val':val})
                 Devices["air conditioner"] = '1'
             if code == '53':
-                code,id = memory.selectValue("SELECT user_id FROM users WHERE user_name = '{}' ".format(username))
+                
                 val = 0
-                memory.insertValues('air_con_DS', {'o_val': Interior_Value, 'in_val': Exterior_Value,'user_id':id , 'val':val})
+                memory.insertValues('air_con_DS', {'external_val': Interior_Value, 'internal_val': Exterior_Value,'user_id':int(userid) , 'val':val})
                 Devices["air conditioner"] = '0'
 
     except (RuntimeError, TypeError, NameError, KeyError):

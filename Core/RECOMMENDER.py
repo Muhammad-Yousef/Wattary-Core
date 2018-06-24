@@ -92,4 +92,4 @@ class RECOMMENDER:
 # x = RECOMMENDER(Cars, [21, 150, 4])
 # out = x.Model(x.listOfValues)
 # recomendedItem = x.outPutHandling(out)
-# print(recomendedItem)
+# print(recomendedItem)z
