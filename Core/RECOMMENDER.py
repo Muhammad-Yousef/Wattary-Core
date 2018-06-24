@@ -7,20 +7,21 @@ import numpy as np
 import pandas as pd
 import sklearn
 from sklearn.neighbors import NearestNeighbors
-'''
+from sklearn import preprocessing
 
-csv=pd.read_csv('DataSets/movies_metadata.csv',usecols=['genres'])
-df=pd.DataFrame(csv)
-print(df['genres'])
-
-movieCSV= pd.read_csv('DataSets/movies_metadata.csv',usecols=['adult','id','genres','original_language','title','overview','release_date','runtime','vote_average'])
-print(movieCSV.head(2))
-
-'''
+# Reading the CSV File and Convert it to Data Frame
+movieCSV = pd.read_csv('DataSets/movie_metadata 1.1.csv', usecols=['num_critic_for_reviews', 'duration', 'gross',
+                                                                'num_voted_users', 'cast_total_facebook_likes',
+                                                                'num_user_for_reviews', 'title_year', 'imdb_score',
+                                                                'movie_facebook_likes', 'genres', 'movie_title',
+                                                                'director_name', 'actor_1_name', 'movie_imdb_link'])
+movieDF = pd.DataFrame(movieCSV)
 
 # ----------------------------------------------------- Recommender Class -----------------------------------#
-class RECOMMENDER:
-    def __init__(self, dataset, testValues=[]):
+
+
+class Recommender:
+    def __init__(self, testValues):
         """
 
         :param dataset: string: that has the path to the data set
@@ -30,22 +31,19 @@ class RECOMMENDER:
         and initialize the test values when crating the object without using a function
         """
 
-        self.dataSet = dataset
+        self.movieDF = movieDF
 
-        self.listOfValues = testValues
+        self.testValues = testValues
 
-    def Display(self):
+    def encode(self):
         """ This method for Testing purpose only """
+        le = preprocessing.LabelEncoder()
+        le.fit(self.movieDF['genres'])
+        self.movieDF['genres'] = le.transform(self.movieDF['genres'])
+        print(self.movieDF.head())
 
-        print(self.dataSet.head())
-
-
-    def SetValuesIndexes(self, testValues=[]):
-        """ ToDo """
-
-    def Model(self, valueList=[]):
+    def FitAndPredict(self, valueList=[]):
         """
-
         :param valueList: list:  the values that we will recommend an item based on it
         :return: list:
 
@@ -55,37 +53,33 @@ class RECOMMENDER:
         and Getting the nearest value to the desired values in the data set
         """
 
-        self.Data = self.dataSet.ix[:, (9,25)].values
+        tData = self.movieDF.iloc[:, 0:10]
 
-        self.Neighbors = NearestNeighbors(n_neighbors=1).fit(self.Data)
+        self.Neighbors = NearestNeighbors(n_neighbors=1).fit(tData)
 
         self.Output = self.Neighbors.kneighbors([valueList])
 
         return self.Output
 
-
-
-
-    def outPutHandling(self, output):
-        """
-
-        :param output: list:  that returned from Model()
-        :return: recommenedItem: vector row or list: that has the recommended details
-
-        cast the list given to String,
-        remove the Brackets from the string
-        and return the Recommended Item
-        """
-        self.OutPut = str(output[1])
-
-        self.newOutput = self.OutPut.strip("[]")
-
-        # cast it again to Integer
-        self.Index = int(self.newOutput)
-
-        self.recommendedItem = self.dataSet.iloc[self.Index,11]
-        return self.recommendedItem
-
+    # def outPutHandling(self, output):
+    #     """
+    #
+    #     :param output: list:  that returned from Model()
+    #     :return: recommenedItem: vector row or list: that has the recommended details
+    #
+    #     cast the list given to String,
+    #     remove the Brackets from the string
+    #     and return the Recommended Item
+    #     """
+    #     self.OutPut = str(output[1])
+    #
+    #     self.newOutput = self.OutPut.strip("[]")
+    #
+    #     # cast it again to Integer
+    #     self.Index = int(self.newOutput)
+    #
+    #     self.recommendedItem = self.dataSet.iloc[self.Index, 11]
+    #     return self.recommendedItem
 
 # --------------------------------------------------Just for Testing---------------------------------------#
 # Cars = pd.read_csv('DataSets/mtcars.csv')
