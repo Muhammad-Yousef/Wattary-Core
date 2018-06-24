@@ -184,19 +184,29 @@ def SignUp():
     # Adding new User in the database with his username and his image
     # Case 1: this means the operation succeeded.
     if code == 101:
-        return jsonify({'response': "Operation succeeded. New User added to database"}), 200
+        return jsonify({'response': "Operation succeeded. New User added to database",
+        "code":True
+        }), 200
     # Case 2: this means that I can not read the picture (not Exist).
     elif code == 102:
-        return jsonify({'response': "Cannot read the picture (not Exist)."}), 200
+        return jsonify({'response': "Cannot read the picture (not Exist).",
+        "code":False
+        }), 200
     # Case 3: this means that I can not find any faces in the picture (retake a picture)
     elif code == 103:
-        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 200
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture).",
+        "code":False
+        }), 200
     # Case 4: this means that the user is exist.
     elif code == 104:
-        return jsonify({'response': "This user is exist."}), 200
+        return jsonify({'response': "This user is exist.",
+        "code":False
+        }), 200
     # Case 5: this means a memory (database) error.
     elif code == 105:
-        return jsonify({'response': "There's a problem in the database."}), 200
+        return jsonify({'response': "There's a problem in the database.",
+        "code":False
+        }), 200
 
 
 ################################################# SignIn #######################################################
@@ -209,10 +219,10 @@ def SignInWeb():
 
     username = request.json['UserName']
     password = request.json['password']
-    code,uname = checker.login_password(username,password)
+    code,uname,uid = checker.login_password(username,password)
     if code == 501:
         return jsonify({'response': "welcome " + uname,
-        'userName':uname
+        'userName':uid
         
          }), 200
     # Case 2: this means that I can not read the picture (not Exist).
@@ -232,7 +242,7 @@ def SignIn():
     imageURL = request.json['PhotoUrl']
 
     # Login with the image of the user
-    code, userID = checker.login(imageURL)
+    code,userName,userID = checker.login(imageURL)
     # Case 1 this mean that the user is exist.
     if code == 201:
         return jsonify({'response': "Operation succeeded." + userID,

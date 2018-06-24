@@ -11,6 +11,7 @@ from skimage.transform import resize
 from scipy.ndimage import rotate
 from skimage import img_as_ubyte
 
+
 predictor_path = './Core/Eye/models/shape_predictor_5_face_landmarks.dat'
 face_rec_model_path = './Core/Eye/models/dlib_face_recognition_resnet_model_v1.dat'
 csv_file = './Core/Eye/users_descriptors.csv'
@@ -36,17 +37,17 @@ def register_password(user_name, user_pass, user_email):
 
 
 def login_password(user_name, user_pass):
-    query = "SELECT user_name FROM users WHERE user_name = '" + user_name + "' AND user_pass = '" + user_pass + "'"
-    code, user_name = Memory.selectValue(query)
+    query = "SELECT user_id FROM users WHERE user_name = '" + user_name + "' AND user_pass = '" + user_pass + "'"
+    code, user_id = Memory.selectValue(query)
     if code == 501:
-        return code, user_name
+        return code, user_name, user_id
     else:
-        return code, ''
+        return code, '', ''
 
     
 def register(userName, imgPath, user_pass):
     # Check if the user is exist
-    code, user_id = login(imgPath)
+    code,uname, user_id = login(imgPath)
     if code == 201:
         # 104: this means that the user is exist.
         return 104
@@ -57,7 +58,7 @@ def register(userName, imgPath, user_pass):
         # 102: this means that I can not read the picture (not Exist).
         return 102
 
-  #  img = down_scale(img)
+    img = down_scale(img)
     img = img_as_ubyte(img)
     for i in range(3):
         if i == 1:
@@ -96,9 +97,9 @@ def login(imgPath):
         img = io.imread(imgPath)
         # img = cv2.imread(imgPath).astype(numpy.float32)
     except:
-        return 202, ''
+        return 202, '', ''
 
-  #  img = down_scale(img)
+    img = down_scale(img)
     img = img_as_ubyte(img)
     for i in range(3):
         if i == 1:
@@ -118,12 +119,12 @@ def login(imgPath):
             break
 
     if not is_face:
-        return 203, ''
+        return 203, '', ''
 
     val = 0.5
     user_id = 0
 
-    with open(csv_file) as csvfile:
+    with open('./Core/Eye/users_descriptors.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             j = numpy.asarray(row['descriptor'].split('\n'), dtype='float32')
@@ -138,13 +139,13 @@ def login(imgPath):
         query = "SELECT user_name FROM users WHERE user_ID = '" + user_id + "'"
         code, user_name = Memory.selectValue(query)
         if code == 501:
-            return 201, user_name
+            return 201, user_name, user_id
         else:
             # Error in the database
-            return 205, user_id
+            return 205, user_name, user_id
     # If user is not exist
     else:
-        return 204, ''
+        return 204, '', ''
 
 
 def down_scale(image):
