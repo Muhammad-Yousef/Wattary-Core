@@ -33,12 +33,12 @@ def register_password(user_name, user_pass, user_email):
 
 
 def login_password(user_name, user_pass):
-    query = "SELECT user_name FROM users WHERE user_name = '" + user_name + "' AND user_pass = '" + user_pass + "'"
-    code, user_name = Memory.selectValue(query)
+    query = "SELECT user_id FROM users WHERE user_name = '" + user_name + "' AND user_pass = '" + user_pass + "'"
+    code, user_id = Memory.selectValue(query)
     if code == 501:
-        return code, user_name
+        return code, user_name, user_id
     else:
-        return code, ''
+        return code, '', ''
 
     
 def register(userName, imgPath, user_pass):
@@ -93,7 +93,7 @@ def login(imgPath):
         img = io.imread(imgPath)
         # img = cv2.imread(imgPath).astype(numpy.float32)
     except:
-        return 202, ''
+        return 202, '', ''
 
     img = down_scale(img)
     img = img_as_ubyte(img)
@@ -115,12 +115,12 @@ def login(imgPath):
             break
 
     if not is_face:
-        return 203, ''
+        return 203, '', ''
 
     val = 0.5
     user_id = 0
 
-    with open(csv_file) as csvfile:
+    with open('/home/ahmed/Downloads/Wattary-Core-master/Core/Eye/users_descriptors.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             j = numpy.asarray(row['descriptor'].split('\n'), dtype='float32')
@@ -135,13 +135,13 @@ def login(imgPath):
         query = "SELECT user_name FROM users WHERE user_ID = '" + user_id + "'"
         code, user_name = Memory.selectValue(query)
         if code == 501:
-            return 201, user_name
+            return 201, user_name, user_id
         else:
             # Error in the database
-            return 205, user_id
+            return 205, user_name, user_id
     # If user is not exist
     else:
-        return 204, ''
+        return 204, '', ''
 
 
 def down_scale(image):
