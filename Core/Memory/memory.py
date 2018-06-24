@@ -226,9 +226,9 @@ def insertValues(tableName, data):
             return 201
         except (Exception, psycopg2.Error) as error:
             if 'column' in str(error) and 'not exist' in str(error):
-                return 205
+                return 205, error
             elif 'relation' in str(error) and 'not exist' in str(error):
-                return 204
+                return 204, error
             else:
                 return error
     else:
