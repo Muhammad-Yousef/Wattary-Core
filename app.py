@@ -12,7 +12,7 @@ from flask import render_template, render_template_string, request
 import requests
 from NLP import NLP
 from checker import *
-#from RECOMMENDER import *
+from RECOMMENDER import *
 from Mouth import *
 import datetime
 from AirCond import *
@@ -72,7 +72,7 @@ db = memory
 
 
 def recommend(mgenra):
-    Movies = pd.read_csv('Core/DataSets/movie_metadata.csv')
+    Movies = pd.read_csv('Core/DataSets/convertcsv.csv')
     gn = MoviesGenra[mgenra]
     A = RECOMMENDER(Movies, [gn, 5])
     opt = A.Model(A.listOfValues)
@@ -299,9 +299,11 @@ def analyze_data():
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
+            Devices[EAR.information['Location']] = '1'
+            
             val = 1
             memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']]), 'val':val})
-            Devices[EAR.information['Location']] = '1'
+            
             print(Devices[EAR.information['Location']])
         elif EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'off':
             code = lightCodeOff[EAR.information['Location']]
@@ -310,9 +312,10 @@ def analyze_data():
             send.Conect(clientName)
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
-    
-            memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']])})
             Devices[EAR.information['Location']] = '0'
+
+            memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']])})
+            
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 

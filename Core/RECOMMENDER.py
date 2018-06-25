@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import sklearn
 from sklearn.neighbors import NearestNeighbors
+import random
 '''
 
 csv=pd.read_csv('DataSets/movies_metadata.csv',usecols=['genres'])
@@ -33,6 +34,7 @@ class RECOMMENDER:
         self.dataSet = dataset
 
         self.listOfValues = testValues
+        self.items = []
 
     def Display(self):
         """ This method for Testing purpose only """
@@ -57,7 +59,7 @@ class RECOMMENDER:
 
         self.Data = self.dataSet.ix[:, (9,25)].values
 
-        self.Neighbors = NearestNeighbors(n_neighbors=1).fit(self.Data)
+        self.Neighbors = NearestNeighbors(n_neighbors=25).fit(self.Data)
 
         self.Output = self.Neighbors.kneighbors([valueList])
 
@@ -77,12 +79,27 @@ class RECOMMENDER:
         and return the Recommended Item
         """
         self.OutPut = str(output[1])
+        #print( self.OutPut)
+        #self.newOutput = self.OutPut.strip("[]")
 
-        self.newOutput = self.OutPut.strip("[]")
-
+        self.OutPut = self.OutPut.replace("[[ ", "")
+        self.OutPut = self.OutPut.replace("]]", "")
+        self.OutPut = self.OutPut.replace(" ", ",")
+        self.OutPut = self.OutPut.replace("[[", "")
+        self.OutPut = self.OutPut.replace(",,", ",")
+        self.OutPut = self.OutPut.replace("\n,,", ",")
+        self.OutPut = self.OutPut.replace("\n", "")
+        self.items.append(self.OutPut)
+        x = self.items[0]
+        x = x.replace(",", " ")
+        y = x.split()
+        #print(len(y))
+        r = random.sample(range(0,24), 1)
+        r = str(r).strip('[]')
+        
         # cast it again to Integer
-        self.Index = int(self.newOutput)
-
+        self.Index = int(y[int(r)])
+        #print(y[int(r)])
         self.recommendedItem = self.dataSet.iloc[self.Index,11]
         return self.recommendedItem
 
@@ -93,3 +110,9 @@ class RECOMMENDER:
 # out = x.Model(x.listOfValues)
 # recomendedItem = x.outPutHandling(out)
 # print(recomendedItem)z
+#  Movies = pd.read_csv('./DataSets/convertcsv.csv')
+#  A = RECOMMENDER(Movies, [8, 5])
+#  opt = A.Model(A.listOfValues)
+#  recomendedItem = A.outPutHandling(opt)
+#  print(recomendedItem)
+#  #print(opt)
