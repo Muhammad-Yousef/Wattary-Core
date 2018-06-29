@@ -525,15 +525,42 @@ def analyze_data():
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
-    Mou.speak(EAR.intent, EAR.tense)
-    return jsonify({'message': Mou.respone}), 200
 
-        # Elvator
-        # Weather
+#########################################################################
+
+ ################################    water tap    ###################################
+    try:
+        if EAR.information['Appliance'] == 'water tap':
+            code = waterTap[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
+
+            if code == '100' and Devices["waterTap"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '101' and Devices["waterTap"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '100':
+                Devices["waterTap"] = '1'
+            if code == '101':
+                Devices["waterTap"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
 
     #return jsonify({'message': "Sory some times i don't understand"}), 200
 
 
+
+    Mou.speak(EAR.intent, EAR.tense)
+    return jsonify({'message': Mou.respone}), 200
 
 
 

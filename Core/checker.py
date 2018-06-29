@@ -46,8 +46,8 @@ coffeeCode = {
 
 tvCode = {
 
-    "on":'17',
-    "off":'18'
+    "on":'39',
+    "off":'40'
 
 }
 fridge = {
@@ -68,8 +68,12 @@ elevator = {
 
 }
 airConditioner = {
-    "on":'52',
-    "off":'53'
+    "on":'57',
+    "off":'58'
+}
+waterTap = {
+    "on":'100',
+    "off":'101'
 }
 # class CHECKER:
 #
@@ -85,7 +89,8 @@ Devices =  {
                 "kitchen":'0',
                 "fridge":'0',
                 "curtains":'0',
-                "air conditioner":'0'
+                "air conditioner":'0',
+                "waterTap":'0'
 
         }
 learn = {
