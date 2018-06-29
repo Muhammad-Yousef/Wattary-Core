@@ -267,8 +267,6 @@ def SignIn():
         "code":False
         }), 200
 
-################################################# Main API  #######################################################
-
 @app.route('/main', methods=['POST'])
 def analyze_data():
     if not request.json and not 'message' in request.json and 'userID' in request.json:
@@ -279,6 +277,7 @@ def analyze_data():
     Mou = Mouth()
     ################ RECOMMENDER  #################
     EAR.execute(message)
+    print(EAR.information)
     try:
         if EAR.information['Type'] == 'movie':
             genra = EAR.information['Category']
@@ -300,10 +299,14 @@ def analyze_data():
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
             Devices[EAR.information['Location']] = '1'
-            
+
             val = 1
             memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']]), 'val':val})
-            
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
             print(Devices[EAR.information['Location']])
         elif EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'off':
             code = lightCodeOff[EAR.information['Location']]
@@ -315,7 +318,13 @@ def analyze_data():
             Devices[EAR.information['Location']] = '0'
 
             memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']])})
-            
+
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
@@ -327,6 +336,7 @@ def analyze_data():
     try:
         if EAR.information['Appliance'] == 'television':
             code = tvCode[EAR.information['State']]
+            print(EAR.information)
             print(code)
             print(Devices["tv"])
 
@@ -344,6 +354,10 @@ def analyze_data():
                 Devices["tv"] = '1'
             if code == '18':
                 Devices["tv"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
 
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
@@ -367,10 +381,16 @@ def analyze_data():
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
 
-            if code == '21':        
+            if code == '21':
                 Devices["coffeMachine"] = '1'
             if code == '22':
                 Devices["coffeMachine"] = '0'
+
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
 
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
@@ -393,18 +413,22 @@ def analyze_data():
             send.disconnect(clientName)
 
             if code == '52':
-                
+
                 val = 1
                 memory.insertValues('air_con_DS', {'external_val': Interior_Value, 'internal_val': Exterior_Value,'user_id':int(userid) , 'val':val})
                 Devices["air conditioner"] = '1'
             if code == '53':
-                
+
                 val = 0
                 memory.insertValues('air_con_DS', {'external_val': Interior_Value, 'internal_val': Exterior_Value,'user_id':int(userid) , 'val':val})
                 Devices["air conditioner"] = '0'
 
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
-        pass    
+        pass
 
     ###############################  Curtains  ######################################
     try:
@@ -428,9 +452,13 @@ def analyze_data():
             if code == '30':
                 Devices["curtains"] = '0'
 
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
 
-        pass  
+        pass
   ################################    Fridge    ###################################
     try:
         if EAR.information['Appliance'] == 'fridge':
@@ -453,13 +481,17 @@ def analyze_data():
             if code == '28':
                 Devices["fridge"] = '0'
 
-    except (RuntimeError, TypeError, NameError, KeyError):
-        pass  
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
 
-        # Elvator 
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+        # Elvator
         # Weather
 
-
+    #return jsonify({'message': "Sory some times i don't understand"}), 200
 
 
 
@@ -481,9 +513,10 @@ def analyze_data():
 
 
         ################ Mouth  #################
-
     Mou.speak(EAR.intent, EAR.tense)
     return jsonify({'message': Mou.respone}), 200
+
+
 
 
 ################################################# remote API  #######################################################
