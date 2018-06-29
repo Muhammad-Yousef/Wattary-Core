@@ -291,7 +291,7 @@ obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, R
 
 #################### Testing Cases ##################
 
-print(DateTime.hour, DateTime.minute)
+# print(DateTime.hour, DateTime.minute)
 
 # testRoom1 = test(1, obj)
 # testRoom2 = test(2, obj)
