@@ -70,6 +70,19 @@ send = Sender()
 db = memory
 
 
+################################################# weather API Function  ############################################
+
+
+def get_temperature(city):
+    print('321')
+    r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + ',eg&appid=2a3902eb285f33e5150f8f36ec7e81ba')
+    json_object = r.json()
+    temp_k = float(json_object['main']['temp'])
+    temp_c = temp_k - 273.15
+    print(temp_c)
+    return int(temp_c)
+#########################################################################################################################3
+
 
 def recommend(mgenra):
     Movies = pd.read_csv('Core/DataSets/convertcsv.csv')
@@ -102,7 +115,7 @@ def Learn():
     DateTime=datetime.datetime.now()
     bedroom = obj1.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['bedroom']))
     hallway = obj1.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['hallway']))
-    bathroom = obj1.FitAndPredict(DateTime.date().toordinal(),DateTime.hour,DateTime.minute, int(learn['bathroom']))
+    bathroom = obj1.FitAndPredict(DateTime.date().toordinal(),20,DateTime.minute, int(learn['bathroom']))
     obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
     res = obj.display()
     return jsonify({
@@ -113,21 +126,6 @@ def Learn():
         
 
     }), 200
-
-################################################# weather API Function  ############################################
-
-
-def get_temperature(city):
-    r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + ',eg&appid= ')
-    json_object = r.json()
-    temp_k = float(json_object['main']['temp'])
-    temp_c = temp_k - 273.15
-    return temp_c
-
-
-
-
-
 
 
 ################################################# SignUp #######################################################
@@ -266,6 +264,8 @@ def SignIn():
         return jsonify({'response': "I can not recognize this person.",
         "code":False
         }), 200
+
+################################################# Main API  #######################################################
 
 @app.route('/main', methods=['POST'])
 def analyze_data():
@@ -488,6 +488,46 @@ def analyze_data():
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
+
+    try:
+        if EAR.information['Appliance'] == 'elevator':
+            code = '31'
+            print(code)
+            #print(Devices["airConditioner"])
+
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+
+    try:
+        if EAR.information['Inquiry'] == 'weather':
+            print('123')
+            print(EAR.information['Location'])
+            tem = get_temperature(EAR.information['Location'])
+            str1 = 'the weather in '
+            str2 = str(EAR.information['Location'])
+            str3 = ' is: '
+            str4 = ' Celsius'
+            strr = str1 + str2 + str3 + str(tem) + str4
+            print (strr)
+            return jsonify({'message': strr }), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+    Mou.speak(EAR.intent, EAR.tense)
+    return jsonify({'message': Mou.respone}), 200
+
         # Elvator
         # Weather
 
@@ -513,8 +553,6 @@ def analyze_data():
 
 
         ################ Mouth  #################
-    Mou.speak(EAR.intent, EAR.tense)
-    return jsonify({'message': Mou.respone}), 200
 
 
 
