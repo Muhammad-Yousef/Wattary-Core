@@ -136,7 +136,32 @@ def getelec():
 ######################################  getcamera ######################################################
 @app.route('/getcamera', methods=['get'])
 def getcam():
-    return jsonify({'response': url}), 200    
+    code,userName,userID = checker.login(url)
+    if code == 101:
+        return jsonify({'response': "Operation succeeded. New User added to database",
+        "imageUrl":url
+        }), 200
+    # Case 2: this means that I can not read the picture (not Exist).
+    elif code == 102:
+        return jsonify({'response': "Cannot read the picture (not Exist).",
+        "imageUrl":url
+        }), 200
+    # Case 3: this means that I can not find any faces in the picture (retake a picture)
+    elif code == 103:
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture).",
+        "imageUrl":url
+        }), 200
+    # Case 4: this means that the user is exist.
+    elif code == 104:
+        return jsonify({'response': "This user is exist.",
+        "imageUrl":url
+        }), 200
+    # Case 5: this means a memory (database) error.
+    elif code == 105:
+        return jsonify({'response': "There's a problem in the database.",
+        "imageUrl":url
+        }), 200
+     
 ######################################  tempretures ######################################################
 @app.route('/temp', methods=['POST'])
 def getTemp():
