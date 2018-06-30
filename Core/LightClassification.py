@@ -49,7 +49,7 @@ class Light:
             3- minutes
             4- Room Number
         """
-        testValues = np.array([(Date, Hour, Minutes, roomNum)], dtype=np.int32)
+        testValues = np.array([(736834, Hour, Minutes, roomNum)], dtype=np.int32)
         # Prediction result
         result = str(self.Cls.predict(testValues)).strip("[].")
         result = int(result)

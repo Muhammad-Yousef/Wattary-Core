@@ -33,6 +33,9 @@ app.config['DEBUG'] = True
 
 Interior_Value = 0
 Exterior_Value = 0
+url = ''
+water_m = 40
+electric_m = 40
         ### Database Configuration ###
 # POSTGRES = {
 #     'user': 'postgres',
@@ -56,6 +59,12 @@ cors4 = CORS(app, resources={r"/signup/*": {"origins": "*"}})
 cors5 = CORS(app, resources={r"/signup/web*": {"origins": "*"}})
 cors6 = CORS(app, resources={r"/signin/web*": {"origins": "*"}})
 cors7 = CORS(app, resources={r"/learn*": {"origins": "*"}})
+cors8 = CORS(app, resources={r"/water*": {"origins": "*"}})
+cors9 = CORS(app, resources={r"/electric*": {"origins": "*"}})
+cors10 = CORS(app, resources={r"/camera*": {"origins": "*"}})
+cors11 = CORS(app, resources={r"/getwater*": {"origins": "*"}})
+cors12 = CORS(app, resources={r"/getelectric*": {"origins": "*"}})
+cors13 = CORS(app, resources={r"/getcamera*": {"origins": "*"}})
 ###################################### instances and variables #################################################
 
 
@@ -70,6 +79,19 @@ send = Sender()
 db = memory
 
 
+################################################# weather API Function  ############################################
+
+
+def get_temperature(city):
+    print('321')
+    r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + ',eg&appid=2a3902eb285f33e5150f8f36ec7e81ba')
+    json_object = r.json()
+    temp_k = float(json_object['main']['temp'])
+    temp_c = temp_k - 273.15
+    print(temp_c)
+    return int(temp_c)
+#########################################################################################################################3
+
 
 def recommend(mgenra):
     Movies = pd.read_csv('Core/DataSets/convertcsv.csv')
@@ -78,6 +100,43 @@ def recommend(mgenra):
     opt = A.Model(A.listOfValues)
     recomendedItem = A.outPutHandling(opt)
     return recomendedItem
+######################################  water ######################################################
+@app.route('/water', methods=['POST'])
+def wat():
+    if not request.json and not 'water' in request.json:
+        abort(400)
+    global water_m
+    water_m = request.json['water']
+    return jsonify({'res': 'done'}), 200
+######################################  electric ######################################################
+@app.route('/electric', methods=['POST'])
+def elec():
+    if not request.json and not 'electic' in request.json:
+        abort(400)
+    global electric_m
+    electric_m = request.json['electric']
+    return jsonify({'res': 'done'}), 200
+######################################  camera ######################################################
+@app.route('/camera', methods=['POST'])
+def cam():
+    if not request.json and not 'urll' in request.json:
+        abort(400)
+    global url
+    url = request.json['urll']
+    return jsonify({'res': 'done'}), 200
+
+######################################  getwater ######################################################
+@app.route('/getwater', methods=['get'])
+def getwat():
+    return jsonify({'response': water_m}), 200
+######################################  getelectric ######################################################
+@app.route('/getelectric', methods=['get'])
+def getelec():
+    return jsonify({'response': electric_m}), 200
+######################################  getcamera ######################################################
+@app.route('/getcamera', methods=['get'])
+def getcam():
+    return jsonify({'response': url}), 200    
 ######################################  tempretures ######################################################
 @app.route('/temp', methods=['POST'])
 def getTemp():
@@ -102,7 +161,7 @@ def Learn():
     DateTime=datetime.datetime.now()
     bedroom = obj1.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['bedroom']))
     hallway = obj1.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['hallway']))
-    bathroom = obj1.FitAndPredict(DateTime.date().toordinal(),DateTime.hour,DateTime.minute, int(learn['bathroom']))
+    bathroom = obj1.FitAndPredict(DateTime.date().toordinal(),20,DateTime.minute, int(learn['bathroom']))
     obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
     res = obj.display()
     return jsonify({
@@ -113,21 +172,6 @@ def Learn():
         
 
     }), 200
-
-################################################# weather API Function  ############################################
-
-
-def get_temperature(city):
-    r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + ',eg&appid= ')
-    json_object = r.json()
-    temp_k = float(json_object['main']['temp'])
-    temp_c = temp_k - 273.15
-    return temp_c
-
-
-
-
-
 
 
 ################################################# SignUp #######################################################
@@ -279,6 +323,7 @@ def analyze_data():
     Mou = Mouth()
     ################ RECOMMENDER  #################
     EAR.execute(message)
+    print(EAR.information)
     try:
         if EAR.information['Type'] == 'movie':
             genra = EAR.information['Category']
@@ -300,10 +345,14 @@ def analyze_data():
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
             Devices[EAR.information['Location']] = '1'
-            
+
             val = 1
             memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']]), 'val':val})
-            
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
             print(Devices[EAR.information['Location']])
         elif EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'off':
             code = lightCodeOff[EAR.information['Location']]
@@ -315,7 +364,13 @@ def analyze_data():
             Devices[EAR.information['Location']] = '0'
 
             memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']])})
-            
+
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
@@ -327,6 +382,7 @@ def analyze_data():
     try:
         if EAR.information['Appliance'] == 'television':
             code = tvCode[EAR.information['State']]
+            print(EAR.information)
             print(code)
             print(Devices["tv"])
 
@@ -344,6 +400,10 @@ def analyze_data():
                 Devices["tv"] = '1'
             if code == '18':
                 Devices["tv"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
 
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
@@ -367,10 +427,16 @@ def analyze_data():
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
 
-            if code == '21':        
+            if code == '21':
                 Devices["coffeMachine"] = '1'
             if code == '22':
                 Devices["coffeMachine"] = '0'
+
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
 
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
@@ -393,18 +459,22 @@ def analyze_data():
             send.disconnect(clientName)
 
             if code == '52':
-                
+
                 val = 1
                 memory.insertValues('air_con_DS', {'external_val': Interior_Value, 'internal_val': Exterior_Value,'user_id':int(userid) , 'val':val})
                 Devices["air conditioner"] = '1'
             if code == '53':
-                
+
                 val = 0
                 memory.insertValues('air_con_DS', {'external_val': Interior_Value, 'internal_val': Exterior_Value,'user_id':int(userid) , 'val':val})
                 Devices["air conditioner"] = '0'
 
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
-        pass    
+        pass
 
     ###############################  Curtains  ######################################
     try:
@@ -428,9 +498,13 @@ def analyze_data():
             if code == '30':
                 Devices["curtains"] = '0'
 
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
 
-        pass  
+        pass
   ################################    Fridge    ###################################
     try:
         if EAR.information['Appliance'] == 'fridge':
@@ -453,15 +527,86 @@ def analyze_data():
             if code == '28':
                 Devices["fridge"] = '0'
 
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
-        pass  
-
-        # Elvator 
-        # Weather
+        pass
 
 
+    try:
+        if EAR.information['Appliance'] == 'elevator':
+            code = '31'
+            print(code)
+            #print(Devices["airConditioner"])
 
 
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+
+    try:
+        if EAR.information['Inquiry'] == 'weather':
+            print('123')
+            print(EAR.information['Location'])
+            tem = get_temperature(EAR.information['Location'])
+            str1 = 'the weather in '
+            str2 = str(EAR.information['Location'])
+            str3 = ' is: '
+            str4 = ' Celsius'
+            strr = str1 + str2 + str3 + str(tem) + str4
+            print (strr)
+            return jsonify({'message': strr }), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+
+#########################################################################
+
+ ################################    water tap    ###################################
+    try:
+        if EAR.information['Appliance'] == 'water tap':
+            code = waterTap[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
+
+            if code == '100' and Devices["waterTap"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '101' and Devices["waterTap"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '100':
+                Devices["waterTap"] = '1'
+            if code == '101':
+                Devices["waterTap"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+    #return jsonify({'message': "Sory some times i don't understand"}), 200
+
+
+
+    Mou.speak(EAR.intent, EAR.tense)
+    return jsonify({'message': Mou.respone}), 200
 
 
 
@@ -482,8 +627,7 @@ def analyze_data():
 
         ################ Mouth  #################
 
-    Mou.speak(EAR.intent, EAR.tense)
-    return jsonify({'message': Mou.respone}), 200
+
 
 
 ################################################# remote API  #######################################################
