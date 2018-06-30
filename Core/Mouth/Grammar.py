@@ -23,13 +23,13 @@ statusQuery = CFG.fromstring("""
     RB -> "extremely"
     R -> "well"
     
-    S -> PR NND CC DD NNS VBP J
+    S -> PR NND CC DD NNS VbP J
     PR -> "My"
     NND -> "logic"
     CC -> "and"
     DD -> "cognitive"
     NNS -> "functions"
-    VBP -> "are"
+    VbP -> "are"
     J -> "Normal" | "working well"
     
     S -> P VBZ DT JJJ
@@ -75,17 +75,7 @@ disability = CFG.fromstring("""
     VB -> "do"
     IN -> "that"
     
-    S -> PRP VBP J PRP VBP JJ PRP MD RB VB IN
-    PRP -> "I"
-    VBP -> "am"
-    J -> "sorry"
-    JJ -> "afraid"
-    MD -> "can"
-    RB -> "not"
-    VB -> "do"
-    IN -> "that"
     
-
 """)
 
 
