@@ -137,30 +137,32 @@ def getelec():
 @app.route('/getcamera', methods=['get'])
 def getcam():
     code,userName,userID = checker.login(url)
-    if code == 101:
-        return jsonify({'response': "Operation succeeded. New User added to database",
-        "imageUrl":url
+    print(code)
+    if code == 201:
+        return jsonify({'response': "Operation succeeded.",
+        "imageUrl":url,
+        'userName': userName
         }), 200
     # Case 2: this means that I can not read the picture (not Exist).
-    elif code == 102:
-        return jsonify({'response': "Cannot read the picture (not Exist).",
+    elif code == 202:
+        return jsonify({'response': " I can not read the picture (not Exist)",
         "imageUrl":url
         }), 200
     # Case 3: this means that I can not find any faces in the picture (retake a picture)
-    elif code == 103:
+    elif code == 203:
         return jsonify({'response': "Cannot find any faces in the picture (retake the picture).",
         "imageUrl":url
         }), 200
     # Case 4: this means that the user is exist.
-    elif code == 104:
-        return jsonify({'response': "This user is exist.",
+    elif code == 204:
+        return jsonify({'response': "I can not recognize this person.",
         "imageUrl":url
         }), 200
-    # Case 5: this means a memory (database) error.
-    elif code == 105:
-        return jsonify({'response': "There's a problem in the database.",
+    else :
+        return jsonify({'response': "There's somthing went wrong.",
         "imageUrl":url
         }), 200
+
      
 ######################################  tempretures ######################################################
 @app.route('/temp', methods=['POST'])
