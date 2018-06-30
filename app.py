@@ -33,6 +33,9 @@ app.config['DEBUG'] = True
 
 Interior_Value = 0
 Exterior_Value = 0
+url = ''
+water_m = 40
+electric_m = 40
         ### Database Configuration ###
 # POSTGRES = {
 #     'user': 'postgres',
@@ -56,6 +59,12 @@ cors4 = CORS(app, resources={r"/signup/*": {"origins": "*"}})
 cors5 = CORS(app, resources={r"/signup/web*": {"origins": "*"}})
 cors6 = CORS(app, resources={r"/signin/web*": {"origins": "*"}})
 cors7 = CORS(app, resources={r"/learn*": {"origins": "*"}})
+cors8 = CORS(app, resources={r"/water*": {"origins": "*"}})
+cors9 = CORS(app, resources={r"/electric*": {"origins": "*"}})
+cors10 = CORS(app, resources={r"/camera*": {"origins": "*"}})
+cors11 = CORS(app, resources={r"/getwater*": {"origins": "*"}})
+cors12 = CORS(app, resources={r"/getelectric*": {"origins": "*"}})
+cors13 = CORS(app, resources={r"/getcamera*": {"origins": "*"}})
 ###################################### instances and variables #################################################
 
 
@@ -91,6 +100,43 @@ def recommend(mgenra):
     opt = A.Model(A.listOfValues)
     recomendedItem = A.outPutHandling(opt)
     return recomendedItem
+######################################  water ######################################################
+@app.route('/water', methods=['POST'])
+def wat():
+    if not request.json and not 'water' in request.json:
+        abort(400)
+    global water_m
+    water_m = request.json['water']
+    return jsonify({'res': 'done'}), 200
+######################################  electric ######################################################
+@app.route('/electric', methods=['POST'])
+def elec():
+    if not request.json and not 'electic' in request.json:
+        abort(400)
+    global electric_m
+    electric_m = request.json['electric']
+    return jsonify({'res': 'done'}), 200
+######################################  camera ######################################################
+@app.route('/camera', methods=['POST'])
+def cam():
+    if not request.json and not 'urll' in request.json:
+        abort(400)
+    global url
+    url = request.json['urll']
+    return jsonify({'res': 'done'}), 200
+
+######################################  getwater ######################################################
+@app.route('/getwater', methods=['get'])
+def getwat():
+    return jsonify({'response': water_m}), 200
+######################################  getelectric ######################################################
+@app.route('/getelectric', methods=['get'])
+def getelec():
+    return jsonify({'response': electric_m}), 200
+######################################  getcamera ######################################################
+@app.route('/getcamera', methods=['get'])
+def getcam():
+    return jsonify({'response': url}), 200    
 ######################################  tempretures ######################################################
 @app.route('/temp', methods=['POST'])
 def getTemp():
