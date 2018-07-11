@@ -9,8 +9,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 import datetime
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
 class Light:
     def __init__(self, data):
         """
@@ -36,8 +39,15 @@ class Light:
         df = self.dataSet
         # Assign The TrainingExamples Columns And Target Columns
         X, Y = df.iloc[:, 0:4], df.iloc[:, 4]
+<<<<<<< HEAD
         # slicing the DataSet into Train and Test
         # X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.80, random_state=1, stratify=Y)
+=======
+        #print(X)
+        #print(Y)
+        # slicing the DataSet into Train and Test
+        #X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.80, random_state=1, stratify=Y)
+>>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
         # Fit The Data
         self.Cls.fit(X, Y)
         # Evaluate the accuracy of the model
@@ -177,8 +187,13 @@ DateTimeDF['Dates'] = pd.to_datetime(DateTimeDF['DateTime']).dt.date
 # The following code will convert the date into numerical value:
 DateTimeDF['Dates'] = DateTimeDF['Dates'].map(datetime.datetime.toordinal)
 DateTimeDF = DateTimeDF.drop(['DateTime'],axis=1)
+<<<<<<< HEAD
 # print(DateTimeDF)
 # DateTimeDF = DateTimeDF.reshape(DateTimeDF.size, 1)
+=======
+#print(DateTimeDF)
+#DateTimeDF = DateTimeDF.reshape(DateTimeDF.size, 1)
+>>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
 # Array of training data with values of:
 """{ Hours, Minutes, RoomNumber, UserValue }"""
 data = np.asarray([(1,0,1,0),
@@ -278,6 +293,7 @@ data = np.asarray([(1,0,1,0),
 dataDF = pd.DataFrame(data)
 # Assign The Columns Of The Data Set
 dataDF.columns = ['Hour', 'Minutes', 'RoomNum', 'User_Value']
+<<<<<<< HEAD
 # print(dataDF)
 
 # this is combination between the DateTime and the other Values in data2DF
@@ -292,6 +308,20 @@ obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, R
 #################### Testing Cases ##################
 
 # print(DateTime.hour, DateTime.minute)
+=======
+#print(dataDF)
+
+#this is combination between the DateTime and the other Values in data2DF
+bigData = pd.concat([DateTimeDF, dataDF], axis=1)
+#bigData = bigData.drop(['DateTime'], axis=1)
+#print(bigData)
+obj1 = Light(bigData)
+RoomNum = 1
+DateTime = datetime.datetime.now()
+#obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, RoomNum)
+
+#################### Testing Cases ##################
+>>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
 
 # testRoom1 = test(1, obj)
 # testRoom2 = test(2, obj)
@@ -299,4 +329,8 @@ obj.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, R
 
 # print(testRoom1.items())
 # print(testRoom2.items())
+<<<<<<< HEAD
 # print(testRoom3.items())
+=======
+# print(testRoom3.items())
+>>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
