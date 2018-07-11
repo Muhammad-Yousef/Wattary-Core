@@ -127,7 +127,7 @@ class NLP:
         chunked = chunkParser.parse(self.tagged_tokens)
 
         # Temporary: Should be deleted unless we are in presentation mode
-        #chunked.draw()
+        chunked.draw()
 
         self.info = []
 
@@ -192,17 +192,17 @@ class NLP:
 
 # Testing purposes
 
-# A = NLP()
+A = NLP()
 # B = Mouth()
-# for command in commands:
-#     A.execute(command)
-#     print('Text = ', A.text)
-#     print('Intent = ', A.intent)
-#     print('Tense = ', A.tense)
-#     print('Tokens = ', A.tokens)
-#     print('Tagged Tokens = ', A.tagged_tokens)
-#     print('Information = ', A.info)
-#     print('Extracted information Dictionary = ', A.information)
+for command in commands:
+     A.execute(command)
+     print('Text = ', A.text)
+     print('Intent = ', A.intent)
+     print('Tense = ', A.tense)
+     print('Tokens = ', A.tokens)
+     print('Tagged Tokens = ', A.tagged_tokens)
+     print('Information = ', A.info)
+     print('Extracted information Dictionary = ', A.information)
 #     print()
 #     print('Wattary Response =', end = ' ')
 #     B.speak(A.intent, A.tense)
