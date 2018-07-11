@@ -1,7 +1,7 @@
 # The Mouth of Wattary
 
 from nltk.parse.generate import generate
-from Core.Mouth.Grammar import *
+from Grammar import *
 import random
 
 class Mouth:

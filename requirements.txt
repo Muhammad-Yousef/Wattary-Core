@@ -19,9 +19,7 @@ pytz==2017.3
 scikit-learn==0.19.1
 scipy==1.0.0
 six==1.11.0
-SQLAlchemy==1.1.13
 Werkzeug==0.12.2
-WTForms==2.1
 paho-mqtt
 requests
 textblob
