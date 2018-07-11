@@ -14,15 +14,15 @@ from skimage import img_as_ubyte
 
 predictor_path = './Core/Eye/models/shape_predictor_5_face_landmarks.dat'
 face_rec_model_path = './Core/Eye/models/dlib_face_recognition_resnet_model_v1.dat'
-<<<<<<< HEAD
+# <<<<<<< HEAD
+# csv_file = './Core/Eye/users_descriptors.csv'
+# =======
+# <<<<<<< HEAD
+# csv_file = '/home/ahmed/Downloads/Wattary-Core-master/Core/Eye/users_descriptors.csv'
+# =======
 csv_file = './Core/Eye/users_descriptors.csv'
-=======
-<<<<<<< HEAD
-csv_file = '/home/ahmed/Downloads/Wattary-Core-master/Core/Eye/users_descriptors.csv'
-=======
-csv_file = './Core/Eye/users_descriptors.csv'
->>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
->>>>>>> master
+# >>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
+# >>>>>>> master
 
 detector = dlib.get_frontal_face_detector()
 sp = dlib.shape_predictor(predictor_path)
@@ -66,15 +66,15 @@ def register(userName, imgPath, user_pass):
         # 102: this means that I can not read the picture (not Exist).
         return 102
 
-<<<<<<< HEAD
-    # img = down_scale(img)
-=======
-<<<<<<< HEAD
-    img = down_scale(img)
-=======
-    # img = down_scale(img)
->>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
->>>>>>> master
+# <<<<<<< HEAD
+# img = down_scale(img)
+# =======
+# <<<<<<< HEAD
+#     img = down_scale(img)
+# =======
+#     # img = down_scale(img)
+# >>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
+# >>>>>>> master
     img = img_as_ubyte(img)
     for i in range(3):
         if i == 1:
@@ -115,15 +115,15 @@ def login(imgPath):
     except:
         return 202, '', ''
 
-<<<<<<< HEAD
-    #img = down_scale(img)
-=======
-<<<<<<< HEAD
-    img = down_scale(img)
-=======
-    #img = down_scale(img)
->>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
->>>>>>> master
+# <<<<<<< HEAD
+#     #img = down_scale(img)
+# =======
+# <<<<<<< HEAD
+#     img = down_scale(img)
+# =======
+#     #img = down_scale(img)
+# >>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
+# >>>>>>> master
     img = img_as_ubyte(img)
     for i in range(3):
         if i == 1:
@@ -148,15 +148,15 @@ def login(imgPath):
     val = 0.5
     user_id = 0
 
-<<<<<<< HEAD
+# <<<<<<< HEAD
+#     with open('./Core/Eye/users_descriptors.csv') as csvfile:
+# =======
+# <<<<<<< HEAD
+#     with open('/home/ahmed/Downloads/Wattary-Core-master/Core/Eye/users_descriptors.csv') as csvfile:
+# =======
     with open('./Core/Eye/users_descriptors.csv') as csvfile:
-=======
-<<<<<<< HEAD
-    with open('/home/ahmed/Downloads/Wattary-Core-master/Core/Eye/users_descriptors.csv') as csvfile:
-=======
-    with open('./Core/Eye/users_descriptors.csv') as csvfile:
->>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
->>>>>>> master
+# >>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
+# >>>>>>> master
         reader = csv.DictReader(csvfile)
         for row in reader:
             j = numpy.asarray(row['descriptor'].split('\n'), dtype='float32')
@@ -190,12 +190,12 @@ def down_scale(image):
         # perform the actual resizing of the image and show it
         return resize(image, dim, mode='reflect', preserve_range=False)
     else:
-<<<<<<< HEAD
+# <<<<<<< HEAD
+#         return image
+# =======
+# <<<<<<< HEAD
+#         return image
+# =======
         return image
-=======
-<<<<<<< HEAD
-        return image
-=======
-        return image
->>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
->>>>>>> master
+# >>>>>>> b3e23a69d357152ba3ecbc248e5ba2eaea92325b
+# >>>>>>> master
