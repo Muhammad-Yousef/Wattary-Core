@@ -27,12 +27,16 @@ lightCodeON = {
     "bedroom":'11',
     "bathroom":'13',
     "hallway":'15',
+    "kitchen":'23',
+    "living room":'25',
 }
 lightCodeOff = {
 
     "bedroom":'12',
     "bathroom":'14',
     "hallway":'16',
+    "kitchen":'24',
+    "living room":'26',
 }
 coffeeCode = {
 
@@ -42,11 +46,35 @@ coffeeCode = {
 
 tvCode = {
 
-    "on":'17',
-    "off":'18'
+    "on":'39',
+    "off":'40'
 
 }
+fridge = {
 
+    "on":'27',
+    "off":'28'
+
+}
+curtains = {
+
+    "on":'29',
+    "off":'30'
+
+}
+elevator = {
+
+    "call":'31',
+
+}
+airConditioner = {
+    "on":'57',
+    "off":'58'
+}
+waterTap = {
+    "on":'100',
+    "off":'101'
+}
 # class CHECKER:
 #
 #     def __init__(self):
@@ -54,13 +82,22 @@ Devices =  {
 
                 "bedroom":'0',
                 "bathroom":'0',
-                "living-room":'0',
+                "living room":'0',
                 "hallway":'0',
                 "tv": '0',
-                "coffeMachine":'0'
+                "coffeMachine":'0',
+                "kitchen":'0',
+                "fridge":'0',
+                "curtains":'0',
+                "air conditioner":'0',
+                "waterTap":'0'
 
         }
-
+learn = {
+    "bedroom":"1",
+    "hallway":"2",
+    "bathroom":"3"
+}
     #
     # def checkStatus(self, device):
     #     if self.Devices[device] == '0':

@@ -2,12 +2,15 @@
 import re
 import nltk
 from nltk.tokenize import regexp_tokenize
-import Core.NLP.spell
-import Core.NLP.IntentClassifier
-import Core.NLP.TenseClassifier
+import sys
+sys.path.append('../Core/NLP')
+sys.path.append('../Core/Mouth')
+import spell
+import IntentClassifier
+import TenseClassifier
 
-from Core.NLP.Testing import *
-from Core.Mouth.Mouth import *
+from Testing import *
+from Mouth import *
 
 
 class NLP:
@@ -51,11 +54,11 @@ class NLP:
 
     # 3. Spelling Correction | Unfinished yet => The corpus needs to be reinforced by the rest commands
     def corrector(self):
-        self.corrected = [Core.NLP.spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
+        self.corrected = [spell.correction(token) if not re.match('[0-9]', token) else token for token in self.tokens]
 
     # 4. Intent & Tense Detection
     def detector(self):
-        self.intent = Core.NLP.IntentClassifier.C.classify(' '.join(self.corrected))
+        self.intent = IntentClassifier.C.classify(' '.join(self.corrected))
 
         if self.intent in ('greeting', 'status-query', 'name-query', 'age-query', 'weather-query'):
             self.tense = ''
@@ -64,7 +67,7 @@ class NLP:
         elif 'query' not in self.intent:
             self.tense = 'imperative'
         else:
-            self.tense = Core.NLP.TenseClassifier.C.classify(' '.join(self.corrected))
+            self.tense = TenseClassifier.C.classify(' '.join(self.corrected))
 
     # Temporary : Untill I reach Stanford Core NLP Tagger
     # 5. Performing POS-Tagging over the resulted tokens and save the result into a new list of tagged tokens called tagged_tokens

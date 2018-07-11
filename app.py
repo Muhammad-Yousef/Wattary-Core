@@ -2,21 +2,28 @@ from flask import Flask, abort
 from flask import request
 from flask import jsonify
 from flask_cors import CORS
-from Core.sender import Sender
+import sys
+sys.path.append('./Core')
+sys.path.append('./Core/NLP')
+sys.path.append('./Core/Mouth')
+sys.path.append('./Core/Eye')
+from sender import Sender
 from flask import render_template, render_template_string, request
 import requests
-from Core.NLP.NLP import NLP
-from Core.checker import *
-from Core.RECOMMENDER import *
-from Core.Mouth.Mouth import *
+from NLP import NLP
+from checker import *
+from RECOMMENDER import *
+from Mouth import *
 import datetime
-from Core.AirCond import *
+from AirCond import *
 ### Importing the Database Module ###
-from Core.Memory import memory
+from Memory import memory
 import logging
+from LightClassification import *
 
 ### Importing the Eye Module ###
-from Core.Eye import eye as checker
+import eye as checker
+
 
 
 ############################################## Configurations ############################################
@@ -24,6 +31,11 @@ from Core.Eye import eye as checker
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
+Interior_Value = 0
+Exterior_Value = 0
+url = ''
+water_m = 40
+electric_m = 40
         ### Database Configuration ###
 # POSTGRES = {
 #     'user': 'postgres',
@@ -47,6 +59,12 @@ cors4 = CORS(app, resources={r"/signup/*": {"origins": "*"}})
 cors5 = CORS(app, resources={r"/signup/web*": {"origins": "*"}})
 cors6 = CORS(app, resources={r"/signin/web*": {"origins": "*"}})
 cors7 = CORS(app, resources={r"/learn*": {"origins": "*"}})
+cors8 = CORS(app, resources={r"/water*": {"origins": "*"}})
+cors9 = CORS(app, resources={r"/electric*": {"origins": "*"}})
+cors10 = CORS(app, resources={r"/camera*": {"origins": "*"}})
+cors11 = CORS(app, resources={r"/getwater*": {"origins": "*"}})
+cors12 = CORS(app, resources={r"/getelectric*": {"origins": "*"}})
+cors13 = CORS(app, resources={r"/getcamera*": {"origins": "*"}})
 ###################################### instances and variables #################################################
 
 
@@ -61,40 +79,126 @@ send = Sender()
 db = memory
 
 
+################################################# weather API Function  ############################################
+
+
+def get_temperature(city):
+    print('321')
+    r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + ',eg&appid=2a3902eb285f33e5150f8f36ec7e81ba')
+    json_object = r.json()
+    temp_k = float(json_object['main']['temp'])
+    temp_c = temp_k - 273.15
+    print(temp_c)
+    return int(temp_c)
+#########################################################################################################################3
+
+
 def recommend(mgenra):
-    Movies = pd.read_csv('Core/DataSets/movie_metadata.csv')
+    Movies = pd.read_csv('Core/DataSets/convertcsv.csv')
     gn = MoviesGenra[mgenra]
     A = RECOMMENDER(Movies, [gn, 5])
     opt = A.Model(A.listOfValues)
     recomendedItem = A.outPutHandling(opt)
     return recomendedItem
+######################################  water ######################################################
+@app.route('/water', methods=['POST'])
+def wat():
+    if not request.json and not 'water' in request.json:
+        abort(400)
+    global water_m
+    water_m = request.json['water']
+    return jsonify({'res': 'done'}), 200
+######################################  electric ######################################################
+@app.route('/electric', methods=['POST'])
+def elec():
+    if not request.json and not 'electic' in request.json:
+        abort(400)
+    global electric_m
+    electric_m = request.json['electric']
+    return jsonify({'res': 'done'}), 200
+######################################  camera ######################################################
+@app.route('/camera', methods=['POST'])
+def cam():
+    if not request.json and not 'urll' in request.json:
+        abort(400)
+    global url
+    url = request.json['urll']
+    return jsonify({'res': 'done'}), 200
 
-##########################################################################################################
+######################################  getwater ######################################################
+@app.route('/getwater', methods=['get'])
+def getwat():
+    return jsonify({'response': water_m}), 200
+######################################  getelectric ######################################################
+@app.route('/getelectric', methods=['get'])
+def getelec():
+    return jsonify({'response': electric_m}), 200
+######################################  getcamera ######################################################
+@app.route('/getcamera', methods=['get'])
+def getcam():
+    code,userName,userID = checker.login(url)
+    print(code)
+    if code == 201:
+        return jsonify({'response': "Operation succeeded.",
+        "imageUrl":url,
+        'userName': userName
+        }), 200
+    # Case 2: this means that I can not read the picture (not Exist).
+    elif code == 202:
+        return jsonify({'response': " I can not read the picture (not Exist)",
+        "imageUrl":url
+        }), 200
+    # Case 3: this means that I can not find any faces in the picture (retake a picture)
+    elif code == 203:
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture).",
+        "imageUrl":url
+        }), 200
+    # Case 4: this means that the user is exist.
+    elif code == 204:
+        return jsonify({'response': "I can not recognize this person.",
+        "imageUrl":url
+        }), 200
+    else :
+        return jsonify({'response': "There's somthing went wrong.",
+        "imageUrl":url
+        }), 200
+
+     
+######################################  tempretures ######################################################
+@app.route('/temp', methods=['POST'])
+def getTemp():
+    if not request.json or not 'i_val' in request.json and 'e_val' in request.json :
+        abort(400)
+    global Interior_Value
+    Interior_Value = request.json['i_val']
+    global Exterior_Value
+    Exterior_Value = request.json['e_val']
+    return jsonify({'res': 'done'}), 200
+
+######################################  learnin ######################################################
 @app.route('/learn', methods=['POST'])
 def Learn():
     if not request.json or not 'hours' in request.json and 'minutes' in request.json:
         abort(400)
+
+    print(Interior_Value)  
+    print(Exterior_Value)  
+    int(Interior_Value)
+    int(Exterior_Value)
     DateTime=datetime.datetime.now()
-    Interior_Value=30
-    Exterior_Value=35
+    bedroom = obj1.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['bedroom']))
+    hallway = obj1.FitAndPredict(DateTime.date().toordinal(), DateTime.hour, DateTime.minute, int(learn['hallway']))
+    bathroom = obj1.FitAndPredict(DateTime.date().toordinal(),20,DateTime.minute, int(learn['bathroom']))
     obj.Model_fitting(DateTime.date().toordinal(),DateTime.hour,DateTime.minute,Interior_Value,Exterior_Value)
     res = obj.display()
-    return jsonify({'response': res}), 200
+    return jsonify({
+        'Air Conditioner': res,
+        'bedroom-light':bedroom,
+        'hallway-light':hallway,
+        'bathroom-light':bathroom
+        
 
-################################################# weather API Function  ############################################
-
-
-def get_temperature(city):
-    r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + ',eg&appid= ')
-    json_object = r.json()
-    temp_k = float(json_object['main']['temp'])
-    temp_c = temp_k - 273.15
-    return temp_c
-
-
-
-
-
+    }), 200
 
 
 ################################################# SignUp #######################################################
@@ -109,12 +213,18 @@ def SignUpWeb():
     code = checker.register_password(username,password,email)
     print(code)
     if code == 101:
-        return jsonify({'response': "Operation succeeded. New User added to database"}), 200
+        return jsonify({'response': "Operation succeeded. New User added to database",
+        'state':'101'
+        
+        }), 200
     elif code == 104:
-        return jsonify({'response': "This user is exist."}), 200
-
+        return jsonify({'response': "This user is exist.",
+        'state':'104'
+        }), 200
     elif code == 105:
-        return jsonify({'response': "There's a problem in the database."}), 105
+        return jsonify({'response': "There's a problem in the database.",
+        'state':'105'
+        }), 200
 
 
 
@@ -126,7 +236,7 @@ def SignUpWeb():
 
 @app.route('/signup', methods=['POST'])
 def SignUp():
-    if not request.json or not 'PhotoUrl' in request.json and 'UserName' in request.json:
+    if not request.json and not 'PhotoUrl' in request.json and 'UserName' in request.json and 'password' in request.json:
         abort(400)
         '''
         pull the user data from the json requests
@@ -139,24 +249,35 @@ def SignUp():
     # invoke the Memory and Eye Function
     imageURL = request.json['PhotoUrl']
     userName = request.json['UserName']
+    userpass = request.json['password']
 
-    code = checker.register(userName, imageURL)
+    code = checker.register(userName, imageURL, userpass)
     # Adding new User in the database with his username and his image
     # Case 1: this means the operation succeeded.
     if code == 101:
-        return jsonify({'response': "Operation succeeded. New User added to database"}), 200
+        return jsonify({'response': "Operation succeeded. New User added to database",
+        "code":True
+        }), 200
     # Case 2: this means that I can not read the picture (not Exist).
     elif code == 102:
-        return jsonify({'response': "Cannot read the picture (not Exist)."}), 102
+        return jsonify({'response': "Cannot read the picture (not Exist).",
+        "code":False
+        }), 200
     # Case 3: this means that I can not find any faces in the picture (retake a picture)
     elif code == 103:
-        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 103
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture).",
+        "code":False
+        }), 200
     # Case 4: this means that the user is exist.
     elif code == 104:
-        return jsonify({'response': "This user is exist."}), 104
+        return jsonify({'response': "This user is exist.",
+        "code":False
+        }), 200
     # Case 5: this means a memory (database) error.
     elif code == 105:
-        return jsonify({'response': "There's a problem in the database."}), 105
+        return jsonify({'response': "There's a problem in the database.",
+        "code":False
+        }), 200
 
 
 ################################################# SignIn #######################################################
@@ -169,12 +290,16 @@ def SignInWeb():
 
     username = request.json['UserName']
     password = request.json['password']
-    code,uname = checker.login_password(username,password)
+    code,uname,uid = checker.login_password(username,password)
     if code == 501:
-        return jsonify({'response': "welcome " + uname }), 200
+        return jsonify({'response': "welcome " + uname,
+        'userName': uname,
+        'userID':uid
+        
+         }), 200
     # Case 2: this means that I can not read the picture (not Exist).
     else:
-        return jsonify({'respone':"user name or password is incorrect"}), 209
+        return jsonify({'respone':"user name or password is incorrect"}), 200
 
 
 
@@ -189,32 +314,43 @@ def SignIn():
     imageURL = request.json['PhotoUrl']
 
     # Login with the image of the user
-    code, userID = checker.login(imageURL)
+    code,userName,userID = checker.login(imageURL)
     # Case 1 this mean that the user is exist.
     if code == 201:
-        return jsonify({'response': "Operation succeeded." + userID}), 200
+        return jsonify({'response': "Operation succeeded." + userID,
+        'userName': userName,
+        'userID':userID,
+        "code":True
+        }), 200
     # Case 2 this means that I can not read the picture (not Exist).
     elif code == 202:
-        return jsonify({'response': "Cannot read the picture (not Exist)."}), 202
+        return jsonify({'response': "Cannot read the picture (not Exist).",
+        "code":False
+        }), 200
     # Case 3: this means that I can not find any faces in the picture (retake a picture).
     elif code == 203:
-        return jsonify({'response': "Cannot find any faces in the picture (retake the picture)."}), 203
+        return jsonify({'response': "Cannot find any faces in the picture (retake the picture).",
+        "code":False
+        }), 200
     # Case 4: this means that I can not recognize this person.
     elif code == 204:
-        return jsonify({'response': "I can not recognize this person."}), 204
+        return jsonify({'response': "I can not recognize this person.",
+        "code":False
+        }), 200
 
 ################################################# Main API  #######################################################
 
 @app.route('/main', methods=['POST'])
 def analyze_data():
-    if not request.json or not 'message' in request.json:
+    if not request.json and not 'message' in request.json and 'userID' in request.json:
         abort(400)
     message = request.json['message']
-
+    userid = request.json['userID']
     EAR = NLP()
     Mou = Mouth()
     ################ RECOMMENDER  #################
     EAR.execute(message)
+    print(EAR.information)
     try:
         if EAR.information['Type'] == 'movie':
             genra = EAR.information['Category']
@@ -236,6 +372,14 @@ def analyze_data():
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
             Devices[EAR.information['Location']] = '1'
+
+            val = 1
+            memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']]), 'val':val})
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
             print(Devices[EAR.information['Location']])
         elif EAR.information['Appliance'] == 'light' and EAR.information['State'] == 'off':
             code = lightCodeOff[EAR.information['Location']]
@@ -245,6 +389,15 @@ def analyze_data():
             send.send(clientName, TOPIC, code)
             send.disconnect(clientName)
             Devices[EAR.information['Location']] = '0'
+
+            memory.insertValues('light_DS', {'user_id': int(userid), 'room_num':int(learn[EAR.information['Location']])})
+
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
@@ -256,6 +409,7 @@ def analyze_data():
     try:
         if EAR.information['Appliance'] == 'television':
             code = tvCode[EAR.information['State']]
+            print(EAR.information)
             print(code)
             print(Devices["tv"])
 
@@ -273,6 +427,10 @@ def analyze_data():
                 Devices["tv"] = '1'
             if code == '18':
                 Devices["tv"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
 
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
@@ -301,15 +459,181 @@ def analyze_data():
             if code == '22':
                 Devices["coffeMachine"] = '0'
 
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+
     except (RuntimeError, TypeError, NameError, KeyError):
         pass
 
-        # Call reciever to get the current state
+    #######################   air conditioning   ##############################
+    try:
+        if EAR.information['Appliance'] == 'air conditioner':
+            code = airConditioner[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
+
+            if code == '52' and Devices["air conditioner"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '53' and Devices["air conditioner"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '52':
+
+                val = 1
+                memory.insertValues('air_con_DS', {'external_val': Interior_Value, 'internal_val': Exterior_Value,'user_id':int(userid) , 'val':val})
+                Devices["air conditioner"] = '1'
+            if code == '53':
+
+                val = 0
+                memory.insertValues('air_con_DS', {'external_val': Interior_Value, 'internal_val': Exterior_Value,'user_id':int(userid) , 'val':val})
+                Devices["air conditioner"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+    ###############################  Curtains  ######################################
+    try:
+        if EAR.information['Appliance'] == 'curtains':
+            code = curtains[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
+
+            if code == '29' and Devices["curtains"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '30' and Devices["curtains"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '29':
+                Devices["curtains"] = '1'
+            if code == '30':
+                Devices["curtains"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+
+        pass
+  ################################    Fridge    ###################################
+    try:
+        if EAR.information['Appliance'] == 'fridge':
+            code = fridge[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
+
+            if code == '27' and Devices["fridge"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '28' and Devices["fridge"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '27':
+                Devices["fridge"] = '1'
+            if code == '28':
+                Devices["fridge"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+
+    try:
+        if EAR.information['Appliance'] == 'elevator':
+            code = '31'
+            print(code)
+            #print(Devices["airConditioner"])
+
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+
+    try:
+        if EAR.information['Inquiry'] == 'weather':
+            print('123')
+            print(EAR.information['Location'])
+            tem = get_temperature(EAR.information['Location'])
+            str1 = 'the weather in '
+            str2 = str(EAR.information['Location'])
+            str3 = ' is: '
+            str4 = ' Celsius'
+            strr = str1 + str2 + str3 + str(tem) + str4
+            print (strr)
+            return jsonify({'message': strr }), 200
+
+
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+
+#########################################################################
+
+ ################################    water tap    ###################################
+    try:
+        if EAR.information['Appliance'] == 'water tap':
+            code = waterTap[EAR.information['State']]
+            print(code)
+            #print(Devices["airConditioner"])
+
+            if code == '100' and Devices["waterTap"] == '1':
+                return jsonify({'message': "it's already on "}), 207
+
+            if code == '101' and Devices["waterTap"] == '0':
+                return jsonify({'message': "it's already off "}), 207
+
+            send.Conect(clientName)
+            send.send(clientName, TOPIC, code)
+            send.disconnect(clientName)
+
+            if code == '100':
+                Devices["waterTap"] = '1'
+            if code == '101':
+                Devices["waterTap"] = '0'
+
+            Mou.speak(EAR.intent, EAR.tense)
+            return jsonify({'message': Mou.respone}), 200
+    except (RuntimeError, TypeError, NameError, KeyError):
+        pass
+
+    #return jsonify({'message': "Sory some times i don't understand"}), 200
 
 
 
-
-
+    Mou.speak(EAR.intent, EAR.tense)
+    return jsonify({'message': Mou.respone}), 200
 
 
 
@@ -330,17 +654,16 @@ def analyze_data():
 
         ################ Mouth  #################
 
-    Mou.speak(EAR.intent, EAR.tense)
-    return jsonify({'message': Mou.respone}), 200
 
 
-################################################# tv API  #######################################################
 
-@app.route('/tv', methods=['POST'])
+################################################# remote API  #######################################################
+
+@app.route('/remote', methods=['POST'])
 def remote_control():
-    if not request.json or not 'channel' in request.json:
+    if not request.json or not 'code' in request.json:
         abort(400)
-    channel = request.json['channel']
+    channel = request.json['code']
 
     send = Sender()
     send.Conect(clientName)
@@ -353,23 +676,23 @@ def remote_control():
     return jsonify({'response': "CH.NO " + channel}), 200
 
 
-################################################# Air conditioner  API  #######################################################
+# ################################################# Air conditioner  API  #######################################################
 
-@app.route('/conditioner', methods=['POST'])
-def air_conditioner():
-    if not request.json or not 'command' in request.json:
-        abort(400)
-    command = request.json['command']
+# @app.route('/conditioner', methods=['POST'])
+# def air_conditioner():
+#     if not request.json or not 'command' in request.json:
+#         abort(400)
+#     command = request.json['command']
 
-    send = Sender()
-    send.Conect(clientName)
-    send.send(clientName, TOPIC, command)
-    send.disconnect(clientName)
+#     send = Sender()
+#     send.Conect(clientName)
+#     send.send(clientName, TOPIC, command)
+#     send.disconnect(clientName)
 
-    # Call reciever to get the current state
+#     # Call reciever to get the current state
 
 
-    return jsonify({'response': "The command you choose is " + command}), 200
+#     return jsonify({'response': "The command you choose is " + command}), 200
 
 
 @app.route('/')
@@ -378,4 +701,4 @@ def homepage():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+    app.run(debug=True, use_reloader=True,host='0.0.0.0' )

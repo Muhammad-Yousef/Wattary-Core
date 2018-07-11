@@ -6,6 +6,7 @@
 import numpy as np
 import pandas as pd
 #from pandas.tests.scalar import timestamp
+from sklearn.model_selection import train_test_split
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
@@ -55,9 +56,9 @@ class AirCond:
            print("DataSet Train size:"+str( self.TrainSetSize))
 
            if self.Predaction =='0':
-               return ("Air conditioner is OFF")
+               return True
            elif self.Predaction =='1':
-               return ("Air conditioner is ON")
+               return False
 
 # ------------------------- Main ----------------------------#
 DateTime=np.asarray([
